@@ -1,22 +1,20 @@
-<ng-container *ngIf="project$ | async as project">
-  <mat-card class="custom-card front">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>{{ (project$ | async)?.title }}</mat-card-title>
-      <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image [src]="project.thumbnail" alt="Photo of a Shiba Inu">
-    <mat-card-content>
-      <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button class="active" mat-button>READ MORE</button>
-      <button class="active" mat-button>{{ project.id }}</button>
-    </mat-card-actions>
-  </mat-card>
-</ng-container>
+<!-- <a href="#" class="btn btn-primary"  routerLink="./create-entry" routerLinkActive="active">Create</a> -->
+
+<div *ngIf="loading" class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>     
+<div class="card-group">
+     <div  *ngFor="let recipe of recipeData" class='col-sm-4  mb-2' >
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{recipe.Recipe_Name}}</h5>
+              <img class="card-img-top" src={{recipe.Pictures}} alt="Card image cap" width="254" height="152">
+              <br>
+              <p class="card-text"><b>Total Time:</b> {{recipe.TotalTime}}</p>
+              <button class="btn btn-primary"  (click)="navigateToDynamicComponent(recipe.Recipe_Name)">Details</button>
+            </div>
+          </div>
+        </div>
+     </div>
+
 

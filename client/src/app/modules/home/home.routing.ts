@@ -15,7 +15,8 @@ export const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'projects/:id',
+    //path: 'projects/:id',
+    path: 'recipes',
     component: ProjectDetailsComponent,
     resolve: {
       project: ProjectResolver

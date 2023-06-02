@@ -1,3 +1,22 @@
-.mat-app-background {
-  height: 100%;
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  /* Adjust other styles as needed */
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* Adjust other styles as needed */
+}
+
+.router-outlet {
+  margin-top: 60px; /* Adjust the value to match the height of your header */
+  margin-bottom: 40px; /* Adjust the value to match the height of your footer */
+}
+

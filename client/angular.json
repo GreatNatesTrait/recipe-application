@@ -40,10 +40,10 @@
               }
             ],
             "styles": [
-              {
-                "input": "src/styles.scss",
-                "inject": true
-              }
+              
+                "@angular/material/prebuilt-themes/indigo-pink.css",
+                "src/styles.scss"
+              
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -136,10 +136,10 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              {
-                "input": "src/main.scss",
-                "inject": true
-              }
+              
+                "@angular/material/prebuilt-themes/indigo-pink.css",
+                "src/styles.scss"
+              
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

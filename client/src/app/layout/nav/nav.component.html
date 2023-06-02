@@ -1,28 +1,41 @@
-<div class="wrapper">
-  <div class="toolbar">
-    <mat-toolbar color="primary">
-      <div class="container">
-        <span class="branding spacer center d-none d-sm-inline d-md-none">
-          Angular Folder Structure
-        </span>
-        <span class="branding spacer d-none d-md-inline">
-          Angular Folder Structure
-        </span>
-        <span class="d-none d-md-inline">
-          <button mat-button class="nav-button" *ngFor="let item of navItems" [routerLink]="item.link"
-            routerLinkActive="active">
-            {{ item.title }}
-          </button>
 
-          <mat-slide-toggle [checked]="isDarkTheme$ | async" (change)="toggleTheme($event.checked)">Change Theme
-          </mat-slide-toggle>
-        </span>
-        <div style="float: right;">
-          <a [href]="repoUrl" target="_blank">Fork on GitHub
-            <fa-icon [icon]="['fab','github']"></fa-icon>
-          </a>
-        </div>
-      </div>
-    </mat-toolbar>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/home" href="#">Recipe.com</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+        routerLink="/home"
+        routerLinkActive="active"
+        class="nav-link active" aria-current="page" href="#"
+        >Home</a
+      >
+        </li>
+        <li class="nav-item">
+          <a routerLink="/recipes"
+          routerLinkActive="active" class="nav-link" href="#">Recipes</a>
+        </li>      
+        <li class="nav-item">
+          <a
+        routerLink="/contact"
+        routerLinkActive="active"
+        class="nav-link" href="#" tabindex="-1"
+        >Contact</a
+      >
+        </li>
+        <!-- <li class="nav-item">
+          <a routerLink="/login" routerLinkActive="active" class="nav-link" href="#" tabindex="-1">Login</a> 
+        </li> -->
+      </ul>
+      <form class="d-flex">
+        <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+        <a routerLink="/auth/login" routerLinkActive="active" class="nav-item nav-link" href="#" tabindex="-1">Login</a>
+        <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+      </form>
+    </div>
   </div>
-</div>
+</nav>
