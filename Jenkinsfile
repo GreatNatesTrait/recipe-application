@@ -35,7 +35,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/GreatNatesTrait/recipe-application.git'
+                git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
             }
         }
 
