@@ -5,14 +5,18 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 import { NoAuthGuard } from '@core/guard/no-auth.guard';
 
 const routes: Routes = [
-
+  {
+    path: '',
+    redirectTo: '/dashboard/home',
+    pathMatch: 'full'
+  },
   {
     path: '',
     component: ContentLayoutComponent,
     //canActivate: [NoAuthGuard], // Should be replaced with actual auth guard
     children: [
       {
-        path: '',
+        path: 'dashboard',
         loadChildren: () =>
           import('@modules/home/home.module').then(m => m.HomeModule)
       },
@@ -28,6 +32,7 @@ const routes: Routes = [
       },
       {
         path: 'auth',
+        component: AuthLayoutComponent,
         loadChildren: () =>
           import('@modules/auth/auth.module').then(m => m.AuthModule)
       }
@@ -41,11 +46,14 @@ const routes: Routes = [
   // },
   // Fallback when no prior routes is matched
   //{ path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
-  { path: '**', redirectTo: 'home', pathMatch: 'full' }
+  { path: '**', redirectTo: '/dashboard/home', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    useHash: true,
+   // relativeLinkResolution: 'legacy'
+  })],
   exports: [RouterModule],
   providers: []
 })

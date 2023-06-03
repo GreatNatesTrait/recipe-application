@@ -7,22 +7,65 @@ import { ProjectDetailsComponent } from './page/project-details/project-details.
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '/dashboard/home',
     pathMatch: 'full'
   },
   {
-    path: 'home',
-    component: HomeComponent
+    path: '',
+    children: [
+      {
+        path: 'home',
+        component: HomeComponent
+      },
+      {
+        path: 'recipes',
+        component: ProjectDetailsComponent
+      }
+    ]
   },
-  {
-    //path: 'projects/:id',
-    path: 'recipes',
-    component: ProjectDetailsComponent,
-    resolve: {
-      project: ProjectResolver
-    }
-  }
+ // },
+  // {
+  //   //path: 'projects/:id',
+  //   path: 'recipes',
+  //   component: ProjectDetailsComponent,
+  //   resolve: {
+  //     project: ProjectResolver
+  //   }
+  // }
 ];
+// const routes: Routes = [
+//   {
+//     path: '',
+//     redirectTo: '/auth/login',
+//     pathMatch: 'full'
+//   },
+//   {
+//     path: '',
+//     children: [
+//       {
+//         path: 'login',
+//         component: LoginComponent
+//       },
+//       {
+//         path: 'register',
+//         component: RegisterComponent
+//       }
+//     ]
+//   },
+//   // {
+//   //   path: '',
+//   //   children: [
+//   //     {
+//   //       path: 'login',
+//   //       component: LoginComponent
+//   //     },
+//   //     {
+//   //       path: 'register',
+//   //       component: RegisterComponent
+//   //     }
+//   //   ]
+//   // }
+// ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
