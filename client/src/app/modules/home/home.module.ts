@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { HomeComponent } from './page/home.component';
-import { ProjectItemComponent } from './page/project-item/project-item.component';
-import { ProjectDetailsComponent } from './page/project-details/project-details.component';
 
+
+import { SafePipe } from '@app/shared/pipe/safepipe.pipe';
 import { HomeRoutingModule } from './home.routing';
 
 @NgModule({
-  declarations: [HomeComponent, ProjectItemComponent, ProjectDetailsComponent],
+  declarations: [HomeComponent, SafePipe],
   imports: [SharedModule, HomeRoutingModule],
-  exports: [],
-  providers: []
+  exports: [SafePipe],
+  providers: [SafePipe]
 })
 export class HomeModule {}

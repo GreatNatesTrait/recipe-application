@@ -7,6 +7,7 @@ import { MaterialModule } from './material.module';
 
 import { ControlMessagesComponent } from './component/control-messages/control-messages.component';
 import { SpinnerComponent } from './component/spinner/spinner.component';
+//import { SafePipe } from './pipe/safepipe.pipe';
 
 @NgModule({
   imports: [
@@ -15,7 +16,9 @@ import { SpinnerComponent } from './component/spinner/spinner.component';
     ReactiveFormsModule,
     RouterModule
   ],
-  declarations: [ControlMessagesComponent, SpinnerComponent],
+  declarations: [ControlMessagesComponent, SpinnerComponent
+   // , SafePipe
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -24,6 +27,8 @@ import { SpinnerComponent } from './component/spinner/spinner.component';
     MaterialModule,
     ControlMessagesComponent,
     SpinnerComponent
+    //,
+    //SafePipe
   ]
 })
 export class SharedModule {
