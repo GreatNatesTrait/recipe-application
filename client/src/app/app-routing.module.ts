@@ -61,6 +61,7 @@ const routes: Routes = [
     useHash: true,
    // relativeLinkResolution: 'legacy'
   })],
+
   exports: [RouterModule],
   providers: []
 })
