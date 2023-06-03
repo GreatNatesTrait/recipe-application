@@ -30,12 +30,9 @@ import { HomeModule } from './modules/home/home.module';
 
     // 3rd party
     //AuthModule,
-HomeModule,
-    // core & shared
+    HomeModule,
     CoreModule,
     SharedModule,
-
-    // app
     AppRoutingModule,
 
     BrowserAnimationsModule

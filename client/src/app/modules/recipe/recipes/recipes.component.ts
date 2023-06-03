@@ -3,10 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Project } from '@app/data/schema/project';
-//import { Recipe } from '../schema/recipe';
 import { ProjectService } from '@app/data/service/project.service';
 import { Recipe } from '@app/data/schema/recipe';
-//import { APIService } from './api.service';
+
 
 
 @Component({
