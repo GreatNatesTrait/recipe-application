@@ -2,4 +2,4 @@
 /beanstalk iac
 node_modules
 package-lock.json
-/server/api/lambda-functions/dynamo-API/terraform
+terraform/
