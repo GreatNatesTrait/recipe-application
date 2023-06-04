@@ -4,13 +4,14 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { NoAuthGuard } from '@core/guard/no-auth.guard';
 import { HomeComponent } from './modules/home/page/home.component';
+import { LoginComponent } from './modules/auth/page/login/login.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: '/home',
-  //   pathMatch: 'full'
-  // },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
   {
     path: '',
     component: ContentLayoutComponent,
@@ -18,8 +19,6 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        // loadChildren: () =>
-        //   import('@modules/home/home.module').then(m => m.HomeModule)
         component: HomeComponent
       },
       {
@@ -39,28 +38,21 @@ const routes: Routes = [
       },
       {
         path: 'auth',
-        component: AuthLayoutComponent,
         loadChildren: () =>
           import('@modules/auth/auth.module').then(m => m.AuthModule)
-      }
+      },
+      {path: 'user',
+      loadChildren: () =>
+        import('@modules/user/user.module').then(m => m.UserModule)
+    }
     ]
   },
-  // {
-  //   path: 'auth',
-  //   component: AuthLayoutComponent,
-  //   loadChildren: () =>
-  //     import('@modules/auth/auth.module').then(m => m.AuthModule)
-  // },
-  // Fallback when no prior routes is matched
-  //{ path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    useHash: true,
-   // relativeLinkResolution: 'legacy'
-  })],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
+
   exports: [RouterModule],
   providers: []
 })
