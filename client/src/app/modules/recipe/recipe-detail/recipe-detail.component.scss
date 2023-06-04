@@ -22,3 +22,14 @@
 .flippable-card.flipped {
   transform: rotateY(180deg);
 }
+
+.image-container {
+  max-width: 100%; /* Set a maximum width for the container */
+  height: auto; /* Allow the height to adjust automatically */
+}
+
+.image-container img {
+  width: 100%; /* Set the width to 100% to fill the container */
+  height: auto; /* Allow the height to adjust automatically */
+  display: block; /* Ensure the image is displayed as a block element */
+}
