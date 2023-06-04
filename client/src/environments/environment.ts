@@ -11,8 +11,14 @@ export const environment = {
   version: env.npm_package_version + '-dev',
   serverUrl: '/api',
   envName: 'DEV',
-  dynamoAPI : dynamo_api_url
+  dynamoAPI : dynamo_api_url,
+  API_URL: 'http://127.0.0.1:8000',
+  cognito: {
+    userPoolId: 'us-east-1_64NAjcj4f',
+    userPoolWebClientId: '1b2lvdp11tr97e1uvai8vorhk5',
+  },
 };
+
 
 /*
  * In development mode, to ignore zone related error stack frames such as

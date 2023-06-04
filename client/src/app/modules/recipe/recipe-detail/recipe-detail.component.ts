@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Recipe } from '@app/data/schema/recipe';
+import { RecipeModel } from '@app/shared/models/recipe.model';
 import { SafePipe } from '@app/shared/pipe/safepipe.pipe';
 
 @Component({
@@ -11,7 +11,7 @@ import { SafePipe } from '@app/shared/pipe/safepipe.pipe';
 })
 export class RecipeDetailComponent implements OnInit{
   Object = Object;
-  activeRecipe: Recipe;
+  activeRecipe: RecipeModel;
   id: string | null = null;
   youtubeUrl: SafeResourceUrl;
   embedUrl: string;

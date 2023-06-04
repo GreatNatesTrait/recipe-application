@@ -1,4 +1,4 @@
-export interface Recipe {
+export interface RecipeModel {
     strSource: string;
     strImageSource: string;
     strCategory: string;
@@ -57,4 +57,3 @@ export interface Recipe {
     };
     strInstructions: string;
   }
-  

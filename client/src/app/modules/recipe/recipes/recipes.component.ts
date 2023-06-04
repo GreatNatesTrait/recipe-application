@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Project } from '@app/data/schema/project';
-import { ProjectService } from '@app/data/service/project.service';
-import { Recipe } from '@app/data/schema/recipe';
+import { RecipeDataService } from '@app/data/service/recipe-data.service';
+import { RecipeModel } from '@app/shared/models/recipe.model';
 
 
 
@@ -14,11 +11,10 @@ import { Recipe } from '@app/data/schema/recipe';
   styleUrls: ['./recipes.component.scss']
 })
 export class RecipesComponent implements OnInit {
-  project$: Observable<Project>;
 
-  constructor(private dataService: ProjectService, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private dataService: RecipeDataService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  recipeData : Recipe[] = [];
+  recipeData : RecipeModel[] = [];
   loading = true;
 
   async ngOnInit(): Promise<void> {

@@ -1,0 +1,103 @@
+<!-- <div class="row justify-content-center my-5">
+    <div class="col-4">
+      <div class="row">
+        <div class="col mb-2">
+          <label for="email" class="form-label">Email:</label>
+          <input type="email" id="email" name="email" #email="ngModel" [ngModel]="user.email" disabled class="form-control form-control-sm">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-2">
+          <label for="name" class="form-label">Name:</label>
+          <input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="user.name" class="form-control form-control-sm">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col d-grid">
+          <button type="button" (click)="update()" class="btn btn-sm btn-dark" [disabled]="loading">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="overlay" *ngIf="!isUserReceived">
+    <div class="spinner-wrapper">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="user$ | async as user" class="profile-page d-flex flex-column">
+    <header class="header">
+      <span class="header-title">User Profile</span>
+      <div class="header-container">
+        <mat-icon aria-hidden="false" aria-label="Example home icon">person</mat-icon>
+        <span>Hi {{ user.username }}</span>
+      </div>
+    </header>
+
+    <!-- Simple form with inputs related to profile -->
+    <form class="example-form" [formGroup]="form">
+      <h2>PROFILE</h2>
+      <table class="example-full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field class="example-full-width">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" />
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Phone</mat-label>
+              <span matPrefix>+1 &nbsp;</span>
+              <input type="tel" matInput placeholder="555-555-1234" formControlName="phone" />
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Current Address</mat-label>
+              <textarea matInput placeholder="Ex. 100 Main St" formControlName="currentaddress"></textarea>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Previous Address</mat-label>
+              <textarea matInput placeholder="Ex. 100 Main St" formControlName="previousaddress"></textarea>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <!-- Action buttons -->
+      <div class="col-xs-3">
+        <button type="button" class="btn btn-success" (click)="createProfile()" [disabled]="!isProfileEmpty || isLoading">
+          <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="isLoading && apiAction === 'create'"
+          ></span>
+          CREATE
+        </button>
+        <button type="button" class="btn btn-primary" (click)="updateProfile()" [disabled]="isProfileEmpty || isLoading">
+          <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="isLoading && apiAction === 'update'"
+          ></span>
+          UPDATE
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteProfile()" [disabled]="isProfileEmpty || isLoading">
+          <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="isLoading && apiAction === 'delete'"
+          ></span>
+          DELETE
+        </button>
+      </div>
+    </form>
+  </div>

@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { NoAuthGuard } from '@core/guard/no-auth.guard';
 import { HomeComponent } from './modules/home/page/home.component';
+import { LoginComponent } from './modules/auth/page/login/login.component';
 
 const routes: Routes = [
   {
@@ -37,10 +38,13 @@ const routes: Routes = [
       },
       {
         path: 'auth',
-        component: AuthLayoutComponent,
         loadChildren: () =>
           import('@modules/auth/auth.module').then(m => m.AuthModule)
-      }
+      },
+      {path: 'user',
+      loadChildren: () =>
+        import('@modules/user/user.module').then(m => m.UserModule)
+    }
     ]
   },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
