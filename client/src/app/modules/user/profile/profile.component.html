@@ -1,28 +1,4 @@
-<!-- <div class="row justify-content-center my-5">
-    <div class="col-4">
-      <div class="row">
-        <div class="col mb-2">
-          <label for="email" class="form-label">Email:</label>
-          <input type="email" id="email" name="email" #email="ngModel" [ngModel]="user.email" disabled class="form-control form-control-sm">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col mb-2">
-          <label for="name" class="form-label">Name:</label>
-          <input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="user.name" class="form-control form-control-sm">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col d-grid">
-          <button type="button" (click)="update()" class="btn btn-sm btn-dark" [disabled]="loading">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
-            Update
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <div class="overlay" *ngIf="!isUserReceived">
+ <div class="overlay" *ngIf="isLoading">
     <div class="spinner-wrapper">
       <div class="spinner-border text-primary" role="status">
         <span class="sr-only">Loading...</span>
@@ -30,7 +6,7 @@
     </div>
   </div>
 
-  <div *ngIf="user$ | async as user" class="profile-page d-flex flex-column">
+  <div class="profile-page d-flex flex-column" *ngIf="!isLoading">
     <header class="header">
       <span class="header-title">User Profile</span>
       <div class="header-container">
@@ -71,7 +47,7 @@
       </table>
       <!-- Action buttons -->
       <div class="col-xs-3">
-        <button type="button" class="btn btn-success" (click)="createProfile()" [disabled]="!isProfileEmpty || isLoading">
+        <button type="button" class="btn btn-success" [disabled]="!isProfileEmpty || isLoading">
           <span
             class="spinner-border spinner-border-sm"
             role="status"
@@ -80,7 +56,7 @@
           ></span>
           CREATE
         </button>
-        <button type="button" class="btn btn-primary" (click)="updateProfile()" [disabled]="isProfileEmpty || isLoading">
+        <button type="button" class="btn btn-primary"[disabled]="isProfileEmpty || isLoading">
           <span
             class="spinner-border spinner-border-sm"
             role="status"
@@ -89,7 +65,7 @@
           ></span>
           UPDATE
         </button>
-        <button type="button" class="btn btn-danger" (click)="deleteProfile()" [disabled]="isProfileEmpty || isLoading">
+        <button type="button" class="btn btn-danger"  [disabled]="isProfileEmpty || isLoading">
           <span
             class="spinner-border spinner-border-sm"
             role="status"

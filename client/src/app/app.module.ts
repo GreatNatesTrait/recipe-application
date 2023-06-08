@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeModule } from './modules/home/home.module';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +23,6 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
   ],
   imports: [
     BrowserModule,
-    ToastrModule.forRoot(),
     HomeModule,
     CoreModule,
     SharedModule,
@@ -31,7 +30,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
     FormsModule,
     BrowserAnimationsModule
   ],
-  providers: [ToastrService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

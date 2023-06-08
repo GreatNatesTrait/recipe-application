@@ -55,7 +55,7 @@
         </li>
       </ul>
       
-      <div *ngIf="currentUser" class="dropdown">
+      <div *ngIf="isAuthenticated" class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-person-circle"></i>
         </button>
@@ -66,7 +66,7 @@
         </ul>
       </div>
       <form class="d-flex">
-       <a *ngIf="!currentUser"
+       <a *ngIf="!isAuthenticated"
           routerLink="/auth/login"
           routerLinkActive="active"
           class="nav-item nav-link"

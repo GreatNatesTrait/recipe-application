@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@core/service/auth.service';
+import { environment } from '@env';
+import { Amplify } from 'aws-amplify';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +11,12 @@ import { AuthService } from '@core/service/auth.service';
 export class AppComponent implements OnInit {
   isAuthenticated: boolean;
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.isAuthenticated = false;
+  constructor(private router: Router) {
+    Amplify.configure({
+      Auth: environment.cognito,
+    });
   }
 
   public ngOnInit(): void {
-    this.authService.isAuthenticated().then((success: boolean) => {
-      this.isAuthenticated = success;
-      console.log(this.isAuthenticated);
-    });
-    
   }
 }

@@ -4,11 +4,11 @@ import { RecipeRoutingModule } from './recipe.routing';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { SharedModule } from '@shared/shared.module';
-
-
+import { IngredientsComponent } from './recipe-detail/ingredients/ingredients.component';
+import { VideoComponent } from './recipe-detail/video/video.component';
 
 @NgModule({
-  declarations: [RecipeDetailComponent,RecipesComponent],
+  declarations: [RecipeDetailComponent,RecipesComponent,IngredientsComponent,VideoComponent],
   imports: [
     CommonModule,
     RecipeRoutingModule,
