@@ -1,20 +1,19 @@
-
 <div class="container">
-<div *ngIf="loading" class="spinner-border" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>     
-<div class="card-group">
-     <div  *ngFor="let recipe of recipeData" class='col-sm-4  mb-2' >
-        <div class="card" style="width: 18rem; margin-top: 5px; margin-bottom: 5px;">
-            <div class="card-body">
-              <h5 class="card-title">{{recipe.strMeal}}</h5>
-              <img class="card-img-top" src={{recipe.strMealThumb}} alt="Card image cap" width="254" height="152">
-              <br>
-              <!-- <p class="card-text"><b>Total Time:</b> {{recipe.TotalTime}}</p> -->
-              <button class="btn btn-primary"  (click)="navigateToDynamicComponent(recipe.strMeal)">Details</button>
-            </div>
+  <div *ngIf="loading" class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div class="card-group">
+      <div *ngFor="let recipe of recipeData" class="col-sm-3 mb-2">
+        <div class="card mt-4 my-4 mx-4">
+          <div class="card-body">
+            <h5 class="card-title">{{recipe.strMeal}}</h5>
+            <img class="card-img-top" src={{recipe.strMealThumb}} alt="Card image cap" width="254" height="152">
+            <br>
+            <button class="btn btn-primary" (click)="navigateToDynamicComponent(recipe.strMeal)">Details</button>
           </div>
         </div>
-     </div>
+      </div>
     </div>
-
+  </div>
+</div>

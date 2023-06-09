@@ -1,36 +1,42 @@
 <div class="class1 full-width-image">
   <div class="container">
-  <!-- <div class="material-table"> -->
-    <div >
-      <br>
-      <br>
-      <h1 style="color: beige; font-family: serif;">Find a Recipe</h1>
-     
-      <form class="search-form">
-        <mat-form-field class="example-full-width">
-           <input class="toolbar-search" type="text" matInput [(ngModel)]="searchTerm" name="first">
-           <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+    <div>
+      <br />
+      <br />
+      <h1 style="color: beige; font-family: serif">Find a Recipe</h1>
+
+      <form class="search-form" (submit)="onFormSubmit($event)">
+        <!-- <mat-form-field class="example-full-width">
+          <input
+            class="toolbar-search"
+            type="text"
+            matInput
+            [(ngModel)]="searchTerm"
+            name="first"
+          /> 
+          <input matInput type="text" name="searchQuery" [(ngModel)]="searchQuery" (keyup.enter)="searchRecipes()" />
+          <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+        </mat-form-field> -->
+        <!-- <mat-form-field>
+          <input matInput [formControl]="searchControl" [(ngModel)]="searchQuery" placeholder="Search" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchRecipes()">
+            <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion">
+              {{ suggestion }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> -->
+        <mat-form-field>
+          <input type="text" matInput name="searchQuery" (keyup.enter)="searchResults()" [ngModel]="searchQuery" (ngModelChange)="searchQuery = $event" [formControl]="dataControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let item of filteredData | async" [value]="item">
+              {{ item }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
+        
+        
       </form>
-      <!-- <mat-form-field>
-        <input
-          matInput
-          [(ngModel)]="searchTerm"
-        />
-         <mat-icon class='search-icon' fontIcon="search" color="primary" matSuffix (click)="filterCountries(searchTerm)"
-          ></mat-icon
-        > 
-        <mat-icon color = "primary">check</mat-icon>
-      </mat-form-field> -->
-      <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-          <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-          <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table> -->
-    
-    <!-- </div> -->
-  </div></div>
+    </div>
+  </div>
+</div>
+

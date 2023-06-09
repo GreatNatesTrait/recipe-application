@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { IUser } from '@app/shared/models/iuser.model';
 import { AuthService } from '@app/core/service/auth.service';
-
+import { Auth } from 'aws-amplify';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -20,6 +20,9 @@ export class ProfileComponent {
   isLoading: boolean;
   apiAction: string;
   isAuthenticated : boolean;
+  // Usage example
+
+
   
   constructor(  private formBuilder: FormBuilder,private authService: AuthService, private changeDetectorRef: ChangeDetectorRef ) {
     this.loading = false;
@@ -41,4 +44,39 @@ export class ProfileComponent {
     this.isLoading = false;
     this.changeDetectorRef.detectChanges();
   }
+
+
+
+// ...
+
+// Set custom attributes for a user
+async setCustomAttributes() {
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    console.log(user);
+    const { sub } = user.attributes;
+    let favs = [52957,52988,52893,52878,52896];
+    let strings = JSON.stringify(favs);
+    // if (sub !== userId) {
+    //   throw new Error('Invalid user ID');
+    // }
+
+
+    //const userId = '84482458-20d1-70de-c6b1-1d02575c0330';
+    const updateUserAttributes = {
+      "custom:Favorites": strings
+    // ...
+  };
+
+    await Auth.updateUserAttributes(user, updateUserAttributes);
+    console.log('Custom attributes updated successfully');
+  } catch (error) {
+    console.error('Error updating custom attributes:', error);
+  }
+}
+
+
+
+
+
 }

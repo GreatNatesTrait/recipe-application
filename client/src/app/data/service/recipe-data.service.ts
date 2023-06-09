@@ -17,5 +17,10 @@ export class RecipeDataService {
     return firstValueFrom(this.http.get<RecipeModel[]>(`${this.apiUrl}/recipes`));
   }
 
+  searchRecipes(keyword: string): Observable<any[]> {
+    const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;
+    return this.http.get<any[]>(url);
+  }
+
 
 }

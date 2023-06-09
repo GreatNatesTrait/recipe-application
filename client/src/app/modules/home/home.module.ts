@@ -3,10 +3,22 @@ import { SharedModule } from '@shared/shared.module';
 import { HomeComponent } from './page/home.component';
 import { SafePipe } from '@app/shared/pipe/safepipe.pipe';
 import { HomeRoutingModule } from './home.routing';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 @NgModule({
-  declarations: [HomeComponent, SafePipe],
-  imports: [SharedModule, HomeRoutingModule],
+  declarations: [HomeComponent, SafePipe, SearchResultsComponent],
+  imports: [
+    SharedModule,
+    HomeRoutingModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    //BrowserAnimationsModule
+  ],
   exports: [SafePipe],
   providers: [SafePipe]
 })

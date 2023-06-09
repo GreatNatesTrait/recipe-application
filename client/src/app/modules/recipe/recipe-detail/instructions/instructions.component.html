@@ -1,1 +1,15 @@
-<p>instructions works!</p>
+<!-- <h6 >Instructions</h6>
+<div class="card-body d-flex justify-content-between">
+      <ul class="list-unstyled">
+            <li style="list-style-type: disc;">
+                {{ Instructions}}
+            </li>       
+      </ul>
+    </div> -->
+    <h6 >Instructions</h6>
+    <div class="card-body d-flex justify-content-between">
+        <ul>
+            <li *ngFor="let item of Instructions">{{ item }}</li>
+          </ul>
+        </div>
+

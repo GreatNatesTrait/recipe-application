@@ -15,6 +15,7 @@ export class RecipeDetailComponent implements OnInit{
   videoUrl :string;
   ingredients: Object;
   measurements: Object;
+  instructions: Object;
 
 
   constructor(private route: ActivatedRoute) { }
@@ -25,6 +26,7 @@ export class RecipeDetailComponent implements OnInit{
     this.videoUrl = this.activeRecipe.strYoutube;
     this.ingredients = this.activeRecipe.strIngredient;
     this.measurements = this.activeRecipe.strMeasure;
+    this.instructions = this.activeRecipe.strInstructions.split('[BREAK]')
   }
 
 

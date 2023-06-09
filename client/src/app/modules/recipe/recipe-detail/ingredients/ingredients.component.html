@@ -1,36 +1,8 @@
 <h6 >Ingredients</h6>
 <div class="card-body d-flex justify-content-between">
-    <!-- <ul class="list-unstyled">
-      <li style="list-style-type: disc;">Lorem ipsum dolor sit amet</li>
-      <li style="list-style-type: disc;">Consectetur adipiscing elit</li>
-      <li style="list-style-type: disc;">Sed do eiusmod tempor incididunt</li>
-      <li style="list-style-type: disc;">Ut labore et dolore magna aliqua</li>
-    </ul>
-    </div> -->
-
-    <!-- <div *ngFor="let key of Object.keys(Instructions)">
-        <p>Key-> {{key}} and value is -> {{Instructions[key]}}</p>
-      </div>  -->
-
-      <!-- <figure>
-        <figcaption>Fruit</figcaption> -->
       <ul class="list-unstyled">
-        <!-- <li *ngFor="let key of Object.keys(Ingredients)" style="list-style-type: disc;">
-           {{item.index}} 
-           <p>Key-> {{key}} and value is -> {{Ingredients[key]}}</p>
-        </li> -->
-        <!-- <div *ngFor="let pair of IngredientMeasurementPairs | keyvalue">
-            <p>{{ pair.value.Ingredient }} : {{ pair.value.Measurement }}</p> 
-            <p>{{ pair | json }}</p>
-          </div> -->
-          <!-- <div *ngFor="let pair of IngredientMeasurementPairs"> -->
             <li *ngFor="let pair of IngredientMeasurementPairs" style="list-style-type: disc;">
                 {{ pair.Ingredient}} : {{pair.Measurement }}
-            </li>
-            <!-- <p>{{ pair.value.Ingredient }} : {{ pair.value.Measurement }}</p> -->
-            <!-- <p>{{ pair.Ingredient}} : {{pair.Measurement }}</p> -->
-          <!-- </div> -->
-        
+            </li>       
       </ul>
-    <!-- </figure> -->
     </div>

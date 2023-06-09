@@ -18,7 +18,9 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        component: HomeComponent
+       // component: HomeComponent,
+        loadChildren: () =>
+          import('@modules/home/home.module').then(m => m.HomeModule)
       },
       {
         path: 'recipes',
