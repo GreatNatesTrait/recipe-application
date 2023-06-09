@@ -22,14 +22,28 @@ export const lambda_handler = async (event, context) => {
   try {
     switch (event.routeKey) {
       case "GET /recipes":
-        body = await dynamo.send(
-          new ScanCommand({ TableName: tableName, Limit: 40 })
-        );
-        body = body.Items;
+        // body = await dynamo.send(
+        //   new ScanCommand({ TableName: tableName, Limit: 40 })
+        // );
+        // body = body.Items;
+        const pageSize = 40;
+   
+        
+        const lastEvaluatedKey = event.queryStringParameters?.lastEvaluatedKey;
+        const scanParams = {
+          TableName: tableName,
+          Limit: pageSize,
+          ExclusiveStartKey: lastEvaluatedKey ? JSON.parse(lastEvaluatedKey) : undefined
+        };
+        body = await dynamo.send(new ScanCommand(scanParams));
+        body = {
+          items: body.Items,
+          lastEvaluatedKey: body.LastEvaluatedKey ? JSON.stringify(body.LastEvaluatedKey) : null
+        };
         break;
       case "GET /recipes/search":
-        const keyword = event.queryStringParameters.keyword;
-        const searchParams = {
+        let keyword = event.queryStringParameters.keyword;
+        let searchParams = {
           TableName: tableName,
           FilterExpression: "contains(#strMeal, :keyword)",
           ExpressionAttributeNames: {
@@ -41,6 +55,21 @@ export const lambda_handler = async (event, context) => {
           Limit: 40,
         };
         body = await dynamo.send(new ScanCommand(searchParams));
+        body = body.Items;
+        break;
+        case "GET /recipesByCategory":
+          let keywordd = event.queryStringParameters.keyword;
+        let searchParamss = {
+          TableName: tableName,
+          FilterExpression: "contains(#strCategory, :keyword)",
+          ExpressionAttributeNames: {
+            "#strCategory": "strCategory",
+          },
+          ExpressionAttributeValues: {
+            ":keyword": keywordd,
+          },
+        };
+        body = await dynamo.send(new ScanCommand(searchParamss));
         body = body.Items;
         break;
       default:

@@ -6,10 +6,19 @@
 }
 
 .full-width-image {
-  min-height: 100vh;
+  min-height: 80vh;
   width: 100vw;
   background: url('../../../../assets/images/w_3888.png') no-repeat center center
     fixed;
   background-size: cover;
 }
+
+
+.badge.rounded-pill {
+  font-size: 20px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+
 

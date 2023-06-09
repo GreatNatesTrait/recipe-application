@@ -6,11 +6,15 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { FavoritesComponent } from './profile/favorites/favorites.component';
+import { UserRecipesComponent } from './profile/user-recipes/user-recipes.component';
 
 
 @NgModule({
   declarations: [
-    ProfileComponent
+    ProfileComponent,
+    FavoritesComponent,
+    UserRecipesComponent
   ],
   imports: [
     CommonModule,

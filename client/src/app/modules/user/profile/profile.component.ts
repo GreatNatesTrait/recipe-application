@@ -14,19 +14,21 @@ import { Auth } from 'aws-amplify';
 export class ProfileComponent {
   loading: boolean;
   email:string;
-  user: IUser;
+  //user: IUser;
+  username: any;
+  user: any;
   form: FormGroup;
   isProfileEmpty: boolean;
   isLoading: boolean;
   apiAction: string;
   isAuthenticated : boolean;
   // Usage example
-
+userFavs:any;
 
   
   constructor(  private formBuilder: FormBuilder,private authService: AuthService, private changeDetectorRef: ChangeDetectorRef ) {
     this.loading = false;
-    this.user = {} as IUser;
+    //this.user = {} as IUser;
     this.form = new FormGroup({
       name: new FormControl(''),
       email: new FormControl(''),
@@ -36,47 +38,22 @@ export class ProfileComponent {
     });
     this.isProfileEmpty = true;
     this.apiAction = '';
+    this.username = '';
   }
   
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
     this.isAuthenticated = await this.authService.checkAuthStatus();
+    
+    
+    //console.log(this.authService.getUser())
+    this.user = await this.authService.getUser();
+    this.username = this.user.username;
+    this.userFavs = JSON.parse(this.user.attributes['custom:favorites']);
+    console.log(this.userFavs)
     this.isLoading = false;
     this.changeDetectorRef.detectChanges();
+    
   }
-
-
-
-// ...
-
-// Set custom attributes for a user
-async setCustomAttributes() {
-  try {
-    const user = await Auth.currentAuthenticatedUser();
-    console.log(user);
-    const { sub } = user.attributes;
-    let favs = [52957,52988,52893,52878,52896];
-    let strings = JSON.stringify(favs);
-    // if (sub !== userId) {
-    //   throw new Error('Invalid user ID');
-    // }
-
-
-    //const userId = '84482458-20d1-70de-c6b1-1d02575c0330';
-    const updateUserAttributes = {
-      "custom:Favorites": strings
-    // ...
-  };
-
-    await Auth.updateUserAttributes(user, updateUserAttributes);
-    console.log('Custom attributes updated successfully');
-  } catch (error) {
-    console.error('Error updating custom attributes:', error);
-  }
-}
-
-
-
-
 
 }

@@ -17,6 +17,50 @@ export class AuthService {
     });
   }
 
+  async signUp(username: string, password: string, email: string): Promise<any> {
+    try {
+      const result = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email,
+        },
+      });
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  async confirmSignUp(username: string, code: string): Promise<any> {
+    try {
+      const result = await Auth.confirmSignUp(username, code);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async forgotPassword(username: string): Promise<any> {
+    try {
+      const result = await Auth.forgotPassword(username);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  async resetPassword(username: string, code: string, newPassword: string): Promise<any> {
+    try {
+      const result = await Auth.forgotPasswordSubmit(username, code, newPassword);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async login(username: string, password: string): Promise<void> {
     try {
       await Auth.signIn(username, password);
@@ -29,7 +73,7 @@ export class AuthService {
   async signout(): Promise<void> {
     try {
       await Auth.signOut();
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
     } catch (error) {
       console.log('Error signing out', error);
     }
@@ -44,16 +88,16 @@ export class AuthService {
     }
   }
 
-  public signUp(user: IUser): Promise<any> {
-    return Auth.signUp({
-      username: user.email,
-      password: user.password,
-    });
-  }
+  // public signUp(user: IUser): Promise<any> {
+  //   return Auth.signUp({
+  //     username: user.email,
+  //     password: user.password,
+  //   });
+  // }
 
-  public confirmSignUp(user: IUser): Promise<any> {
-    return Auth.confirmSignUp(user.email, user.code);
-  }
+  // public confirmSignUp(user: IUser): Promise<any> {
+  //   return Auth.confirmSignUp(user.email, user.code);
+  // }
 
 
   public getUser(): Promise<any> {

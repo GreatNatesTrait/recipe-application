@@ -15,8 +15,10 @@ export const environment = {
   API_URL: 'http://127.0.0.1:8000',
   cognito: {
     region: 'us-east-1',
-    userPoolId: 'us-east-1_64NAjcj4f',
-    userPoolWebClientId: '1b2lvdp11tr97e1uvai8vorhk5',
+    //userPoolId: 'us-east-1_64NAjcj4f',
+    //userPoolWebClientId: '1b2lvdp11tr97e1uvai8vorhk5',
+    userPoolId: 'us-east-1_9v5QC3TYm',
+    userPoolWebClientId: '32bp6c4jtkinrilp4hqjsel7bk',
   },
 };
 

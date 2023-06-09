@@ -56,4 +56,5 @@ export interface RecipeModel {
       strMeasure20: string;
     };
     strInstructions: string;
+    fav?: boolean
   }

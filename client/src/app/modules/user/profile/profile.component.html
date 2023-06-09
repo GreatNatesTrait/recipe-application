@@ -1,22 +1,29 @@
- <div class="overlay" *ngIf="isLoading">
-    <div class="spinner-wrapper">
-      <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+<!-- <div class="overlay" *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
   </div>
+</div> -->
+<div *ngIf="isLoading" class="d-flex justify-content-center" role="status">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
 
-  <div class="profile-page d-flex flex-column" *ngIf="!isLoading">
-    <header class="header">
-      <span class="header-title">User Profile</span>
-      <div class="header-container">
-        <mat-icon aria-hidden="false" aria-label="Example home icon">person</mat-icon>
-        <span>Hi {{ user.username }}</span>
-      </div>
-    </header>
+<div class="profile-page d-flex flex-column" *ngIf="!isLoading">
+  <header class="header">
+    <span class="header-title"><h2>User Profile</h2></span>
+    <div class="header-container">
+      <mat-icon aria-hidden="false" aria-label="Example home icon"
+        >person</mat-icon
+      >
+      <span>{{ username }}</span>
+    </div>
+  </header>
 
-    <!-- Simple form with inputs related to profile -->
-    <form class="example-form" [formGroup]="form">
+  <!-- Simple form with inputs related to profile -->
+  <!-- <form class="example-form" [formGroup]="form">
       <h2>PROFILE</h2>
       <button type="button" class="btn btn-primary" (click)="setCustomAttributes()">custom attribute</button>
       <table class="example-full-width" cellspacing="0">
@@ -46,7 +53,7 @@
           </td>
         </tr>
       </table>
-      <!-- Action buttons -->
+       Action buttons
       <div class="col-xs-3">
         <button type="button" class="btn btn-success" [disabled]="!isProfileEmpty || isLoading">
           <span
@@ -76,5 +83,40 @@
           DELETE
         </button>
       </div>
-    </form>
+    </form> -->
+  <div class="container">
+    <div class="card mt-5">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <img
+              src="../../../../assets/images/avatar.jpg"
+              alt="Profile Picture"
+              class="img-fluid rounded-circle"
+            />
+          </div>
+          <div class="col-md-8">
+            <h4 class="card-title">John Doe</h4>
+            <p class="card-text">Email: john.doe@example.com</p>
+            <p class="card-text">Location: New York, USA</p>
+            <p class="card-text">
+              Bio: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-6">
+        <h5>My Favorites</h5>
+        <app-favorites [userFavs]="userFavs"></app-favorites>
+        </div>
+        <div class="col-md-6">
+          <h5>My Recipes</h5>
+          <app-user-recipes></app-user-recipes>
+        </div>
+      </div>
+    </div>
   </div>
+

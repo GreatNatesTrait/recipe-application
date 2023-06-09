@@ -19,6 +19,8 @@ import { RecipeDataService } from '@app/data/service/recipe-data.service';
 import { Observable, map, startWith, switchMap, tap } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RecipeModel } from '@app/shared/models/recipe.model';
+import { CdkTableModule } from '@angular/cdk/table';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +52,7 @@ export class HomeComponent {
     private http: HttpClient,
     private recipeDataService: RecipeDataService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {
     this.loading = false;
     this.recipeData = [];
@@ -93,4 +95,18 @@ export class HomeComponent {
   let recipes = this.initialTypeaheadData.filter(obj => this.recipeNames.includes(obj.strMeal));
    this.router.navigate(['search'], {relativeTo: this.activatedRoute, state: {data: {recipes: recipes}}});
   }
+
+  async logPillName(event: MouseEvent) {
+    const pillElement = event.target as HTMLElement;
+    const pillName = pillElement.textContent;
+    console.log('Clicked pill:', pillName);
+    let rec = await this.byCat(pillName);
+    this.router.navigate(['search'], {relativeTo: this.activatedRoute, state: {data: {recipes: rec}}});
+  }
+  
+  async byCat(cat2): Promise<RecipeModel[]>{
+    let cat = await this.recipeDataService.searchRecipesByCategory(cat2);
+    console.log(cat);
+    return cat
+   }
 }
