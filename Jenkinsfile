@@ -60,20 +60,20 @@ pipeline {
                     script {
                             def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
                             dir(terraformDirectory) {
-                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: true)
-                                if (terraformInitOutput != 0) {
-                                    echo "Terraform initialization failed:\n${terraformInitOutput}"
-                                }
+                                def terraformInitOutput = sh(script: 'terraform init --upgrade', returnStdout: true)
+                                //if (terraformInitOutput != 0) {
+                                //    echo "Terraform initialization failed:\n${terraformInitOutput}"
+                                //}
 
                                 def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true)
-                                if (terraformPlanOutput != 0) {
-                                    echo "Terraform plan failed:\n${terraformPlanOutput}"
-                                }
+                                //if (terraformPlanOutput != 0) {
+                                //    echo "Terraform plan failed:\n${terraformPlanOutput}"
+                                //}
 
                                 def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true)
-                                if (terraformApplyOutput != 0) {
-                                    echo "Terraform apply failed:\n${terraformApplyOutput}"
-                                }
+                                //if (terraformApplyOutput != 0) {
+                                //    echo "Terraform apply failed:\n${terraformApplyOutput}"
+                                //}
                             }                        
                     }
                 }                                 
