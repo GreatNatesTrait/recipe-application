@@ -60,17 +60,17 @@ pipeline {
                     script {
                             def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
                             dir(terraformDirectory) {
-                                def terraformInitOutput = sh(script: 'terraform init --upgrade', returnStdout: true)
+                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: false)
                                 //if (terraformInitOutput != 0) {
                                 //    echo "Terraform initialization failed:\n${terraformInitOutput}"
                                 //}
 
-                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true)
+                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: false)
                                 //if (terraformPlanOutput != 0) {
                                 //    echo "Terraform plan failed:\n${terraformPlanOutput}"
                                 //}
 
-                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true)
+                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: false)
                                 //if (terraformApplyOutput != 0) {
                                 //    echo "Terraform apply failed:\n${terraformApplyOutput}"
                                 //}
