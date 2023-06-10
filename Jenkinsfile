@@ -60,17 +60,17 @@ pipeline {
                                         script {
                                             def terraformDirectory = "${WORKSPACE}/server/api/lambda-functions/dynamo-API/terraform"
                                             dir(terraformDirectory) {
-                                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: true, returnStatus: true)
+                                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: true)
                                                 if (terraformInitOutput != 0) {
                                                     error "Terraform initialization failed:\n${terraformInitOutput}"
                                                 }
 
-                                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true, returnStatus: true)
+                                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true)
                                                 if (terraformPlanOutput != 0) {
                                                     error "Terraform plan failed:\n${terraformPlanOutput}"
                                                 }
 
-                                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true, returnStatus: true)
+                                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true)
                                                 if (terraformApplyOutput != 0) {
                                                     error "Terraform apply failed:\n${terraformApplyOutput}"
                                                 }
