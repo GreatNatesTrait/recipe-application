@@ -1,4 +1,4 @@
-<div *ngIf="loading" class="d-flex justify-content-center" role="status">
+<!-- <div *ngIf="loading" class="d-flex justify-content-center" role="status">
   <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
@@ -51,4 +51,34 @@
   <i class="custom-icon2">Load More Recipes</i>
   <i class="bi bi-arrow-down custom-icon" (click)="getMoreRecipes()"></i>
 </div>
+ -->
 
+ <div class="container">
+  <div class="d-flex justify-content-center">
+    <div class="card-group">
+      <div class="col-sm-3 mb-2 my-4" *ngFor="let recipe of recipeData; let i = index">
+        <div class="card mx-4 h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ recipe.strMeal }}</h5>
+            <img class="card-img-top" src="{{ recipe.strMealThumb }}" alt="Card image cap" width="254" height="182" />
+            <div class="mt-auto d-flex align-items-center">
+              <button class="btn btn-primary my-2" (click)="navigateToDynamicComponent(recipe.strMeal)">
+                Details
+              </button>
+              <div *ngIf="user" class="ms-auto">
+                <label for="id-of-input" class="custom-checkbox">
+                  <input type="checkbox" id="id-of-input" />
+                  <i
+                    (click)="toggleFav(i, recipe.idMeal)"
+                    [style.color]="isFavorite(recipe.idMeal) ? 'yellow' : 'gray'"
+                    class="bi bi-star-fill"
+                  ></i>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
