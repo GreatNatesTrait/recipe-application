@@ -22,7 +22,6 @@ export const lambda_handler = async (event, context) => {
   try {
     switch (event.routeKey) {
       case "GET /recipes":
-
         const pageSize = 40;       
         const lastEvaluatedKey = event.queryStringParameters?.lastEvaluatedKey;
         const scanParams = {
