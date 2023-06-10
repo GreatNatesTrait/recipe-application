@@ -66,34 +66,33 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh '''
+                script {
                     // Check if Node.js is installed
                     def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
-                    if (nodeVersion == 0) {
+                    if (nodeVersion != 0) {
                         // Node.js is not installed, install it
-                        curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-                        sudo apt-get install -y nodejs
+                        sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
+                        sh 'sudo apt-get install -y nodejs'
                     }
 
                     // Check if Angular CLI is installed
                     def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
-                    if (ngVersion == 0) {
+                    if (ngVersion != 0) {
                         // Angular CLI is not installed, install it
-                        sudo npm install -g @angular/cli
+                        sh 'sudo npm install -g @angular/cli'
                     }
 
-                    # Install frontend dependencies
-                    cd client
-                    sudo npm install
-                    # Build Angular app
-                    ng build
-                    cd ..
+                    // Install frontend dependencies
+                    dir('client') {
+                        sh 'sudo npm install'
+                        sh 'ng build'
+                    }
 
-                    # Install backend dependencies
-                    cd server
-                    sudo npm install
-                    cd ..
-                '''
+                    // Install backend dependencies
+                    dir('server') {
+                        sh 'sudo npm install'
+                    }
+                }
             }
         }
 
