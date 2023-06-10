@@ -90,14 +90,6 @@ resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.example_api.id
   name        = "$default"
   auto_deploy = true
-
-  provisioner "local-exec" {
-    command = "echo 'API_URL = ${aws_apigatewayv2_stage.default.invoke_url}' > ${path.module}/../../../../env_vars.js"
-  }
-
-  triggers = {
-    invoke_url = aws_apigatewayv2_stage.default.invoke_url
-  }
 }
 
 resource "aws_apigatewayv2_integration" "app" {
