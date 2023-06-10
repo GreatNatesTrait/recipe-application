@@ -58,7 +58,7 @@ pipeline {
                                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                                     ]]) {
                                         script {
-                                            def terraformDirectory = "/var/lib/jenkins/workspace/recipe\ application\ build/server/api/lambda-functions/dynamo-API/terraform"
+                                            def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
                                             dir(terraformDirectory) {
                                                 def terraformInitOutput = sh(script: 'terraform init', returnStdout: true)
                                                 if (terraformInitOutput != 0) {
