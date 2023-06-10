@@ -38,55 +38,48 @@ pipeline {
                 git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
             }
         }
+        
 
         stage('Update Lambda Functions') {
+            when {
+                expression {
+                    def changes = sh(
+                        returnStdout: true,
+                        script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions/dynamo-API'
+                    ).trim()
+                    changes != null && !changes.isEmpty()
+                }
+            }
             steps {
-                script {
-                        def changes = sh(
-                            returnStdout: true,
-                            script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions/dynamo-API'
-                        ).trim()
-                        
-                        if (changes) {
-                            // Files have been modified, run Terraform
-                            stage('Run Terraform') {
-                                steps {
-                                    withCredentials([[
-                                    $class: 'AmazonWebServicesCredentialsBinding',
-                                    credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
-                                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                                    ]]) {
-                                        script {
-                                            def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
-                                            dir(terraformDirectory) {
-                                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: true)
-                                                if (terraformInitOutput != 0) {
-                                                    error "Terraform initialization failed:\n${terraformInitOutput}"
-                                                }
-
-                                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true)
-                                                if (terraformPlanOutput != 0) {
-                                                    error "Terraform plan failed:\n${terraformPlanOutput}"
-                                                }
-
-                                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true)
-                                                if (terraformApplyOutput != 0) {
-                                                    error "Terraform apply failed:\n${terraformApplyOutput}"
-                                                }
-                                            }
-                                        }
-                                    }
+                withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                    script {
+                            def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
+                            dir(terraformDirectory) {
+                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: true)
+                                if (terraformInitOutput != 0) {
+                                    error "Terraform initialization failed:\n${terraformInitOutput}"
                                 }
 
-                            }
-                        } else {
-                            // No files have been modified, skip Terraform
-                            echo "No changes detected in server/api/lambda-functions"
-                        }
+                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true)
+                                if (terraformPlanOutput != 0) {
+                                    error "Terraform plan failed:\n${terraformPlanOutput}"
+                                }
+
+                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true)
+                                if (terraformApplyOutput != 0) {
+                                    error "Terraform apply failed:\n${terraformApplyOutput}"
+                                }
+                            }                        
                     }
+                }                                 
             }
         }
+
 
         stage('Build') {
             steps {
@@ -175,7 +168,7 @@ pipeline {
                     }
                }
              }   
-          }
+        }
     }    
 }
 
