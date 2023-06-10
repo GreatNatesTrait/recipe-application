@@ -8,7 +8,7 @@ data "aws_s3_bucket" "existing_bucket" {
 
 data "archive_file" "source" {
   type        = "zip"
-  source_dir  = "${path.module}../code"
+  source_dir  = "${path.module}/../code"
   output_path = "${path.module}/stuff.zip"
 }
 
