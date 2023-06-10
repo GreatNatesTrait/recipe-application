@@ -22,13 +22,8 @@ export const lambda_handler = async (event, context) => {
   try {
     switch (event.routeKey) {
       case "GET /recipes":
-        // body = await dynamo.send(
-        //   new ScanCommand({ TableName: tableName, Limit: 40 })
-        // );
-        // body = body.Items;
-        const pageSize = 40;
-   
-        
+
+        const pageSize = 40;       
         const lastEvaluatedKey = event.queryStringParameters?.lastEvaluatedKey;
         const scanParams = {
           TableName: tableName,
