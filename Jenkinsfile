@@ -39,17 +39,48 @@ pipeline {
             }
         }
 
+        stage('Update Lambda Functions') {
+            steps {
+                script {
+                        def changes = sh(
+                            returnStdout: true,
+                            script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions'
+                        ).trim()
+                        
+                        if (changes) {
+                            // Files have been modified, run Terraform
+                            stage('Run Terraform') {
+                                steps {
+                                    sh 'terraform init'
+                                    sh 'terraform plan'
+                                    sh 'terraform apply -auto-approve'
+                                }
+                            }
+                        } else {
+                            // No files have been modified, skip Terraform
+                            echo "No changes detected in server/api/lambda-functions"
+                        }
+                    }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh '''
-                    # Install Node.js and npm (skip if already installed)
-                    # Add additional installation steps if required
-                    curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-                    sudo apt-get install -y nodejs
+                    // Check if Node.js is installed
+                    def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
+                    if (nodeVersion == 0) {
+                        // Node.js is not installed, install it
+                        sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
+                        sh 'sudo apt-get install -y nodejs'
+                    }
 
-                    # Install Angular CLI (skip if already installed)
-                    # Add additional installation steps if required
-                    sudo npm install -g @angular/cli
+                    // Check if Angular CLI is installed
+                    def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
+                    if (ngVersion == 0) {
+                        // Angular CLI is not installed, install it
+                        sh 'sudo npm install -g @angular/cli'
+                    }
 
                     # Install frontend dependencies
                     cd client
