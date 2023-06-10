@@ -1,8 +1,11 @@
-<h6 >Ingredients</h6>
+<h6>Ingredients</h6>
 <div class="card-body d-flex justify-content-between">
-      <ul class="list-unstyled">
-            <li *ngFor="let pair of IngredientMeasurementPairs" style="list-style-type: disc;">
-                {{ pair.Ingredient}} : {{pair.Measurement }}
-            </li>       
-      </ul>
-    </div>
+  <ul class="list-unstyled">
+    <li
+      *ngFor="let pair of IngredientMeasurementPairs"
+      style="list-style-type: disc"
+    >
+      {{ pair.Ingredient }} : {{ pair.Measurement }}
+    </li>
+  </ul>
+</div>

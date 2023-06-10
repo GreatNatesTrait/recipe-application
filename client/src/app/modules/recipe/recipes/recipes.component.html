@@ -47,7 +47,7 @@
     </div>
   </div>
 </div>
-<div class="d-flex flex-column align-items-center">
+<div *ngIf="!loading" class="d-flex flex-column align-items-center">
   <i class="custom-icon2">Load More Recipes</i>
   <i class="bi bi-arrow-down custom-icon" (click)="getMoreRecipes()"></i>
 </div>

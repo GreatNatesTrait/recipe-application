@@ -1,62 +1,78 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <div class="mx-auto" style="max-width: 1200px;">
-        <!-- Your content here -->
-
-
-<div class="d-flex justify-content-between p-1">
-  <span class="badge rounded-pill text-bg-primary px-4 py-2" (click)="logPillName($event)">Breakfast</span>
-  <span class="badge rounded-pill text-bg-secondary px-4 py-2" (click)="logPillName($event)">Pasta</span>
-  <span class="badge rounded-pill text-bg-success px-4 py-2" (click)="logPillName($event)">Beef</span>
-  <span class="badge rounded-pill text-bg-danger px-4 py-2"(click)="logPillName($event)">Chicken</span>
-  <span class="badge rounded-pill text-bg-warning px-4 py-2"(click)="logPillName($event)">Seafood</span>
-  <span class="badge rounded-pill text-bg-info px-4 py-2"(click)="logPillName($event)">Vegetarian</span>
-  <span class="badge rounded-pill text-bg-dark px-4 py-2"(click)="logPillName($event)">Dessert</span>
-</div> </div>
+      <div class="mx-auto" style="max-width: 1200px">
+        <div class="d-flex justify-content-between p-1">
+          <span
+            class="badge rounded-pill text-bg-primary px-4 py-2"
+            (click)="searchCategory($event)"
+            >Breakfast</span
+          >
+          <span
+            class="badge rounded-pill text-bg-secondary px-4 py-2"
+            (click)="searchCategory($event)"
+            >Pasta</span
+          >
+          <span
+            class="badge rounded-pill text-bg-success px-4 py-2"
+            (click)="searchCategory($event)"
+            >Beef</span
+          >
+          <span
+            class="badge rounded-pill text-bg-danger px-4 py-2"
+            (click)="searchCategory($event)"
+            >Chicken</span
+          >
+          <span
+            class="badge rounded-pill text-bg-warning px-4 py-2"
+            (click)="searchCategory($event)"
+            >Seafood</span
+          >
+          <span
+            class="badge rounded-pill text-bg-info px-4 py-2"
+            (click)="searchCategory($event)"
+            >Vegetarian</span
+          >
+          <span
+            class="badge rounded-pill text-bg-dark px-4 py-2"
+            (click)="searchCategory($event)"
+            >Dessert</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-</div>
-  <br>
+<br />
 <div class="class1 full-width-image">
   <div class="container">
     <div>
       <br />
       <br />
       <h1 style="color: beige; font-family: serif">Find a Recipe</h1>
-
-      <form class="search-form" (submit)="onFormSubmit($event)">
-        <!-- <mat-form-field class="example-full-width">
+      <form [formGroup]="searchForm" class="search-form" (submit)="onFormSubmit($event)">
+        <mat-form-field>
           <input
-            class="toolbar-search"
             type="text"
             matInput
-            [(ngModel)]="searchTerm"
-            name="first"
-          /> 
-          <input matInput type="text" name="searchQuery" [(ngModel)]="searchQuery" (keyup.enter)="searchRecipes()" />
-          <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
-        </mat-form-field> -->
-        <!-- <mat-form-field>
-          <input matInput [formControl]="searchControl" [(ngModel)]="searchQuery" placeholder="Search" [matAutocomplete]="auto" />
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchRecipes()">
-            <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion">
-              {{ suggestion }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field> -->
-        <mat-form-field>
-          <input type="text" matInput name="searchQuery" (keyup.enter)="searchResults()" [ngModel]="searchQuery" (ngModelChange)="searchQuery = $event" [formControl]="dataControl" [matAutocomplete]="auto">
+            name="searchQuery"
+            (keyup.enter)="searchResults()"
+            [ngModel]="searchQuery"
+            (ngModelChange)="searchQuery = $event"
+            [formControl]="dataControl"
+            [matAutocomplete]="auto"
+          />
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let item of filteredData | async" [value]="item">
-              {{ item }}
+            <mat-option
+              *ngFor="let item of filteredData2"
+              [value]="item"
+            >
+              {{ item.strMeal }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        
-        
       </form>
+      <br>
     </div>
   </div>
 </div>
-

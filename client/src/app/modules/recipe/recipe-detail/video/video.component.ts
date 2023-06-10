@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { RecipeModel } from '@app/shared/models/recipe.model';
 import { SafePipe } from '@app/shared/pipe/safepipe.pipe';
 
 @Component({
@@ -14,7 +12,7 @@ export class VideoComponent {
   @Input() videoUrl: string;
   safeVideoUrl: SafeResourceUrl;
 
-  constructor(private route: ActivatedRoute,private safepipe:SafePipe) { }
+  constructor(private safepipe:SafePipe) { }
 
   ngOnInit(): void {
      let videoId = this.extractYouTubeVideoId(this.videoUrl);

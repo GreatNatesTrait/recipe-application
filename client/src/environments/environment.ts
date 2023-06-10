@@ -12,7 +12,6 @@ export const environment = {
   serverUrl: '/api',
   envName: 'DEV',
   dynamoAPI : dynamo_api_url,
-  API_URL: 'http://127.0.0.1:8000',
   cognito: {
     region: 'us-east-1',
     //userPoolId: 'us-east-1_64NAjcj4f',

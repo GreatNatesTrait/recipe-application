@@ -17,17 +17,7 @@ const routes: Routes = [
   {
     path: 'search',
     component: SearchResultsComponent
-  },
-  // {
-  //   path: '',
-  //   children: [
-  //     {
-  //       path: 'search-results',
-  //       component: SearchResultsComponent
-  //     }
-  //   ]
-  // }
-  
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

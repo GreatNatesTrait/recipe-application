@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import {  RouterModule , Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
-import { HomeComponent } from './modules/home/page/home.component';
-
 
 const routes: Routes = [
   {
@@ -14,11 +12,9 @@ const routes: Routes = [
   {
     path: '',
     component: ContentLayoutComponent,
-    //canActivate: [NoAuthGuard], // Should be replaced with actual auth guard
     children: [
       {
         path: 'home',
-       // component: HomeComponent,
         loadChildren: () =>
           import('@modules/home/home.module').then(m => m.HomeModule)
       },

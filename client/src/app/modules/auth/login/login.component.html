@@ -19,14 +19,6 @@
     <li class="nav-item">
       <a
         class="nav-link"
-        [ngClass]="{ active: activeTab === 'signout' }"
-        (click)="setActiveTab('signout')"
-        >Sign Out</a
-      >
-    </li>
-    <li class="nav-item">
-      <a
-        class="nav-link"
         [ngClass]="{ active: activeTab === 'recovery' }"
         (click)="setActiveTab('recovery')"
         >Password Recovery</a
@@ -129,13 +121,6 @@
         <button type="submit" class="btn btn-primary">Confirm Sign Up</button>
       </form> -->
     </div>
-    <div class="tab-pane" [ngClass]="{ 'show active': activeTab === 'signout' }">
-      <div class=" d-flex justify-content-center align-items-center">
-      <form (ngSubmit)="signOut()">
-        <button type="submit" class="btn btn-primary">Signout</button>
-      </form>
-    </div>
-  </div>
     <div class="tab-pane" [ngClass]="{ 'show active': activeTab === 'recovery' }">
       <h2>Password Recovery</h2>
 

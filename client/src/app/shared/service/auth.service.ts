@@ -88,18 +88,6 @@ export class AuthService {
     }
   }
 
-  // public signUp(user: IUser): Promise<any> {
-  //   return Auth.signUp({
-  //     username: user.email,
-  //     password: user.password,
-  //   });
-  // }
-
-  // public confirmSignUp(user: IUser): Promise<any> {
-  //   return Auth.confirmSignUp(user.email, user.code);
-  // }
-
-
   public getUser(): Promise<any> {
     return Auth.currentUserInfo();
   }

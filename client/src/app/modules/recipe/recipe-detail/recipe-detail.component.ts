@@ -8,6 +8,7 @@ import { RecipeModel } from '@app/shared/models/recipe.model';
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.scss']
 })
+
 export class RecipeDetailComponent implements OnInit{
   Object = Object;
   activeRecipe: RecipeModel;
@@ -26,7 +27,9 @@ export class RecipeDetailComponent implements OnInit{
     this.videoUrl = this.activeRecipe.strYoutube;
     this.ingredients = this.activeRecipe.strIngredient;
     this.measurements = this.activeRecipe.strMeasure;
-    this.instructions = this.activeRecipe.strInstructions.split('[BREAK]')
+    console.log(this.activeRecipe.strInstructions)
+    this.instructions = (this.activeRecipe.strInstructions.split('[BREAK]')).filter(el=>el !== '')
+    console.log(this.instructions)
   }
 
 

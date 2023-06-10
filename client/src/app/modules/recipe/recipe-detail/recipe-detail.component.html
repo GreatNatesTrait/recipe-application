@@ -7,7 +7,8 @@
     <h5>Recipe Details</h5>
   </div>
   <div class="card-body d-flex justify-content-between">
-    <app-ingredients class="mt-4 mx-4"
+    <app-ingredients
+      class="mt-4 mx-4"
       [Ingredients]="ingredients"
       [Measurements]="measurements"
     ></app-ingredients>
@@ -15,38 +16,13 @@
       <img src="{{ activeRecipe.strMealThumb }}" alt="Card image cap" />
     </div>
     <app-video [videoUrl]="videoUrl"></app-video>
-
-    <!-- <div class="row">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body text-center">
-            <app-video [videoUrl]="videoUrl"></app-video>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div
-            class="card-body d-flex justify-content-center align-items-center"
-          >
-            <div class="image-container" style="width: 350px">
-              <img src="{{ activeRecipe.strMealThumb }}" alt="Card image cap" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
-    <!-- <div class="row">
-      <div class="col-md-10"> -->
-        <div class="card-body d-flex justify-content-between">
-          <app-instructions class="mt-4 mx-4" [Instructions]="instructions"></app-instructions>
-        <!-- </div>
-      </div> -->
-    </div>
-    <br />
-    <br />
-  
+  <div class="card-body d-flex justify-content-between">
+    <app-instructions
+      class="mt-4 mx-4"
+      [Instructions]="instructions"
+    ></app-instructions>
   </div>
-<!-- </div>
-</div> -->
+  <br />
+  <br />
+</div>

@@ -24,8 +24,6 @@ import { UserRecipesComponent } from './profile/user-recipes/user-recipes.compon
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule
-
-    
   ],
   providers:[]
 })

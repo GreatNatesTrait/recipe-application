@@ -1,16 +1,8 @@
-<!-- <div class="overlay" *ngIf="isLoading">
-  <div class="spinner-wrapper">
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-</div> -->
 <div *ngIf="isLoading" class="d-flex justify-content-center" role="status">
   <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
-
 <div class="profile-page d-flex flex-column" *ngIf="!isLoading">
   <header class="header">
     <span class="header-title"><h2>User Profile</h2></span>
@@ -21,69 +13,6 @@
       <span>{{ username }}</span>
     </div>
   </header>
-
-  <!-- Simple form with inputs related to profile -->
-  <!-- <form class="example-form" [formGroup]="form">
-      <h2>PROFILE</h2>
-      <button type="button" class="btn btn-primary" (click)="setCustomAttributes()">custom attribute</button>
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width">
-              <mat-label>Name</mat-label>
-              <input matInput formControlName="name" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email" type="email" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <mat-label>Phone</mat-label>
-              <span matPrefix>+1 &nbsp;</span>
-              <input type="tel" matInput placeholder="555-555-1234" formControlName="phone" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <mat-label>Current Address</mat-label>
-              <textarea matInput placeholder="Ex. 100 Main St" formControlName="currentaddress"></textarea>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <mat-label>Previous Address</mat-label>
-              <textarea matInput placeholder="Ex. 100 Main St" formControlName="previousaddress"></textarea>
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-       Action buttons
-      <div class="col-xs-3">
-        <button type="button" class="btn btn-success" [disabled]="!isProfileEmpty || isLoading">
-          <span
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-            *ngIf="isLoading && apiAction === 'create'"
-          ></span>
-          CREATE
-        </button>
-        <button type="button" class="btn btn-primary"[disabled]="isProfileEmpty || isLoading">
-          <span
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-            *ngIf="isLoading && apiAction === 'update'"
-          ></span>
-          UPDATE
-        </button>
-        <button type="button" class="btn btn-danger"  [disabled]="isProfileEmpty || isLoading">
-          <span
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-            *ngIf="isLoading && apiAction === 'delete'"
-          ></span>
-          DELETE
-        </button>
-      </div>
-    </form> -->
   <div class="container">
     <div class="card mt-5">
       <div class="card-body">
@@ -111,12 +40,11 @@
       <div class="col-md-6">
         <h5>My Favorites</h5>
         <app-favorites [userFavs]="userFavs"></app-favorites>
-        </div>
-        <div class="col-md-6">
-          <h5>My Recipes</h5>
-          <app-user-recipes></app-user-recipes>
-        </div>
+      </div>
+      <div class="col-md-6">
+        <h5>My Recipes</h5>
+        <app-user-recipes></app-user-recipes>
       </div>
     </div>
   </div>
-
+</div>

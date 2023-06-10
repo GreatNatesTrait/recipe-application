@@ -4,7 +4,6 @@
         <th>Meal</th>
         <th>Category</th>
         <th>Area</th>
-        <!-- <th>Image</th> -->
         <th>Recipe</th>
       </tr>
     </thead>
@@ -13,7 +12,6 @@
         <td>{{ item.strMeal }}</td>
         <td>{{ item.strCategory }}</td>
         <td>{{ item.strArea }}</td>
-        <!-- <td><img src="{{ item.strMealThumb }}" alt="Card image cap" /></td> -->
         <td><button class="btn btn-primary" (click)="goToRecipe(item.strMeal)">View Recipe</button></td>
       </tr>
     </tbody>
