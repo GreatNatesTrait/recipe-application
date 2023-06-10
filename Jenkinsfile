@@ -51,11 +51,35 @@ pipeline {
                             // Files have been modified, run Terraform
                             stage('Run Terraform') {
                                 steps {
-                                    sh 'terraform init'
-                                    sh 'terraform plan'
-                                    sh 'terraform apply -auto-approve'
+                                    withCredentials([[
+                                    $class: 'AmazonWebServicesCredentialsBinding',
+                                    credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+                                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                                    ]]) {
+                                        script {
+                                            def terraformDirectory = "${WORKSPACE}/server/api/lambda-functions/dynamo-API/terraform"
+                                            dir(terraformDirectory) {
+                                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: true, returnStatus: true)
+                                                if (terraformInitOutput != 0) {
+                                                    error "Terraform initialization failed:\n${terraformInitOutput}"
+                                                }
+
+                                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true, returnStatus: true)
+                                                if (terraformPlanOutput != 0) {
+                                                    error "Terraform plan failed:\n${terraformPlanOutput}"
+                                                }
+
+                                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true, returnStatus: true)
+                                                if (terraformApplyOutput != 0) {
+                                                    error "Terraform apply failed:\n${terraformApplyOutput}"
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                            }
+}
+
                         } else {
                             // No files have been modified, skip Terraform
                             echo "No changes detected in server/api/lambda-functions"

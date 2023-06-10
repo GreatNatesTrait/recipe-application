@@ -2,6 +2,4 @@
 /beanstalk iac
 node_modules
 package-lock.json
-terraform/
-**/.terraform/*
-.terraform/
+
