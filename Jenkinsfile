@@ -71,15 +71,15 @@ pipeline {
                     def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
                     if (nodeVersion == 0) {
                         // Node.js is not installed, install it
-                        sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
-                        sh 'sudo apt-get install -y nodejs'
+                        curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+                        sudo apt-get install -y nodejs
                     }
 
                     // Check if Angular CLI is installed
                     def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
                     if (ngVersion == 0) {
                         // Angular CLI is not installed, install it
-                        sh 'sudo npm install -g @angular/cli'
+                        sudo npm install -g @angular/cli
                     }
 
                     # Install frontend dependencies
