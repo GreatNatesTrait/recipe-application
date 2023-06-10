@@ -1,25 +1,126 @@
 provider "aws" {
-  region = "us-east-1"  # Replace with your desired region
+  region = "us-east-1"
 }
 
-resource "aws_cognito_user_pool" "example_user_pool" {
-  name = "example-user-pool-two"
+data "aws_s3_bucket" "existing_bucket" {
+  bucket = "nates3practice"
+}
+
+data "archive_file" "source" {
+  type        = "zip"
+  source_dir  = "${path.module}../code"
+  output_path = "${path.module}/stuff.zip"
+}
+
+resource "aws_s3_bucket_object" "file_upload" {
+  bucket = "${data.aws_s3_bucket.existing_bucket.id}"
+  key    = "lambda-functions/loadbalancer-to-es.zip"
+  source = "${data.archive_file.source.output_path}"
+}
+
+
+resource "aws_lambda_function" "example_lambda" {
+  function_name    = "example-lambda"
+  runtime          = "nodejs18.x"
+  handler          = "main.lambda_handler"
+  s3_bucket = "${data.aws_s3_bucket.existing_bucket.id}"
+  s3_key      = "${aws_s3_bucket_object.file_upload.key}"
+  role = aws_iam_role.lambda_role.arn
+}
+
+
+resource "aws_iam_role" "lambda_role" {
+  name = "example-lambda-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
+  policy_arn = aws_iam_policy.lambda_policy.arn
+  role = aws_iam_role.lambda_role.name
+}
+
+resource "aws_iam_policy" "lambda_policy" {
+  name        = "example-lambda-policy"
+  description = "Allows Lambda function to write dynamodb recipe table"
   
-  # Add any additional configurations as needed
-  alias_attributes = ["preferred_username"]
-  
-  schema {
-    attribute_data_type = "String"
-    name                = "preferred_username"
-    required            = false
-    mutable             = true
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowDynamoDBAccess",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:BatchGetItem"
+      ],
+      "Resource": "arn:aws:dynamodb:us-east-1:372554721158:table/*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_apigatewayv2_api" "example_api" {
+  name        = "example-api"
+  protocol_type = "HTTP"
+}
+
+resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.example_api.id
+  name        = "$default"
+  auto_deploy = true
+
+  provisioner "local-exec" {
+    command = "echo 'API_URL = ${aws_apigatewayv2_stage.default.invoke_url}' > ${path.module}/../../../../env_vars.js"
   }
-  
-  schema {
-    attribute_data_type = "String"
-    name                = "email"
-    required            = true
+
+  triggers = {
+    invoke_url = aws_apigatewayv2_stage.default.invoke_url
   }
 }
+
+resource "aws_apigatewayv2_integration" "app" {
+  api_id = aws_apigatewayv2_api.example_api.id
+  integration_uri    = aws_lambda_function.example_lambda.invoke_arn
+  integration_type   = "AWS_PROXY"
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "Get_All" {
+  api_id = aws_apigatewayv2_api.example_api.id
+  route_key = "GET /recipes"
+  target    = "integrations/${aws_apigatewayv2_integration.app.id}"
+}
+
+resource "aws_lambda_permission" "api_gw" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.example_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.example_api.execution_arn}/*/*"
+}
+
 
 
