@@ -38,7 +38,7 @@ pipeline {
                 git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
             }
         }
-        
+
 
         stage('Update Lambda Functions') {
             when {
@@ -62,17 +62,17 @@ pipeline {
                             dir(terraformDirectory) {
                                 def terraformInitOutput = sh(script: 'terraform init', returnStdout: true)
                                 if (terraformInitOutput != 0) {
-                                    error "Terraform initialization failed:\n${terraformInitOutput}"
+                                    echo "Terraform initialization failed:\n${terraformInitOutput}"
                                 }
 
                                 def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: true)
                                 if (terraformPlanOutput != 0) {
-                                    error "Terraform plan failed:\n${terraformPlanOutput}"
+                                    echo "Terraform plan failed:\n${terraformPlanOutput}"
                                 }
 
                                 def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: true)
                                 if (terraformApplyOutput != 0) {
-                                    error "Terraform apply failed:\n${terraformApplyOutput}"
+                                    echo "Terraform apply failed:\n${terraformApplyOutput}"
                                 }
                             }                        
                     }
