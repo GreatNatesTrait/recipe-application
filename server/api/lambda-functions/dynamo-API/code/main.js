@@ -35,6 +35,7 @@ export const lambda_handler = async (event, context) => {
           Limit: pageSize,
           ExclusiveStartKey: lastEvaluatedKey ? JSON.parse(lastEvaluatedKey) : undefined
         };
+        console.log('testing automated lambda update with terraform in jenkins pipeline');
         body = await dynamo.send(new ScanCommand(scanParams));
         body = {
           items: body.Items,

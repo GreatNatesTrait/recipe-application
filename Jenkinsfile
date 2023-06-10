@@ -44,7 +44,7 @@ pipeline {
                 script {
                         def changes = sh(
                             returnStdout: true,
-                            script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions'
+                            script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions/dynamo-API'
                         ).trim()
                         
                         if (changes) {
