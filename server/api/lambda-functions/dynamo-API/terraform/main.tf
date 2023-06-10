@@ -90,14 +90,6 @@ resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.example_api.id
   name        = "$default"
   auto_deploy = true
-
-  provisioner "local-exec" {
-    command = "echo 'API_URL = ${aws_apigatewayv2_stage.default.invoke_url}' > ${path.module}/../../dynamo-API/test.txt"
-  }
-
-  triggers = {
-    invoke_url = aws_apigatewayv2_stage.default.invoke_url
-  }
 }
 
 resource "aws_apigatewayv2_integration" "app" {
@@ -122,6 +114,11 @@ resource "aws_lambda_permission" "api_gw" {
   source_arn = "${aws_apigatewayv2_api.example_api.execution_arn}/*/*"
 }
 
+resource "local_file" "config_file" {
+  filename = "${path.module}/../../dynamo-API/test.txt"
+  content  = aws_apigatewayv2_stage.default.invoke_url
+}
 
+ 
 
 
