@@ -115,9 +115,10 @@ resource "aws_lambda_permission" "api_gw" {
 resource "local_file" "output_api_url_to_file" {
   filename = "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.js"
   content  = templatefile("${path.module}/template.js.tpl", {
-    aws_apigatewayv2_stage = aws_apigatewayv2_stage.default
+    aws_apigatewayv2_stage = element(aws_apigatewayv2_stage.default, 0)
   })
 }
+
 
  
 
