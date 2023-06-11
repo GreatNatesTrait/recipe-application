@@ -113,7 +113,7 @@ resource "aws_lambda_permission" "api_gw" {
 }
 
 resource "local_file" "output_api_url_to_file" {
-  filename = "${path.module}/../../../../../../client/src/environments/environment.ts"
+  filename = "/var/lib/jenkins/workspace/recipe application build/client/src/environments/environment.ts"
   content  = aws_apigatewayv2_stage.default.invoke_url
 }
 
