@@ -82,14 +82,14 @@ EOF
 resource "aws_apigatewayv2_api" "dynamo_api" {
   name        = "dynamo-api"
   protocol_type = "HTTP"
-  cors_configuration = [{
+  cors_configuration  {
     allow_credentials = false
     allow_headers     = ["*"]
     allow_methods     = ["*"]
     allow_origins     = ["*"]
     expose_headers    = ["*"]
     max_age           = 0
-  }]
+  }
 }
 
 resource "aws_apigatewayv2_stage" "default" {
