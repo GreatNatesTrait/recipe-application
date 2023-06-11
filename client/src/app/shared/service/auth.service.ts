@@ -24,6 +24,7 @@ export class AuthService {
         password,
         attributes: {
           email,
+          'custom:favorites':'[]',
         },
       });
       return result;
