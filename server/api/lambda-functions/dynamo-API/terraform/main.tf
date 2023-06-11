@@ -114,12 +114,19 @@ resource "aws_lambda_permission" "api_gw" {
 
 resource "local_file" "output_api_url_to_file" {
   filename = "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.js"
-  content  = templatefile("${path.module}/template.js.tpl", {
-    aws_apigatewayv2_stage = element(aws_apigatewayv2_stage.default, 0)
-  })
+  content  = ""
 }
 
+resource "null_resource" "update_api_url" {
+  triggers = {
+    output_api_url_file = local_file.output_api_url_to_file.filename
+  }
 
- 
+  provisioner "local-exec" {
+    command = <<EOT
+echo 'export const dynamo_api_url = "${aws_apigatewayv2_stage.default.invoke_url}"' >> ${local_file.output_api_url_to_file.filename}
+EOT
+  }
 
-
+  depends_on = [local_file.output_api_url_to_file]
+}
