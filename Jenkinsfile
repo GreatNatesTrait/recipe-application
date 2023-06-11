@@ -12,9 +12,10 @@ pipeline {
             when {
                 expression {
                     def isChanged = sh(
+                        returnStdout: true,
                         script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions/dynamo-API'
                     ).trim()
-                    isChanged != null && !changes.isEmpty()
+                    isChanged != null && !isChanged.isEmpty()
                 }
             }
             stages {
