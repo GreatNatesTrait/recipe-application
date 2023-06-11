@@ -94,8 +94,8 @@
         <button type="submit" class="btn btn-primary">Sign Up</button>
       </form>
 
-      <!-- <h2>Confirm Sign Up</h2>
-      <form (ngSubmit)="confirmSignUp()">
+      <h2 *ngIf="isSignedUp">Confirm Sign Up</h2>
+      <form (ngSubmit)="confirmSignUp()" *ngIf="isSignedUp">
         <div class="mb-3">
           <label for="confirmUsername" class="form-label">Username:</label>
           <input
@@ -119,7 +119,7 @@
           />
         </div>
         <button type="submit" class="btn btn-primary">Confirm Sign Up</button>
-      </form> -->
+      </form>
     </div>
     <div class="tab-pane" [ngClass]="{ 'show active': activeTab === 'recovery' }">
       <h2>Password Recovery</h2>

@@ -17,9 +17,11 @@ export class LoginComponent{
   resetPasswordCode: string;
   newPassword: string;
   activeTab: string = 'signin';
+  isSignedUp : boolean;
 
-
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    this.isSignedUp = false;
+  }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
@@ -28,6 +30,7 @@ export class LoginComponent{
   async signUp() {
     try {
       const result = await this.authService.signUp(this.signupUsername, this.signupPassword, this.signupEmail);
+      this.isSignedUp = true;
       console.log('Sign up successful', result);
     } catch (error) {
       console.log('Error signing up', error);

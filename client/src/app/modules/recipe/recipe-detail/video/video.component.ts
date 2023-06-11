@@ -11,10 +11,11 @@ import { SafePipe } from '@app/shared/pipe/safepipe.pipe';
 export class VideoComponent {
   @Input() videoUrl: string;
   safeVideoUrl: SafeResourceUrl;
-
-  constructor(private safepipe:SafePipe) { }
+  loading: boolean;
+  constructor(private safepipe:SafePipe) {}
 
   ngOnInit(): void {
+    this.loading = true; 
      let videoId = this.extractYouTubeVideoId(this.videoUrl);
      let embedVideoUrl = "https://www.youtube.com/embed/"+videoId;
      this.safeVideoUrl = this.safepipe.transform(embedVideoUrl);

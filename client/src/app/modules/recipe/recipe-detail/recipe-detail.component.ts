@@ -17,7 +17,7 @@ export class RecipeDetailComponent implements OnInit{
   ingredients: Object;
   measurements: Object;
   instructions: Object;
-
+  
 
   constructor(private route: ActivatedRoute) { }
   

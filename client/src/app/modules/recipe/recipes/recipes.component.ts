@@ -14,13 +14,13 @@ import { Auth } from 'aws-amplify';
 export class RecipesComponent implements OnInit {
   user: any;
   lastEvaluatedKey:any;
-  recipeAPIData: any;
+  recipeDataApiCall: any;
+  moreRecipes: any;
   recipeData: RecipeModel[] = [];
   additionalRecipeData: RecipeModel[] = [];
-  moreRecipes: any;
-  loading = true;
-  favoriteStatus: boolean[] = new Array(this.recipeData.length).fill(false);
-  existingFavs = [];
+  loading : boolean;
+  userFavorites = [];
+
   constructor(
     private dataService: RecipeDataService,
     private router: Router,
@@ -29,78 +29,79 @@ export class RecipesComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.recipeAPIData = await this.dataService.getRecipeData();
-    this.recipeData = this.recipeAPIData.items;
-    this.lastEvaluatedKey = this.recipeAPIData.lastEvaluatedKey;
+    this.loading = true;
+    this.recipeDataApiCall = await this.dataService.getRecipeData();
+    this.recipeData = this.recipeDataApiCall.items;
+    this.lastEvaluatedKey = this.recipeDataApiCall.lastEvaluatedKey;
     this.loading = false;
-    await this.getFavs();
-    
+    await this.getUser();
+
+    if(this.user){
+    await this.getUserFavorites();
+    }
   }
 
-  async getFavs() {
+  async getUser(){
     this.user = await Auth.currentAuthenticatedUser();
-    this.existingFavs = JSON.parse(this.user.attributes['custom:favorites']);
+  }
+
+  async getUserFavorites() {
+    await this.getUser();
+    this.userFavorites = JSON.parse(this.user.attributes['custom:favorites']);
   }
 
   async getMoreRecipes(){
     this.moreRecipes = await this.dataService.getRecipeData(this.lastEvaluatedKey);
     this.additionalRecipeData = this.moreRecipes.items;
-    let test = this.recipeData.concat(this.additionalRecipeData);
-    this.recipeData = test;
+    this.recipeData = this.recipeData.concat(this.additionalRecipeData);
   }
 
-  navigateToDynamicComponent(pathParam: string) {
+  navigateToRecipeDetails(recipeName: string) {
     const singleRecipe = this.recipeData.filter(
-      (el) => el.strMeal === pathParam
+      (el) => el.strMeal === recipeName
     );
-    this.router.navigate(['/recipes', pathParam], {
+    this.router.navigate(['/recipes', recipeName], {
       relativeTo: this.activatedRoute,
       state: { data: { recipeData: singleRecipe } }
     });
   }
 
-  async toggleFav(index: number, id) {
+  async toggleFav(id) {
     await this.setFavorite(id);
-    this.toggle(index);
-  }
-
-  toggle(index: number) {
-    this.favoriteStatus[index] = !this.favoriteStatus[index];
   }
 
   isFavorite(id: any) {
-    return this.existingFavs.filter((el) => el === id).length;
+    return this.userFavorites.filter((el) => el === id).length;
   }
 
   async setFavorite(id) {
     try {
       let updateUserAttributes = {};
-      const user = await Auth.currentAuthenticatedUser();
-      let isAlreadyFav = this.existingFavs.filter((el) => el === id).length;
+      let isAlreadyFav = this.userFavorites.filter((el) => el === id).length;
 
       if (isAlreadyFav) {
-        let removeFav = this.existingFavs.filter((el) => el !== id);
+        let removeFav = this.userFavorites.filter((el) => el !== id);
         updateUserAttributes = {
           'custom:favorites': JSON.stringify(removeFav)
         };
-        await Auth.updateUserAttributes(user, updateUserAttributes);
-        await this.getFavs();
+        await Auth.updateUserAttributes(this.user, updateUserAttributes);
+        await this.getUserFavorites();
 
         this.changeDetectorRef.detectChanges();
         return;
       }
 
-      if (this.existingFavs) {
-        this.existingFavs.push(id);
+      if (this.userFavorites) {
+        this.userFavorites.push(id);
         updateUserAttributes = {
-          'custom:favorites': JSON.stringify(this.existingFavs)
+          'custom:favorites': JSON.stringify(this.userFavorites)
         };
       }
-      await Auth.updateUserAttributes(user, updateUserAttributes);
+      await Auth.updateUserAttributes(this.user, updateUserAttributes);
 
-      await this.getFavs();
-      console.log('Custom attributes updated successfully', this.existingFavs);
-      //console.log(user);
+      await this.getUserFavorites();
+      console.log('Custom attributes updated successfully', this.userFavorites);
+      console.trace();
     } catch (error) {
       console.error('Error updating custom attributes:', error);
     }
