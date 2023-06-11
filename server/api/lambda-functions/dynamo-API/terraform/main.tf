@@ -112,8 +112,4 @@ resource "aws_lambda_permission" "api_gw" {
   source_arn = "${aws_apigatewayv2_api.dynamo_api.execution_arn}/*/*"
 }
 
-resource "local_file" "output_api_url_to_file" {
-  filename = "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.js"
-  content  = ""
-}
 
