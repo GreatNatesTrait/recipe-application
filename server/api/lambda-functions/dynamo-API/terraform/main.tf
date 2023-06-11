@@ -111,6 +111,18 @@ resource "aws_apigatewayv2_route" "Get_All" {
   target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
 }
 
+resource "aws_apigatewayv2_route" "Get_Recipe_By_Category" {
+  api_id = aws_apigatewayv2_api.dynamo_api.id
+  route_key = "GET /recipesByCategory"
+  target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
+}
+
+resource "aws_apigatewayv2_route" "Get_Recipe_Search" {
+  api_id = aws_apigatewayv2_api.dynamo_api.id
+  route_key = "GET /recipes/search"
+  target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
+}
+
 resource "aws_lambda_permission" "api_gw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"

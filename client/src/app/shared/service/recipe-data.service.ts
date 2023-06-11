@@ -24,9 +24,14 @@ export class RecipeDataService {
     );
   }
 
-  searchRecipes(keyword: string): Observable<any[]> {
+  // searchRecipes(keyword: string): Observable<any[]> {
+  //   const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;
+  //   return this.http.get<any[]>(url);
+  // }
+
+  searchRecipes(keyword: string): Promise<RecipeModel[]> {
     const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;
-    return this.http.get<any[]>(url);
+    return firstValueFrom(this.http.get<RecipeModel[]>(url));
   }
 
   searchRecipesByCategory(keyword: string): Promise<RecipeModel[]> {
