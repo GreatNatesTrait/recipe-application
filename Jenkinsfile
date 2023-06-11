@@ -46,18 +46,20 @@ pipeline {
         }
 
         stage("Test") {
-            parallel (
-                'Front end unit tests': {
-                    container('node') {
-                        echo "run ng test here"
+            steps {
+                parallel (
+                    'Front end unit tests': {
+                        container('node') {
+                            echo "run ng test here"
+                        }
+                    },
+                    'backend unit tests': {
+                        container('node') {
+                            echo "run npm test here"
+                        }
                     }
-                },
-                'backend unit tests': {
-                    container('node') {
-                        echo "run npm test here"
-                    }
-                }
-            )
+                )
+            }
         }
 
         stage('Build') {
