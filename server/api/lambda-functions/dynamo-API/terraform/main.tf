@@ -117,16 +117,3 @@ resource "local_file" "output_api_url_to_file" {
   content  = ""
 }
 
-resource "null_resource" "update_api_url" {
-  triggers = {
-    output_api_url_file = local_file.output_api_url_to_file.filename
-  }
-
-  provisioner "local-exec" {
-    command = <<EOT
-echo 'export const dynamo_api_url = "${aws_apigatewayv2_stage.default.invoke_url}"' | tee -a ${local_file.output_api_url_to_file.filename} > /dev/null
-EOT
-  }
-
-  depends_on = [local_file.output_api_url_to_file]
-}
