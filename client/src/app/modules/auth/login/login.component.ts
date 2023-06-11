@@ -41,6 +41,7 @@ export class LoginComponent{
     try {
       const result = await this.authService.confirmSignUp(this.signupUsername, this.confirmSignUpCode);
       console.log('Confirm sign up successful', result);
+      await this.authService.login(this.signupUsername, this.signupPassword)
     } catch (error) {
       console.log('Error confirming sign up', error);
     }
