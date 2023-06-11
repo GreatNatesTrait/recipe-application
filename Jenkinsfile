@@ -38,7 +38,7 @@ pipeline {
                                         def terraformInitOutput = sh(script: 'terraform init')
                                         def terraformPlanOutput = sh(script: 'terraform plan')
                                         def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
-                                        def terraformOutputOutput = sh(script: 'terraform output -raw dynamo_api_url > local_file.json')
+                                        def terraformOutputOutput = sh(script: 'terraform output -raw dynamo_api_url > /var/lib/jenkins/workspace/recipe application build/client/src/environments/local_file.json')
                                     }                        
                             }
                         }                                 
