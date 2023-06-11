@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Observable, firstValueFrom, of } from 'rxjs';
+import { Observable, firstValueFrom, of, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { RecipeModel } from '@app/shared/models/recipe.model';
-import { filter, map } from 'rxjs/operators';
+import { catchError, filter, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeDataService {
   private apiUrl = environment.dynamoAPI;
+  
 
   constructor(private http: HttpClient) {}
 
@@ -23,24 +24,9 @@ export class RecipeDataService {
     );
   }
 
-  // searchRecipes(keyword: string): Observable<any[]> {
-  //   const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;
-  //   return this.http.get<any[]>(url);
-  // }
-
-  searchRecipes(keyword): Observable<RecipeModel[]> {
+  searchRecipes(keyword: string): Observable<any[]> {
     const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;
-
-    return this.http
-      .get<RecipeModel[]>(url)
-      .pipe(
-        map((recipes) =>
-          recipes.filter(
-            (recipe) =>
-              recipe.strMeal.toLowerCase().indexOf(keyword.toLowerCase()) === 0
-          )
-        )
-      );
+    return this.http.get<any[]>(url);
   }
 
   searchRecipesByCategory(keyword: string): Promise<RecipeModel[]> {

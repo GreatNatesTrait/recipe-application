@@ -125,15 +125,15 @@
 //   }
 // }
 
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { RecipeDataService } from '@app/shared/service/recipe-data.service';
 //import { Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeModel } from '@app/shared/models/recipe.model';
-import { Observable, debounceTime, filter, map, of, startWith, switchMap, tap } from 'rxjs';
-
+import { Observable, catchError, debounceTime, filter, fromEvent, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-home',
@@ -148,7 +148,7 @@ import { Observable, debounceTime, filter, map, of, startWith, switchMap, tap } 
   ]
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit, AfterViewInit {
   searchQuery: string;
   searchResults$: Observable<string[]>;
   loading: boolean;
@@ -163,6 +163,9 @@ export class HomeComponent {
   searchResult: any[];
   booksName: string[];
   filteredData2: any[];
+  results: any;
+  results$: Observable<any>;
+  @ViewChild('timezoneSearch') timezoneSearch: ElementRef;
   constructor(
     private recipeDataService: RecipeDataService,
     private router: Router,
@@ -177,43 +180,64 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.dataControl.valueChanges.subscribe(selectedValue => {
-      console.log('Selected Item:', selectedValue);
-      console.log(this.searchResult)
-    });
+    // this.dataControl.valueChanges.subscribe(selectedValue => {
+    //   console.log('Selected Item:', selectedValue);
+    //   console.log(this.searchResult)
+    // });
 
-   
-
-    this.recipeDataService.searchRecipes(this.searchQuery).subscribe(data => {
-      this.booksName = data.map(name => name.strMeal);
-    });
+    // this.recipeDataService.searchRecipes(this.searchQuery).subscribe(data => {
+    //   this.booksName = data.map(name => name.strMeal);
+    // });
 
     this.searchForm = new FormGroup({
-      searchBar: new FormControl('')
-    });
+       searchBar: new FormControl('')
+     });
 
-    this.onChanges();
+console.log('idk')
   }
+
+  ngAfterViewInit() {
+    
+    this.results$ = fromEvent(this.timezoneSearch.nativeElement, 'input').pipe(
+      debounceTime(500),
+      map((e: InputEvent) =>(e.target as HTMLInputElement).value),
+      switchMap(value => {
+        if (value !== '') {
+          return this.recipeDataService.searchRecipes(value);
+        } else {
+          return of([]);
+        }
+      }),
+      tap(res => {
+        if (this.searchQuery !== null) {
+          this.results = res;
+        }
+      }),
+      catchError(error => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+    this.results$.subscribe(result => console.log(result));
+  };
+
+ 
 
   onFormSubmit(event: Event) {
     event.preventDefault();
   }
+  
 
-  filterData(value: string): Observable<string[]> {
-    const filteredValue = value.toLowerCase();
-    return this.recipeDataService.searchRecipes(filteredValue).pipe(
-      tap(data => {
-        this.initialTypeaheadData = data;
-      }),
-      map(data => data.map(item => item.strMeal.toString())),
-      map(data => data.filter(item => item.toLowerCase().includes(filteredValue))),
-      tap(filteredData => this.recipeNames = filteredData)
-    );
+  searchResults2(selection) {
+    //let recipes = this.initialTypeaheadData.filter(obj => this.recipeNames.includes(obj.strMeal));
+    let recipes = this.results.filter(obj => obj.strMeal === selection);
+    this.router.navigate(['search'], { relativeTo: this.activatedRoute, state: { data: { recipes: recipes } } });
   }
 
-  searchResults() {
-    let recipes = this.initialTypeaheadData.filter(obj => this.recipeNames.includes(obj.strMeal));
-    this.router.navigate(['search'], { relativeTo: this.activatedRoute, state: { data: { recipes: recipes } } });
+  searchResults(selection) {
+    const singleRecipe = this.results.filter(obj => obj.strMeal === selection);
+    console.log(singleRecipe);
+  this.router.navigate(['/recipes', selection], {relativeTo: this.activatedRoute, state: {data: {recipeData: singleRecipe}}});
   }
 
   async searchCategory(event: MouseEvent) {
@@ -228,18 +252,8 @@ export class HomeComponent {
     return categoryRecipeData;
   }
 
-  onChanges() {
-    this.dataControl.valueChanges.pipe(
-      startWith(''),
-      debounceTime(500),
-      switchMap(  (id: string) => {
-        
-     return id ? this.recipeDataService.searchRecipes(id) : of([]);
-   })
-  ).subscribe(data =>{
-    
-    this.filteredData2 = data 
-    console.log(this.filteredData2)
-  })
+  onOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    const selectedValue = event.option.value;
+    this.searchResults(selectedValue)
   }
 }

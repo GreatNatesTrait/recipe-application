@@ -8,7 +8,6 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 
-
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = "RecipeTable";
@@ -19,22 +18,25 @@ export const lambda_handler = async (event, context) => {
   const headers = {
     "Content-Type": "application/json",
   };
-  console.log("event: " + event);
+
   try {
     switch (event.routeKey) {
       case "GET /recipes":
-        const pageSize = 40;       
-        const lastEvaluatedKey = event.queryStringParameters?.lastEvaluatedKey;
-        const scanParams = {
+        let pageSize = 40;
+        let lastEvaluatedKey = event.queryStringParameters?.lastEvaluatedKey;
+        let scanParams = {
           TableName: tableName,
           Limit: pageSize,
-          ExclusiveStartKey: lastEvaluatedKey ? JSON.parse(lastEvaluatedKey) : undefined
+          ExclusiveStartKey: lastEvaluatedKey
+            ? JSON.parse(lastEvaluatedKey)
+            : undefined,
         };
-        console.log('testing automated lambda update with terraform in jenkins pipeline');
         body = await dynamo.send(new ScanCommand(scanParams));
         body = {
           items: body.Items,
-          lastEvaluatedKey: body.LastEvaluatedKey ? JSON.stringify(body.LastEvaluatedKey) : null
+          lastEvaluatedKey: body.LastEvaluatedKey
+            ? JSON.stringify(body.LastEvaluatedKey)
+            : null,
         };
         break;
       case "GET /recipes/search":
@@ -47,25 +49,24 @@ export const lambda_handler = async (event, context) => {
           },
           ExpressionAttributeValues: {
             ":keyword": keyword,
-          },
-          Limit: 40,
+          }
         };
         body = await dynamo.send(new ScanCommand(searchParams));
         body = body.Items;
         break;
-        case "GET /recipesByCategory":
-          let keywordd = event.queryStringParameters.keyword;
-        let searchParamss = {
+      case "GET /recipesByCategory":
+        let category = event.queryStringParameters.keyword;
+        let searchByCategoryParams = {
           TableName: tableName,
           FilterExpression: "contains(#strCategory, :keyword)",
           ExpressionAttributeNames: {
             "#strCategory": "strCategory",
           },
           ExpressionAttributeValues: {
-            ":keyword": keywordd,
+            ":keyword": category,
           },
         };
-        body = await dynamo.send(new ScanCommand(searchParamss));
+        body = await dynamo.send(new ScanCommand(searchByCategoryParams));
         body = body.Items;
         break;
       default:

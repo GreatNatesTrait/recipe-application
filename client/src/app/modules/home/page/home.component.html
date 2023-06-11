@@ -53,19 +53,18 @@
       <form [formGroup]="searchForm" class="search-form" (submit)="onFormSubmit($event)">
         <mat-form-field>
           <input
+            #timezoneSearch
             type="text"
             matInput
             name="searchQuery"
-            (keyup.enter)="searchResults()"
-            [ngModel]="searchQuery"
-            (ngModelChange)="searchQuery = $event"
+            [(ngModel)]="searchQuery"
             [formControl]="dataControl"
             [matAutocomplete]="auto"
           />
-          <mat-autocomplete #auto="matAutocomplete">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
             <mat-option
-              *ngFor="let item of filteredData2"
-              [value]="item"
+              *ngFor="let item of results$ | async"
+              [value]="item.strMeal"
             >
               {{ item.strMeal }}
             </mat-option>

@@ -2,84 +2,63 @@ pipeline {
     agent any
 
     stages {
-        stage('Increment Version') {
-            steps {
-                withCredentials([[
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]) {
-                    script {
-                        // Run the AWS CLI command and store the output in a variable
-                        def version = sh(script: 'aws elasticbeanstalk describe-application-versions --application-name recipe-application --region us-east-1 --query "ApplicationVersions[0].VersionLabel" --output text', returnStdout: true).trim()
-                        
-                        // Check if the version is empty
-                        if (version=='None') {
-                            // Version is empty, set it to 1
-                            env.app_version = "1"
-                            echo "New version number: ${env.app_version}"
-                        } else {
-                            // Add 1 to the version
-                            def nextVersion = Integer.parseInt(version) + 1
-                            //def nextVersion = version + 1
-
-                            // Set the variable in Jenkins
-                            env.app_version = nextVersion.toString()
-                            echo "New version number: ${env.app_version}"
-                    }
-                    }
-                }
-            }
-        }
-
         stage('Checkout') {
             steps {
                 git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
             }
         }
 
-
-        stage('Update Lambda Functions') {
+        stage('Update Dynamo API') {
             when {
                 expression {
-                    def changes = sh(
-                        returnStdout: true,
+                    def isChanged = sh(
                         script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions/dynamo-API'
                     ).trim()
-                    changes != null && !changes.isEmpty()
+                    isChanged != null && !changes.isEmpty()
                 }
             }
-            steps {
-                withCredentials([[
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]) {
-                    script {
-                            def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
-                            dir(terraformDirectory) {
-                                def terraformInitOutput = sh(script: 'terraform init', returnStdout: false)
-                                //if (terraformInitOutput != 0) {
-                                //    echo "Terraform initialization failed:\n${terraformInitOutput}"
-                                //}
-
-                                def terraformPlanOutput = sh(script: 'terraform plan', returnStdout: false)
-                                //if (terraformPlanOutput != 0) {
-                                //    echo "Terraform plan failed:\n${terraformPlanOutput}"
-                                //}
-
-                                def terraformApplyOutput = sh(script: 'terraform apply -auto-approve', returnStdout: false)
-                                //if (terraformApplyOutput != 0) {
-                                //    echo "Terraform apply failed:\n${terraformApplyOutput}"
-                                //}
-                            }                        
+            stages {
+                stage('Test Lambda Function') {
+                    steps {
+                        echo 'Test Completed'
                     }
-                }                                 
+                }
+                stage('Run Terraform') {
+                    steps {
+                        withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                        ]]) {
+                            script {
+                                    def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
+                                    dir(terraformDirectory) {
+                                        def terraformInitOutput = sh(script: 'terraform init')
+                                        def terraformPlanOutput = sh(script: 'terraform plan')
+                                        def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
+                                    }                        
+                            }
+                        }                                 
+                    }
+                }
             }
         }
 
+        stage("Test") {
+            parallel (
+                'Front end unit tests': {
+                    container('node') {
+                        echo "run ng test here"
+                    }
+                },
+                'backend unit tests': {
+                    container('node') {
+                        echo "run npm test here"
+                    }
+                }
+            )
+        }
 
         stage('Build') {
             steps {
@@ -139,6 +118,37 @@ pipeline {
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
                         sudo rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                     '''
+                }
+            }
+        }
+
+        stage('Increment Version') {
+            steps {
+                withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                    script {
+                        // Run the AWS CLI command and store the output in a variable
+                        def version = sh(script: 'aws elasticbeanstalk describe-application-versions --application-name recipe-application --region us-east-1 --query "ApplicationVersions[0].VersionLabel" --output text', returnStdout: true).trim()
+                        
+                        // Check if the version is empty
+                        if (version=='None') {
+                            // Version is empty, set it to 1
+                            env.app_version = "1"
+                            echo "New version number: ${env.app_version}"
+                        } else {
+                            // Add 1 to the version
+                            def nextVersion = Integer.parseInt(version) + 1
+                            //def nextVersion = version + 1
+
+                            // Set the variable in Jenkins
+                            env.app_version = nextVersion.toString()
+                            echo "New version number: ${env.app_version}"
+                    }
+                    }
                 }
             }
         }
