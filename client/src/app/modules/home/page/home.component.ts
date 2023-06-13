@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   searchForm: FormGroup;
   results: any;
   results$: Observable<any>;
+  isLoading: boolean;
   @ViewChild('timezoneSearch') timezoneSearch: ElementRef;
 
   constructor(
@@ -78,10 +79,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async searchCategory(event: MouseEvent) {
+    this.isLoading = true;
     const pillElement = event.target as HTMLElement;
     const category = pillElement.textContent;
     let categoryRecipes = await this.searchByCategory(category);
     this.router.navigate(['search'], { relativeTo: this.activatedRoute, state: { data: { recipes: categoryRecipes } } });
+    this.isLoading = false;
   }
 
   async searchByCategory(category): Promise<RecipeModel[]> {

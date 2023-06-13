@@ -15,9 +15,9 @@ export class RecipeCreationComponent {
 
   ngOnInit() {
     this.form = this.fb.group({
-      name: '',
-      category: '',
-      inputs: this.fb.array([])
+      name: ['',Validators.required],
+      category: ['',Validators.required],
+      inputs: this.fb.array([],Validators.required)
     });
 
     this.inputs = this.form.get('inputs') as FormArray;

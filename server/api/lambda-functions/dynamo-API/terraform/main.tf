@@ -123,6 +123,12 @@ resource "aws_apigatewayv2_route" "Get_Recipe_Search" {
   target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
 }
 
+resource "aws_apigatewayv2_route" "Get_Recipe_Search" {
+  api_id = aws_apigatewayv2_api.dynamo_api.id
+  route_key = "PUT /recipe"
+  target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
+}
+
 resource "aws_lambda_permission" "api_gw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"

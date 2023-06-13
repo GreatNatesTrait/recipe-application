@@ -18,9 +18,10 @@ export class RecipesComponent implements OnInit {
   moreRecipes: any;
   recipeData: RecipeModel[] = [];
   additionalRecipeData: RecipeModel[] = [];
-  loading : boolean;
+  isLoading : boolean;
+  isMoreLoading : boolean;
   userFavorites = [];
-
+  loadingMessage = 'Loading';
   constructor(
     private dataService: RecipeDataService,
     private router: Router,
@@ -29,11 +30,11 @@ export class RecipesComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.loading = true;
+    this.isLoading = true;
     this.recipeDataApiCall = await this.dataService.getRecipeData();
     this.recipeData = this.recipeDataApiCall.items;
     this.lastEvaluatedKey = this.recipeDataApiCall.lastEvaluatedKey;
-    this.loading = false;
+    this.isLoading = false;
     await this.getUser();
 
     if(this.user){
@@ -51,9 +52,11 @@ export class RecipesComponent implements OnInit {
   }
 
   async getMoreRecipes(){
+    this.isMoreLoading = true;
     this.moreRecipes = await this.dataService.getRecipeData(this.lastEvaluatedKey);
     this.additionalRecipeData = this.moreRecipes.items;
     this.recipeData = this.recipeData.concat(this.additionalRecipeData);
+    this.isMoreLoading = false;
   }
 
   navigateToRecipeDetails(recipeName: string) {

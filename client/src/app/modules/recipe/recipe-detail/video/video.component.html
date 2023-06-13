@@ -1,8 +1,9 @@
-<div *ngIf="loading" class="d-flex justify-content-center" role="status">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    </div>
-<iframe (load)="loading=false" [class.d-none]="loading"  width="750" height="400"
-[src]="safeVideoUrl">
+<app-spinner [isLoading]="loading"></app-spinner>
+<iframe
+  (load)="loading = false"
+  [class.d-none]="loading"
+  width="750"
+  height="400"
+  [src]="safeVideoUrl"
+>
 </iframe>

@@ -69,6 +69,17 @@ export const lambda_handler = async (event, context) => {
         body = await dynamo.send(new ScanCommand(searchByCategoryParams));
         body = body.Items;
         break;
+        case "PUT /recipe":
+          let requestJSON = JSON.parse(event.body);
+          console.log(requestJSON);
+          await dynamo.send(
+            new PutCommand({
+              TableName: tableName,
+              Item: {requestJSON},
+            })
+          );
+          body = `Put item ${requestJSON.id}`;
+          break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);
     }

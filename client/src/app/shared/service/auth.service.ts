@@ -68,6 +68,7 @@ export class AuthService {
       this.router.navigate(['/home']);
     } catch (error) {
       console.log('Error signing in', error);
+      throw error;
     }
   }
 
