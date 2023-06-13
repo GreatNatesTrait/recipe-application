@@ -123,7 +123,7 @@ resource "aws_apigatewayv2_route" "Get_Recipe_Search" {
   target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
 }
 
-resource "aws_apigatewayv2_route" "Get_Recipe_Search" {
+resource "aws_apigatewayv2_route" "Create_Recipe" {
   api_id = aws_apigatewayv2_api.dynamo_api.id
   route_key = "PUT /recipe"
   target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
