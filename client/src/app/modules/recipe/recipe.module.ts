@@ -7,9 +7,10 @@ import { SharedModule } from '@shared/shared.module';
 import { IngredientsComponent } from './recipe-detail/ingredients/ingredients.component';
 import { VideoComponent } from './recipe-detail/video/video.component';
 import { InstructionsComponent } from './recipe-detail/instructions/instructions.component';
+import { RecipeCreationComponent } from './recipe-creation/recipe-creation.component';
 
 @NgModule({
-  declarations: [InstructionsComponent, RecipeDetailComponent,RecipesComponent,IngredientsComponent,VideoComponent],
+  declarations: [InstructionsComponent, RecipeDetailComponent,RecipesComponent,IngredientsComponent,VideoComponent, RecipeCreationComponent],
   imports: [
     CommonModule,
     RecipeRoutingModule,

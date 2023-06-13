@@ -11,20 +11,28 @@ export class ControlMessagesComponent {
   @Input() control: UntypedFormControl | AbstractControl;
   @Input() labelName?: string;
 
-  get errorMessage(): boolean {
+
+  get errorMessage(): string {
+
+    // console.log('Control:', this.control);
+    // console.log('Errors:', this.control.errors);
+  
     for (const propertyName in this.control.errors) {
+      //console.log('PropertyName:', propertyName);
       if (
-        this.control.errors.hasOwnProperty(propertyName) &&
-        this.control.touched
+        this.control.errors.hasOwnProperty(propertyName) && this.control.touched
       ) {
-        return ValidationService.getValidationErrorMessage(
+        const errorMessage = ValidationService.getValidationErrorMessage(
           propertyName,
           this.control.errors[propertyName],
           this.labelName
         );
+        //console.log('ErrorMessage:', errorMessage);
+        return errorMessage;
       }
     }
-
+  
     return undefined;
   }
+  
 }

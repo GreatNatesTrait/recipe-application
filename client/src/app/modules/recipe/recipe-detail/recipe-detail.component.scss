@@ -33,3 +33,20 @@
   height: auto; /* Allow the height to adjust automatically */
   display: block; /* Ensure the image is displayed as a block element */
 }
+
+.card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.app-ingredients,
+.image-container,
+app-video {
+  flex-basis: 30%;
+  margin-right: 5%;
+}
+
+.card-body > *:last-child {
+  margin-right: 0;
+}
