@@ -78,7 +78,16 @@ resource "aws_iam_policy" "lambda_policy" {
         "dynamodb:BatchGetItem"
       ],
       "Resource": "arn:aws:dynamodb:us-east-1:372554721158:table/*"
-    }
+    },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
   ]
 }
 EOF
