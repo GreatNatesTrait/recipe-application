@@ -29,7 +29,7 @@ resource "aws_lambda_function" "dynamo_lambda" {
   depends_on = [aws_cloudwatch_log_group.recipe_lambda_logs]
 }
 
-resource "aws_cloudwatch_log_group" "lambda_logs" {
+resource "aws_cloudwatch_log_group" "recipe_lambda_logs" {
   name = "/aws/lambda/recipe-app-lambda-logs"
 }
 
