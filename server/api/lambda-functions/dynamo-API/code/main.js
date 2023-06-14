@@ -81,6 +81,7 @@ export const lambda_handler = async (event, context) => {
           body = `Put item ${requestJSON.id}`;
           break;
       default:
+        console.log(event);
         throw new Error(`Unsupported route: "${event.routeKey}"`);
     }
   } catch (err) {
