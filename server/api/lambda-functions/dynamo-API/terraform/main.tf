@@ -8,14 +8,15 @@ data "aws_s3_bucket" "existing_bucket" {
 
 data "archive_file" "source" {
   type        = "zip"
-  source_dir  = "${path.module}/../code"
-  output_path = "${path.module}/lambda.zip"
+  source_dir  = "${path.cwd}/../code"
+  output_path = "${path.cwd}/lambda.zip"
 }
 
-resource "aws_s3_bucket_object" "file_upload" {
+resource "aws_s3_object" "file_upload" {
   bucket = "${data.aws_s3_bucket.existing_bucket.id}"
   key    = "lambda-functions/dynamo-api.zip"
   source = "${data.archive_file.source.output_path}"
+  etag = filemd5(data.archive_file.source.output_path)
 }
 
 
@@ -24,10 +25,10 @@ resource "aws_lambda_function" "dynamo_lambda" {
   runtime          = "nodejs18.x"
   handler          = "main.lambda_handler"
   s3_bucket = "${data.aws_s3_bucket.existing_bucket.id}"
-  s3_key      = "${aws_s3_bucket_object.file_upload.key}"
+  s3_key      = "${aws_s3_object.file_upload.key}"
   role = aws_iam_role.lambda_role.arn
-  source_code_hash = "${data.archive_file.source.output_base64sha256}"
-  depends_on = [aws_cloudwatch_log_group.dynamo-lambda,aws_s3_bucket_object.file_upload]
+  source_code_hash = data.archive_file.source.output_base64sha256
+  depends_on = [aws_cloudwatch_log_group.dynamo-lambda]
 }
 
 resource "aws_cloudwatch_log_group" "dynamo-lambda" {

@@ -12,7 +12,6 @@ const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = "RecipeTable";
 
-
 export const lambda_handler = async (event, context) => {
   let body;
   let statusCode = 200;
