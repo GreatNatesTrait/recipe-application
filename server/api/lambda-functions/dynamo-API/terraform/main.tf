@@ -26,11 +26,11 @@ resource "aws_lambda_function" "dynamo_lambda" {
   s3_bucket = "${data.aws_s3_bucket.existing_bucket.id}"
   s3_key      = "${aws_s3_bucket_object.file_upload.key}"
   role = aws_iam_role.lambda_role.arn
-  depends_on = [aws_cloudwatch_log_group.recipe_lambda_logs]
+  depends_on = [aws_cloudwatch_log_group.dynamo-lambda]
 }
 
-resource "aws_cloudwatch_log_group" "recipe_lambda_logs" {
-  name = "/aws/lambda/recipe-app-lambda-logs"
+resource "aws_cloudwatch_log_group" "dynamo-lambda" {
+  name = "/aws/lambda/dynamo-lambda"
 }
 
 
