@@ -76,7 +76,7 @@ export const lambda_handler = async (event, context) => {
           await dynamo.send(
             new PutCommand({
               TableName: tableName,
-              Item: {requestJSON},
+              Item: requestJSON,
             })
           );
           body = `Put item ${requestJSON.id}`;
