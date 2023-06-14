@@ -28,7 +28,7 @@ resource "aws_lambda_function" "dynamo_lambda" {
   s3_key      = "${aws_s3_object.file_upload.key}"
   role = aws_iam_role.lambda_role.arn
   source_code_hash = data.archive_file.source.output_base64sha256
-  depends_on = [aws_cloudwatch_log_group.dynamo-lambda]
+  depends_on = [aws_cloudwatch_log_group.dynamo-lambda, aws_s3_object.file_upload]
 }
 
 resource "aws_cloudwatch_log_group" "dynamo-lambda" {
