@@ -24,6 +24,7 @@ resource "aws_lambda_function" "dynamo_lambda" {
   runtime          = "nodejs18.x"
   handler          = "main.lambda_handler"
   s3_bucket = "${data.aws_s3_bucket.existing_bucket.id}"
+  source_code_hash = "a7cec2d852b8fcae746ba19ba7887ddb"
   s3_key      = "${aws_s3_bucket_object.file_upload.key}"
   role = aws_iam_role.lambda_role.arn
   depends_on = [aws_cloudwatch_log_group.dynamo-lambda]
