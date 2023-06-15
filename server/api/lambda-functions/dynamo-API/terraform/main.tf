@@ -213,7 +213,7 @@ resource "aws_iam_policy" "api_gateway_policy" {
       "Action": [
         "s3:PutObject"
       ],
-      "Resource": "arn:aws:s3:::recipe-app-code/logs"  # Replace with your S3 bucket ARN and desired path
+      "Resource": "arn:aws:s3:::recipe-app-code/logs"
     }
   ]
 }
