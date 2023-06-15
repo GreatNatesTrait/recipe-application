@@ -105,7 +105,7 @@ resource "aws_apigatewayv2_route" "s3_proxy_route" {
 }
 
 resource "aws_apigatewayv2_stage" "default" {
-  api_id      = aws_apigatewayv2_api.dynamo_api.id
+  api_id      = aws_apigatewayv2_api.s3_proxy_api.id
   name        = "$default"
   auto_deploy = true
 }
