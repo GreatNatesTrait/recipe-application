@@ -15,13 +15,14 @@ import { RecipeModel } from '@app/shared/models/recipe.model';
   styleUrls: ['./recipe-creation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecipeCreationComponent implements OnInit{
+export class RecipeCreationComponent implements OnInit {
   form: FormGroup;
   ingredients: FormArray;
   measurements: FormArray;
   instructions: FormArray;
-  existingPKs: [];
+  existingPKs: [] | number[];
   recipe2Add = <RecipeModel>{};
+  pk;
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +44,6 @@ export class RecipeCreationComponent implements OnInit{
 
     await this.getExistingMeals();
   }
-  
 
   addIngredient() {
     this.ingredients.push(this.fb.control(''));
@@ -67,6 +67,7 @@ export class RecipeCreationComponent implements OnInit{
     console.log(this.form.value);
     this.mapFormToRecipeModel();
     this.createRecipe(this.recipe2Add);
+    console.log(this.existingPKs);
   }
 
   getIngredientNameControlName(index: number): string {
@@ -90,19 +91,66 @@ export class RecipeCreationComponent implements OnInit{
   //   }
   // }
 
-  async getExistingMeals(){
-    this.existingPKs = await this.recipeDataService.getExistingPKs();
+  async getExistingMeals() {
+    const result: any[] = [];
+    await this.recipeDataService
+      .getExistingPKs()
+      .then((primaryKeys) =>
+        primaryKeys.forEach((el) => result.push(parseInt(el.idMeal)))
+      );
+    console.log(result);
+
+    this.pk = this.smallestNumNotaPK(result).toString();
+    console.log(this.pk); 
   }
 
-  smallestNumNotaPK(){
-
+  smallestNumNotaPK(arr) {
+    const numSet: Set<number> = new Set(arr);
+    let smallestMissing = 1;
+    while (numSet.has(smallestMissing)) {
+      smallestMissing++;
+    }
+    return smallestMissing;
   }
 
-  mapFormToRecipeModel(){
+  mapFormToRecipeModel() {
+    this.recipe2Add.idMeal = this.pk;
     this.recipe2Add.strCategory = this.form.value.category;
     this.recipe2Add.strMeal = this.form.value.name;
-    this.recipe2Add.strIngredient = this.form.value.ingredients;
-    this.recipe2Add.strInstructions = this.form.value.instructions;
-    this.recipe2Add.strMeasure = this.form.value.measurements;
+    //this.recipe2Add.strIngredient = this.form.value.ingredients;
+    //this.recipe2Add.strInstructions = this.form.value.instructions;
+    //this.recipe2Add.strMeasure = this.form.value.measurements;
+    this.recipe2Add.strIngredient = this.prepareArrays('Ingredient',this.form.value.ingredients);
+    this.recipe2Add.strInstructions = this.prepareArrays('Instructions',this.form.value.instructions);
+    this.recipe2Add.strMeasure = this.prepareArrays('Measure',this.form.value.ingredients);
+  }
+
+  prepareArrays(caseValue,arr:[]){
+    // let tmpObj = [];
+    // switch(caseValue){
+    //   case 'Ingredient':
+    //     for(let i = 1; i <= arr.length; i++){
+    //       tmpObj.push({[`strIngredient${i}`]: arr[i-1]})
+    //     }
+    let tmpObj={};
+    let result;
+    switch(caseValue){
+      case 'Ingredient':
+        for(let i = 1; i <= arr.length; i++){
+          tmpObj[`strIngredient${i}`]= arr[i-1]
+        }
+        result = tmpObj;
+      break;
+      case 'Measure':
+        for(let i = 1; i <= arr.length; i++){
+          tmpObj[`strMeasure${i}`]= arr[i-1]
+        }
+        result = tmpObj;
+      break;
+      case 'Instructions':
+      result = arr.join('[BREAK]');
+      break;
+    }
+return result;
   }
 }

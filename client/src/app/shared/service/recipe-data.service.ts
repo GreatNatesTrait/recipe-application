@@ -49,8 +49,8 @@ export class RecipeDataService {
     );
   }
 
-  getExistingPKs(): Promise<[]> {
+  getExistingPKs(): Promise<any[]> {
     const url = `${this.apiUrl}/existing-primary-keys`;
-    return firstValueFrom(this.http.get<[]>(url));
+    return firstValueFrom(this.http.get<any[]>(url));
   }
 }

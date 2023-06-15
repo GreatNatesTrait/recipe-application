@@ -29,7 +29,7 @@ export interface RecipeModel {
     //   strIngredient19: string;
     //   strIngredient20: string;
     // };
-    strIngredient: Array<any>;
+    strIngredient: Array<any> | Object;
     dateModified?: string;
     strDrinkAlternate?: string;
     strArea?: string;
@@ -56,6 +56,6 @@ export interface RecipeModel {
     //   strMeasure19: string;
     //   strMeasure20: string;
     // };
-    strMeasure: Array<any>;
+    strMeasure: Array<any> | Object;
     strInstructions: string;
   }
