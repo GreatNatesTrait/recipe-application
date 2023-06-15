@@ -169,14 +169,19 @@ resource "aws_apigatewayv2_route" "s3_proxy_route" {
   target = "integrations/${aws_apigatewayv2_integration.s3_proxy_integration.id}"
 }
 
-# Create an integration with S3 for the route
+# Create an integration with the S3 bucket
 resource "aws_apigatewayv2_integration" "s3_proxy_integration" {
   api_id = aws_apigatewayv2_api.dynamo_api.id
 
-  integration_type       = "AWS_PROXY"
-  integration_method     = "GET"
-  integration_uri        = "arn:aws:apigateway:us-east-1:s3:path/recipe-app-code/logs"  # Replace with your S3 ARN or URI
-  payload_format_version = "2.0"
+  integration_type   = "MOCK"
+  integration_method = "PUT"
+}
+
+# Create a mock integration response
+resource "aws_apigatewayv2_integration_response" "s3_proxy_integration_response" {
+  api_id         = aws_apigatewayv2_api.dynamo_api.id
+  integration_id = aws_apigatewayv2_integration.s3_proxy_integration.id
+  integration_response_key = "200"
 }
 
 # Create an IAM role for API Gateway
