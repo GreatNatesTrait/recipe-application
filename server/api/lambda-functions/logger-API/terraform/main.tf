@@ -20,6 +20,7 @@ resource "aws_s3_object" "file_upload" {
   etag = filemd5(data.archive_file.source.output_path)
 }
 
+
 # Create an AWS Lambda function
 resource "aws_lambda_function" "log_writer_lambda" {
   function_name    = "LogWriterLambda"

@@ -13,7 +13,7 @@ pipeline {
                 expression {
                     def isChanged = sh(
                         returnStdout: true,
-                        script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions/dynamo-API'
+                        script: 'git diff --name-only HEAD HEAD^ server/api/lambda-functions'
                     ).trim()
                     isChanged != null && !isChanged.isEmpty()
                 }
