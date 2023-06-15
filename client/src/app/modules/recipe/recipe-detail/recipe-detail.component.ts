@@ -24,12 +24,14 @@ export class RecipeDetailComponent implements OnInit{
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('name');
     this.activeRecipe = history.state.data.recipeData[0];
-    this.videoUrl = this.activeRecipe.strYoutube;
+    console.log(this.activeRecipe);
+    this.instructions = (this.activeRecipe.strInstructions.split('[BREAK]')).filter(el=>el !== '');
     this.ingredients = this.activeRecipe.strIngredient;
     this.measurements = this.activeRecipe.strMeasure;
-    console.log(this.activeRecipe.strInstructions)
-    this.instructions = (this.activeRecipe.strInstructions.split('[BREAK]')).filter(el=>el !== '')
-    console.log(this.instructions)
+    //console.log(this.activeRecipe.strInstructions)
+    
+    console.log(this.instructions);
+    this.videoUrl = this.activeRecipe.strYoutube;
   }
 
 

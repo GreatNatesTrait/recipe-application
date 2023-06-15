@@ -1,4 +1,4 @@
- <form [formGroup]="form" (ngSubmit)="submit()" class="mt-3">
+<form [formGroup]="form" (ngSubmit)="submit()" class="mt-3">
   <div class="container">
     <div class="mb-3">
       <label for="name" class="form-label">Name:</label>
@@ -30,22 +30,20 @@
             class="mb-3"
           >
             <div class="input-group">
-              <input
-              [formControlName]="i"
-              type="text"
-              class="form-control"
-            />
-             
+              <input [formControlName]="i" type="text" class="form-control" />
             </div>
           </div>
         </div>
         <div class="d-flex justify-content-start">
-          <button type="button" class="btn btn-secondary btn-rounded" (click)="addIngredient()">
+          <button
+            type="button"
+            class="btn btn-secondary btn-rounded"
+            (click)="addIngredient()"
+          >
             <i class="bi bi-plus-circle rounded-circle"></i>
           </button>
         </div>
       </div>
-
       <div class="col-2">
         <h5 *ngIf="ingredients.length">Measurements</h5>
         <div formArrayName="measurements">
@@ -55,11 +53,11 @@
           >
             <div class="input-group">
               <input
-              [formControlName]="i"
-              type="text"
-              class="form-control"
-              placeholder="Qty"
-            />
+                [formControlName]="i"
+                type="text"
+                class="form-control"
+                placeholder="Qty"
+              />
               <button
                 type="button"
                 class="btn btn-outline-secondary"
@@ -70,11 +68,8 @@
             </div>
           </div>
         </div>
-        <div class="d-flex justify-content-start">
-        </div>
+        <div class="d-flex justify-content-start"></div>
       </div>
-
-
       <div class="col-2"></div>
       <div class="col-4">
         <h5>Instructions</h5>
@@ -101,10 +96,27 @@
           </div>
         </div>
         <div class="d-flex justify-content-start">
-          <button type="button" class="btn btn-secondary btn-rounded"  (click)="addInstruction()">
+          <button
+            type="button"
+            class="btn btn-secondary btn-rounded"
+            (click)="addInstruction()"
+          >
             <i class="bi bi-plus-circle rounded-circle"></i>
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <h5>Image Link</h5>
+        <input type="text" class="form-control" formControlName="image"/>
+      </div>
+      <div class="col-4">
+        <h5>Youtube Link</h5>
+        <input type="text" class="form-control" formControlName="youtube"/>
       </div>
     </div>
     <div class="d-flex justify-content-end">
@@ -114,5 +126,3 @@
     </div>
   </div>
 </form>
-
-
