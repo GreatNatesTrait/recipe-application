@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 
 export const handler = async (event) => {
+  console.log(event);
   try {
     // Parse the request body from API Gateway
     const { logData } = JSON.parse(event.body);
@@ -31,7 +32,7 @@ export const handler = async (event) => {
       body: 'Log data written to S3',
     };
   } catch (error) {
-    // Return an error response if any exception occurs
+    console.log(error);
     return {
       statusCode: 500,
       body: JSON.stringify({

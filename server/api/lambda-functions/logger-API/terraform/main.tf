@@ -28,15 +28,18 @@ resource "aws_lambda_function" "log_writer_lambda" {
   handler          = "index.handler"
   s3_bucket = "${data.aws_s3_bucket.existing_bucket.id}"
   s3_key      = "${aws_s3_object.file_upload.key}"
-  role             = aws_iam_role.lambda_role.arn
+  role             = aws_iam_role.lambda_log_writing_role.arn
   source_code_hash = data.archive_file.source.output_base64sha256
-  depends_on = [aws_s3_object.file_upload]
+  depends_on = [aws_cloudwatch_log_group.log_writing_lambda, aws_s3_object.file_upload]
 }
 
-# Create an IAM role for the Lambda function
-resource "aws_iam_role" "lambda_role" {
-  name = "LambdaRole"
+resource "aws_cloudwatch_log_group" "log_writing_lambda" {
+  name = "/aws/lambda/dynamo-lambda"
+}
 
+
+resource "aws_iam_role" "lambda_log_writing_role" {
+  name = "s3-logger-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -53,11 +56,39 @@ resource "aws_iam_role" "lambda_role" {
 EOF
 }
 
-# Attach an IAM policy to the Lambda role granting S3 permissions
-resource "aws_iam_role_policy_attachment" "lambda_s3_policy_attachment" {
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"  # Adjust the policy ARN as needed
+resource "aws_iam_role_policy_attachment" "lambda_log_writing_policy_attachment" {
+  policy_arn = aws_iam_policy.lambda_log_writing_policy.arn
+  role = aws_iam_role.lambda_log_writing_role.name
 }
+
+resource "aws_iam_policy" "lambda_log_writing_policy" {
+  name        = "dynamo-lambda-policy"
+  description = "Allows Lambda function to write logs to s3"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::recipe-app-code/logs"
+    },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
+  ]
+}
+EOF
+}
+
 
 # Create the API Gateway HTTP API
 resource "aws_apigatewayv2_api" "s3_proxy_api" {
@@ -71,6 +102,12 @@ resource "aws_apigatewayv2_route" "s3_proxy_route" {
   route_key = "PUT /logs"  # Replace with your desired route path
 
   target = "integrations/${aws_apigatewayv2_integration.s3_proxy_integration.id}"
+}
+
+resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.dynamo_api.id
+  name        = "$default"
+  auto_deploy = true
 }
 
 # Create an integration with the Lambda function
