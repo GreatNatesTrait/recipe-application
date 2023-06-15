@@ -110,13 +110,20 @@ resource "aws_apigatewayv2_stage" "default" {
   auto_deploy = true
 }
 
-# Create an integration with the Lambda function
 resource "aws_apigatewayv2_integration" "s3_proxy_integration" {
   api_id = aws_apigatewayv2_api.s3_proxy_api.id
-
-  integration_type   = "AWS_PROXY"
-  integration_method = "POST"
   integration_uri    = aws_lambda_function.log_writer_lambda.invoke_arn
+  integration_type   = "AWS_PROXY"
+  payload_format_version = "2.0"
 }
 
+
+resource "aws_lambda_permission" "api_gw" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.log_writer_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.s3_proxy_api.execution_arn}/*/*"
+}
 
