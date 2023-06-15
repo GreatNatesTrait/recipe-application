@@ -10,7 +10,6 @@ import { catchError, filter, map } from 'rxjs/operators';
 })
 export class RecipeDataService {
   private apiUrl = environment.dynamoAPI;
-  
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +30,7 @@ export class RecipeDataService {
 
   createRecipe(body): Promise<any> {
     const url = `${this.apiUrl}/recipe`;
-    return firstValueFrom(this.http.put<any[]>(url,body));
+    return firstValueFrom(this.http.put<RecipeModel>(url, body));
   }
 
   // searchRecipes(keyword: string): Promise<RecipeModel[]> {
@@ -48,5 +47,10 @@ export class RecipeDataService {
         params
       })
     );
+  }
+
+  getExistingPKs(): Promise<[]> {
+    const url = `${this.apiUrl}/existing-primary-keys`;
+    return firstValueFrom(this.http.get<[]>(url));
   }
 }

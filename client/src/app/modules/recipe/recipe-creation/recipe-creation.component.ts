@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit  } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  Validators,
+  FormControl
+} from '@angular/forms';
 import { RecipeDataService } from '@app/shared/service/recipe-data.service';
+import { RecipeModel } from '@app/shared/models/recipe.model';
 
 @Component({
   selector: 'app-recipe-creation',
@@ -13,26 +20,28 @@ export class RecipeCreationComponent {
   ingredients: FormArray;
   measurements: FormArray;
   instructions: FormArray;
+  existingPKs: [];
+  recipe2Add: RecipeModel;
 
-  constructor(private fb: FormBuilder, private recipeDataService: RecipeDataService) { 
- }
+  constructor(
+    private fb: FormBuilder,
+    private recipeDataService: RecipeDataService
+  ) {}
 
-  
-
-
-  ngOnInit() {
+  async ngOnInit() {
     this.form = this.fb.group({
-      idMeal: '1',
-      name: ['',Validators.required],
-      category: ['',Validators.required],
-      ingredients: this.fb.array([],Validators.required),
-      measurements: this.fb.array([],Validators.required),
-      instructions: this.fb.array([],Validators.required)
+      name: ['', Validators.required],
+      category: ['', Validators.required],
+      ingredients: this.fb.array([], Validators.required),
+      measurements: this.fb.array([], Validators.required),
+      instructions: this.fb.array([], Validators.required)
     });
 
     this.ingredients = this.form.get('ingredients') as FormArray;
     this.measurements = this.form.get('measurements') as FormArray;
     this.instructions = this.form.get('instructions') as FormArray;
+
+    await this.getExistingMeals();
   }
 
   addIngredient() {
@@ -51,28 +60,26 @@ export class RecipeCreationComponent {
 
   removeInstruction(index: number) {
     this.instructions.removeAt(index);
-    
   }
 
   submit() {
-    // Handle form submission
     console.log(this.form.value);
-    this.createRecipe();
+    this.mapFormToRecipeModel();
+    this.createRecipe(this.recipe2Add);
   }
 
   getIngredientNameControlName(index: number): string {
     return `ingredients.${index}`;
   }
-  
+
   getIngredientQuantityControlName(index: number): string {
     return `measurements.${index}`;
   }
-  
-  
-async createRecipe(){
-  const result = this.recipeDataService.createRecipe(this.form.value);
-  console.log(result);
-}
+
+  async createRecipe(recipe: RecipeModel) {
+    const result = this.recipeDataService.createRecipe(recipe);
+    console.log(result);
+  }
 
   // updateDropdownOptions() {
   //   if (this.radioControl.value === '1') {
@@ -81,4 +88,20 @@ async createRecipe(){
   //     this.dropdownOptions = ['d', 'e', 'f'];
   //   }
   // }
+
+  async getExistingMeals(){
+    this.existingPKs = await this.recipeDataService.getExistingPKs();
+  }
+
+  smallestNumNotaPK(){
+
+  }
+
+  mapFormToRecipeModel(){
+    this.recipe2Add.strCategory = this.form.value.category;
+    this.recipe2Add.strMeal = this.form.value.name;
+    this.recipe2Add.strIngredient = this.form.value.ingredients;
+    this.recipe2Add.strInstructions = this.form.value.instructions;
+    this.recipe2Add.strMeasure = this.form.value.measurements;
+  }
 }

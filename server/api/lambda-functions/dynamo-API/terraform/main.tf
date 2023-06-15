@@ -145,6 +145,12 @@ resource "aws_apigatewayv2_route" "Create_Recipe" {
   target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
 }
 
+resource "aws_apigatewayv2_route" "Existing_Primary_Keys" {
+  api_id = aws_apigatewayv2_api.dynamo_api.id
+  route_key = "GET /existing-primary-keys"
+  target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
+}
+
 resource "aws_lambda_permission" "api_gw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"

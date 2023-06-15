@@ -81,6 +81,15 @@ export const lambda_handler = async (event, context) => {
           );
           body = `Put item ${requestJSON.id}`;
           break;
+          case "GET /existing-primary-keys":
+            let Params = {
+              TableName: tableName,
+              Select: 'SPECIFIC_ATTRIBUTES',
+              ProjectionExpression: 'idMeal'
+            };
+            body = await dynamo.send(new ScanCommand(Params));
+            body = body.Items.map(item => item.idMeal.S);
+            break;
       default:
         console.log(event);
         throw new Error(`Unsupported route: "${event.routeKey}"`);
@@ -89,6 +98,7 @@ export const lambda_handler = async (event, context) => {
     statusCode = 400;
     body = err.message;
   } finally {
+    console.log(body);
     body = JSON.stringify(body);
   }
 
