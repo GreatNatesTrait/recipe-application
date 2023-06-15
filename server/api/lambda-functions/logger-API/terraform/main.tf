@@ -62,7 +62,7 @@ resource "aws_iam_role_policy_attachment" "lambda_log_writing_policy_attachment"
 }
 
 resource "aws_iam_policy" "lambda_log_writing_policy" {
-  name        = "dynamo-lambda-policy"
+  name        = "log-writing-lambda-policy"
   description = "Allows Lambda function to write logs to s3"
   policy = <<EOF
 {
