@@ -3,15 +3,33 @@ provider "aws" {
   region = "us-east-1"  # Replace with your desired AWS region
 }
 
+data "aws_s3_bucket" "existing_bucket" {
+  bucket = "recipe-app-code"
+}
+
+data "archive_file" "source" {
+  type        = "zip"
+  source_dir  = "${path.cwd}/../code"
+  output_path = "${path.cwd}/lambda.zip"
+}
+
+resource "aws_s3_object" "file_upload" {
+  bucket = "${data.aws_s3_bucket.existing_bucket.id}"
+  key    = "lambda-functions/logger-api.zip"
+  source = "${data.archive_file.source.output_path}"
+  etag = filemd5(data.archive_file.source.output_path)
+}
+
 # Create an AWS Lambda function
 resource "aws_lambda_function" "log_writer_lambda" {
   function_name    = "LogWriterLambda"
   runtime          = "nodejs18.x"
   handler          = "index.handler"
-  timeout          = 10
-  memory_size      = 128
+  s3_bucket = "${data.aws_s3_bucket.existing_bucket.id}"
+  s3_key      = "${aws_s3_object.file_upload.key}"
   role             = aws_iam_role.lambda_role.arn
-  source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
+  source_code_hash = data.archive_file.source.output_base64sha256
+  depends_on = [aws_s3_object.file_upload]
 }
 
 # Create an IAM role for the Lambda function
