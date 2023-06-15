@@ -161,3 +161,73 @@ resource "aws_lambda_permission" "api_gw" {
 }
 
 
+# Create a route for the S3 proxy path
+resource "aws_apigatewayv2_route" "s3_proxy_route" {
+  api_id    = aws_apigatewayv2_api.dynamo_api.id
+  route_key = "PUT /logs"  # Replace with your desired resource path
+
+  target = "integrations/${aws_apigatewayv2_integration.s3_proxy_integration.id}"
+}
+
+# Create an integration with S3 for the route
+resource "aws_apigatewayv2_integration" "s3_proxy_integration" {
+  api_id = aws_apigatewayv2_api.dynamo_api.id
+
+  integration_type       = "AWS_PROXY"
+  integration_method     = "GET"
+  integration_uri        = "arn:aws:apigateway:us-east-1:s3:path/recipe-app-code/logs"  # Replace with your S3 ARN or URI
+  payload_format_version = "2.0"
+}
+
+# Create an IAM role for API Gateway
+resource "aws_iam_role" "api_gateway_role" {
+  name = "APIGatewayRole"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "apigateway.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+# Create an IAM policy for API Gateway to access the S3 bucket
+resource "aws_iam_policy" "api_gateway_policy" {
+  name        = "APIGatewayS3Policy"
+  description = "Allows API Gateway to access the S3 bucket"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::recipe-app-code/logs"  # Replace with your S3 bucket ARN and desired path
+    }
+  ]
+}
+EOF
+}
+
+# Attach the IAM policy to the API Gateway role
+resource "aws_iam_role_policy_attachment" "api_gateway_policy_attachment" {
+  role       = aws_iam_role.api_gateway_role.name
+  policy_arn = aws_iam_policy.api_gateway_policy.arn
+}
+
+# Output the API Gateway endpoint URL
+output "api_endpoint" {
+  value = aws_apigatewayv2_api.dynamo_api.api_endpoint
+}
+

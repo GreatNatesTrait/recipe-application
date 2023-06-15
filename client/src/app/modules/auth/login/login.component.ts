@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/shared/service/auth.service';
+import { NGXLogger } from "ngx-logger";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private logger: NGXLogger
   ) {
     this.isSignedUp = false;
     this.signInForm = this.formBuilder.group({
@@ -89,6 +91,7 @@ export class LoginComponent {
     } catch (error) {
       console.log('Error signing in', error);
       this.authEventMessage = error;
+      this.logger.error(error);
     }
   }
 
