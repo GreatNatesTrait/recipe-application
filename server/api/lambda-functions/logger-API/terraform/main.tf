@@ -34,7 +34,7 @@ resource "aws_lambda_function" "log_writer_lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "log_writing_lambda" {
-  name = "/aws/lambda/dynamo-lambda"
+  name = "/aws/lambda/log-writing-lambda"
 }
 
 
