@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit  } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
+import { RecipeDataService } from '@app/shared/service/recipe-data.service';
 
 @Component({
   selector: 'app-recipe-creation',
@@ -9,30 +10,75 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 })
 export class RecipeCreationComponent {
   form: FormGroup;
-  inputs: FormArray;
+  ingredients: FormArray;
+  measurements: FormArray;
+  instructions: FormArray;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private recipeDataService: RecipeDataService) { 
+ }
+
+  
+
 
   ngOnInit() {
     this.form = this.fb.group({
+      idMeal: '1',
       name: ['',Validators.required],
       category: ['',Validators.required],
-      inputs: this.fb.array([],Validators.required)
+      ingredients: this.fb.array([],Validators.required),
+      measurements: this.fb.array([],Validators.required),
+      instructions: this.fb.array([],Validators.required)
     });
 
-    this.inputs = this.form.get('inputs') as FormArray;
+    this.ingredients = this.form.get('ingredients') as FormArray;
+    this.measurements = this.form.get('measurements') as FormArray;
+    this.instructions = this.form.get('instructions') as FormArray;
   }
 
-  addInput() {
-    this.inputs.push(this.fb.control(''));
+  addIngredient() {
+    this.ingredients.push(this.fb.control(''));
+    this.measurements.push(this.fb.control(''));
   }
 
-  removeInput(index: number) {
-    this.inputs.removeAt(index);
+  removeIngredient(index: number) {
+    this.ingredients.removeAt(index);
+    this.measurements.removeAt(index);
+  }
+
+  addInstruction() {
+    this.instructions.push(this.fb.control(''));
+  }
+
+  removeInstruction(index: number) {
+    this.instructions.removeAt(index);
+    
   }
 
   submit() {
     // Handle form submission
     console.log(this.form.value);
+    this.createRecipe();
   }
+
+  getIngredientNameControlName(index: number): string {
+    return `ingredients.${index}`;
+  }
+  
+  getIngredientQuantityControlName(index: number): string {
+    return `measurements.${index}`;
+  }
+  
+  
+async createRecipe(){
+  const result = this.recipeDataService.createRecipe(this.form.value);
+  console.log(result);
+}
+
+  // updateDropdownOptions() {
+  //   if (this.radioControl.value === '1') {
+  //     this.dropdownOptions = ['a', 'b', 'c'];
+  //   } else if (this.radioControl.value === '2') {
+  //     this.dropdownOptions = ['d', 'e', 'f'];
+  //   }
+  // }
 }

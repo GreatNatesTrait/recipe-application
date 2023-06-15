@@ -29,6 +29,11 @@ export class RecipeDataService {
     return this.http.get<any[]>(url);
   }
 
+  createRecipe(body): Promise<any> {
+    const url = `${this.apiUrl}/recipe`;
+    return firstValueFrom(this.http.put<any[]>(url,body));
+  }
+
   // searchRecipes(keyword: string): Promise<RecipeModel[]> {
   //   const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;
   //   return firstValueFrom(this.http.get<RecipeModel[]>(url));
