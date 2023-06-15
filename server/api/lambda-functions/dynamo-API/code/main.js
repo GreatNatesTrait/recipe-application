@@ -88,7 +88,7 @@ export const lambda_handler = async (event, context) => {
               ProjectionExpression: 'idMeal'
             };
             body = await dynamo.send(new ScanCommand(Params));
-            body = body.Items.map(item => item.idMeal.S);
+            body = body.Items;
             break;
       default:
         console.log(event);
