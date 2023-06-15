@@ -33,13 +33,22 @@ pipeline {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {
                             script {
-                                    def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform"
-                                    dir(terraformDirectory) {
+                                    def terraformDirectories = [
+                                    "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform",
+                                    "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
+                                    ]
+
+                                    terraformDirectories.each { terraformDirectory ->
+                                    script {
+                                        dir(terraformDirectory) {
                                         def terraformInitOutput = sh(script: 'terraform init')
                                         def terraformPlanOutput = sh(script: 'terraform plan')
                                         def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                         def terraformOutputOutput = sh(script: 'terraform output -json > "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.json"')
-                                    }                        
+                                        }
+                                    }
+                                    }
+                   
                             }
                         }                                 
                     }
