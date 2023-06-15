@@ -15,13 +15,13 @@ import { RecipeModel } from '@app/shared/models/recipe.model';
   styleUrls: ['./recipe-creation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecipeCreationComponent {
+export class RecipeCreationComponent implements OnInit{
   form: FormGroup;
   ingredients: FormArray;
   measurements: FormArray;
   instructions: FormArray;
   existingPKs: [];
-  recipe2Add: RecipeModel;
+  recipe2Add = <RecipeModel>{};
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +43,7 @@ export class RecipeCreationComponent {
 
     await this.getExistingMeals();
   }
+  
 
   addIngredient() {
     this.ingredients.push(this.fb.control(''));
