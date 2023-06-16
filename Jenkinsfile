@@ -1,7 +1,12 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'greatnate27/recipe-app-pipeline-env:v1'
+            args '-u root'
+        }
+    }
 
-    stages {
+    stages {        
         stage('Checkout') {
             steps {
                 git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
@@ -64,6 +69,11 @@ pipeline {
         }
 
         stage("Test") {
+             agent {
+                docker {
+                    image 'greatnate27/recipe-app-pipeline-env:v1'
+                }
+            }
             steps {
                 parallel (
                     'Front end unit tests': {
