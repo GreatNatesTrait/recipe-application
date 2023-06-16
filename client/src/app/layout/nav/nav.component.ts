@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@env';
-import { AuthService } from '@app/shared/service/auth.service';
+import { AuthService } from '@app/shared/service/auth/auth.service';
 
 @Component({
   selector: 'app-nav',

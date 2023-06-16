@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
-import { AuthService } from '@app/shared/service/auth.service';
+import { AuthService } from '@app/shared/service/auth/auth.service';
 
 @Component({
   selector: 'app-profile',

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { RecipeDataService } from '@app/shared/service/recipe-data.service';
+import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeModel } from '@app/shared/models/recipe.model';

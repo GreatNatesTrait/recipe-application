@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RecipeDataService } from '@app/shared/service/recipe-data.service';
+import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { RecipeModel } from '@app/shared/models/recipe.model';
 import { Auth } from 'aws-amplify';
 

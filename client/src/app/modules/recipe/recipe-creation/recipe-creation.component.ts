@@ -6,7 +6,7 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
-import { RecipeDataService } from '@app/shared/service/recipe-data.service';
+import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { RecipeModel } from '@app/shared/models/recipe.model';
 
 @Component({

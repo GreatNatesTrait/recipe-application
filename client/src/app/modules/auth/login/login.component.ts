@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '@app/shared/service/auth.service';
-import { LoggerApiService } from '@app/shared/service/logger-api.service';
-import { NGXLogger } from "ngx-logger";
+import { AuthService } from '@app/shared/service/auth/auth.service';
+import { LoggerApiService } from '@app/shared/service/log/logger-api.service';
+import { LoggerService } from '@app/shared/service/log/logger.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ t;
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private loggerService: LoggerApiService,
-    private logger: NGXLogger,
+    private logger: LoggerService
 
   ) {
     this.isSignedUp = false;
@@ -47,9 +47,7 @@ t;
       newPassword: ['', Validators.required]
     });
 
-    this.t = this.logger.error("Your log message goes here");
-    
-    this.logger.warn("Multiple", "Argument", "support");
+
   }
 
   setActiveTab(tab: string) {
@@ -69,9 +67,7 @@ t;
     } catch (error) {
       console.log('Error signing up', error);
       this.authEventMessage = error;
-      let log = this.logger.debug(error);
-      let jsonLog = JSON.stringify(log);
-      this.loggerService.writeLogToS3(jsonLog);
+      this.logger.error(error);
     }
   }
 
@@ -103,9 +99,7 @@ t;
     } catch (error) {
       console.log('Error signing in', error);
       this.authEventMessage = error;
-      let log = this.logger.debug(error);
-      //get ip, timestamp, user, log level
-      this.loggerService.writeLogToS3(error);
+      this.logger.error(error);
     }
   }
 
