@@ -31,7 +31,15 @@ ENV PATH="/root/.local/bin:${PATH}"
 # Set the working directory
 WORKDIR /app
 
-# Add your Jenkins pipeline code or any other configurations
+# Define the entry point script content
+RUN echo '#!/bin/sh' >> jenkins-entrypoint.sh && \
+    echo 'set -e' >> jenkins-entrypoint.sh && \
+    echo 'echo "Executing Jenkins entry point script..."' >> jenkins-entrypoint.sh && \
+    echo '# Add your custom commands or configurations here' >> jenkins-entrypoint.sh && \
+    echo 'exec "$@"' >> jenkins-entrypoint.sh
+
+# Make the entry point script executable
+RUN chmod +x jenkins-entrypoint.sh
 
 # Define the entry point
 ENTRYPOINT ["jenkins-entrypoint.sh"]
