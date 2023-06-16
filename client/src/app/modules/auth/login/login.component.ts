@@ -4,6 +4,7 @@ import { AuthService } from '@app/shared/service/auth.service';
 import { LoggerApiService } from '@app/shared/service/logger-api.service';
 import { NGXLogger } from "ngx-logger";
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,12 +18,13 @@ export class LoginComponent {
   activeTab: string = 'signin';
   isSignedUp: boolean;
   authEventMessage;
-
+t;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private loggerService: LoggerApiService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+
   ) {
     this.isSignedUp = false;
     this.signInForm = this.formBuilder.group({
@@ -44,6 +46,10 @@ export class LoginComponent {
       resetPasswordCode: ['', Validators.required],
       newPassword: ['', Validators.required]
     });
+
+    this.t = this.logger.error("Your log message goes here");
+    
+    this.logger.warn("Multiple", "Argument", "support");
   }
 
   setActiveTab(tab: string) {
@@ -87,6 +93,7 @@ export class LoginComponent {
   }
 
   async signIn() {
+
     try {
       const result = await this.authService.login(
         this.signInForm.value.signinUsername,
@@ -98,7 +105,7 @@ export class LoginComponent {
       this.authEventMessage = error;
       let log = this.logger.debug(error);
       //get ip, timestamp, user, log level
-      this.loggerService.writeLogToS3(JSON.stringify(error));
+      this.loggerService.writeLogToS3(error);
     }
   }
 

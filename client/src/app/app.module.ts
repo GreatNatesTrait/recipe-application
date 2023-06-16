@@ -13,6 +13,7 @@ import { HomeModule } from './modules/home/home.module';
 import { HttpClientModule} from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 
+
 @NgModule({
   declarations: [
     AppComponent,

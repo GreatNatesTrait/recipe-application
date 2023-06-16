@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Observable, firstValueFrom, of, throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,70 +11,66 @@ export class LoggerApiService {
 
   constructor(private http: HttpClient) {}
 
-  writeLogToS3v2(body: string): Promise<any> {
-    const url = `${this.apiUrl}/logs`;
-    const encoder = new TextEncoder();
-    const encodedBody = encoder.encode(body);
-    const contentLength = encodedBody.length;
+  writeLogToS3(body) {
+    //create log timestamp
+    const now = new Date();
+    const milliseconds = now.getMilliseconds();
+    const timestamp = now.toISOString().replace('T', ' ').replace('Z', '');
+    const logTimestamp = `${timestamp}.${milliseconds}`;
 
-    const headers = {
-      'Content-Length': contentLength.toString()
+    const log = {
+      timestamp: logTimestamp,
+      message: body,
+      source: this.getFunctionName()
     };
-    return firstValueFrom(this.http.put<any>(url, encodedBody, { headers }));
+
+    // Check if adding the new log will exceed the local storage threshold
+    const MAX_LOCAL_STORAGE_SIZE = 3 * 1024;
+    const currentLocalStorageSize = JSON.stringify(localStorage).length;
+    const newLogSize = JSON.stringify(body).length;
+
+    if (currentLocalStorageSize + newLogSize > MAX_LOCAL_STORAGE_SIZE) {
+      // Local storage will exceed the threshold, upload logs to S3
+      console.log('threshold reached');
+      this.uploadLogsToS3();
+      localStorage.removeItem('logs');
+    }
+
+    // Add the new log to local storage
+    const logs = localStorage.getItem('logs');
+    const updatedLogs = logs ? JSON.parse(logs) : [];
+    updatedLogs.push(log);
+    localStorage.setItem('logs', JSON.stringify(updatedLogs));
   }
 
-   writeLogToS3(body) {
-    const options = {
-      method: 'PUT',
-      url: 'https://5olenhixzi.execute-api.us-east-1.amazonaws.com/logs',
-      // headers: {
-      //   'Content-Type': 'text/plain'
-      // },
-      //responseType: 'text' // Specify the response type as 'text' to get the response body as a string
-    };
-  
-    this.http.request(options.method, options.url, {
-      //headers: options.headers,
-      body: body,
-      //responseType: options.responseType
-    }).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+  private getFunctionName(): string {
+    const stackTrace = new Error().stack;
+    const functionName = stackTrace.match(/at (\S+)/g)?.[1];
+    return functionName ? functionName.slice(3) : 'Unknown Function';
   }
 
-  writeLogToS39(body){
-  
-      const url = 'https://5olenhixzi.execute-api.us-east-1.amazonaws.com/logs';
+  uploadLogsToS3() {
+    const logs = localStorage.getItem('logs');
 
-    //   const encoder = new TextEncoder();
-    // const encodedBody = encoder.encode(body);
-    // const contentLength = encodedBody.length;
-    //   const headers = new HttpHeaders({
-    //     'Content-Type': 'text/plain',
-    //     'Content-Length': contentLength.toString()
-    //   });
-  
-      const postData2 = '"{test log}"';
-      const postData = body;
-  
-      this.http.put(url, postData, 
-        { 
-          //headers,
-           responseType: 'text' }
-        )
+    if (logs) {
+      const options = {
+        method: 'PUT',
+        url: `${this.apiUrl}/logs`,
+        body: JSON.parse(logs)
+      };
+
+      this.http
+        .request(options.method, options.url, {
+          body: options.body
+        })
         .subscribe(
-          response => {
+          (response) => {
             console.log(response);
           },
-          error => {
+          (error) => {
             console.error(error);
           }
         );
-    
+    }
   }
 }
