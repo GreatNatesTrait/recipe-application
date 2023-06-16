@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/shared/service/auth.service';
+import { LoggerApiService } from '@app/shared/service/logger-api.service';
 import { NGXLogger } from "ngx-logger";
 
 @Component({
@@ -20,6 +21,7 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private loggerService: LoggerApiService,
     private logger: NGXLogger
   ) {
     this.isSignedUp = false;
@@ -61,6 +63,7 @@ export class LoginComponent {
     } catch (error) {
       console.log('Error signing up', error);
       this.authEventMessage = error;
+      this.loggerService.writeLogToS3(error);
     }
   }
 
@@ -91,7 +94,7 @@ export class LoginComponent {
     } catch (error) {
       console.log('Error signing in', error);
       this.authEventMessage = error;
-      this.logger.error(error);
+      this.loggerService.writeLogToS3(this.logger.debug(error));
     }
   }
 
