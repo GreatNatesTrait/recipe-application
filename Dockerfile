@@ -27,10 +27,6 @@ RUN pip3 install --no-cache-dir awsebcli==${EB_CLI_VERSION}
 
 # Set environment variables
 ENV PATH="/root/.local/bin:${PATH}"
-ENV SUDO_FORCE_REMOVE=yes
-
-# Create a new user and grant sudo permissions
-RUN useradd -m jenkins && echo "jenkins:jenkins" | chpasswd && adduser jenkins sudo
 
 # Copy the Jenkinsfile and jenkins-entrypoint.sh
 COPY Jenkinsfile /app/Jenkinsfile
@@ -38,9 +34,6 @@ COPY jenkins-entrypoint.sh /app/jenkins-entrypoint.sh
 
 # Make jenkins-entrypoint.sh executable
 RUN chmod +x /app/jenkins-entrypoint.sh
-
-# Switch to the jenkins user
-USER jenkins
 
 # Define the entry point
 ENTRYPOINT ["/app/jenkins-entrypoint.sh"]
