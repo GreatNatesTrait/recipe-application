@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the Docker daemon address
-DOCKER_HOST="tcp://localhost:4243"
+DOCKER_HOST="tcp://docker:4243"
 
 # Run the Jenkins pipeline
 jenkinsfile="/app/Jenkinsfile"

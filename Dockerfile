@@ -28,15 +28,12 @@ RUN pip3 install --no-cache-dir awsebcli==${EB_CLI_VERSION}
 # Set environment variables
 ENV PATH="/root/.local/bin:${PATH}"
 
-# Copy the Jenkinsfile to the container
+# Copy the Jenkinsfile and jenkins-entrypoint.sh
 COPY Jenkinsfile /app/Jenkinsfile
+COPY jenkins-entrypoint.sh /app/jenkins-entrypoint.sh
 
-# Define the entry point script
-COPY jenkins-entrypoint.sh /usr/local/bin/jenkins-entrypoint.sh
-RUN chmod +x /usr/local/bin/jenkins-entrypoint.sh
-
-# Set the working directory
-WORKDIR /app
+# Make jenkins-entrypoint.sh executable
+RUN chmod +x /app/jenkins-entrypoint.sh
 
 # Define the entry point
-ENTRYPOINT ["jenkins-entrypoint.sh"]
+ENTRYPOINT ["/app/jenkins-entrypoint.sh"]
