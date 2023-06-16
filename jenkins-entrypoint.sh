@@ -9,10 +9,10 @@ jenkinsfile="/app/Jenkinsfile"
 # Check if the Jenkinsfile exists
 if [ -f "$jenkinsfile" ]; then
   echo "Executing Jenkins pipeline..."
-  cat "$jenkinsfile" | docker -H "$DOCKER_HOST" run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD":/app greatnate27/recipe-app-pipeline-env:v1 cat
+  cat "$jenkinsfile" | docker -H "$DOCKER_HOST" run -i --rm -v /var/run/docker.sock:/var/run/docker.sock cat
 else
   echo "Jenkinsfile not found."
 fi
 
 # Execute the subsequent command or process
-exec "$@"
+exec sudo "$@"
