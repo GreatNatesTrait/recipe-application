@@ -63,7 +63,9 @@ export class LoginComponent {
     } catch (error) {
       console.log('Error signing up', error);
       this.authEventMessage = error;
-      this.loggerService.writeLogToS3(error);
+      let log = this.logger.debug(error);
+      let jsonLog = JSON.stringify(log);
+      this.loggerService.writeLogToS3(jsonLog);
     }
   }
 
@@ -94,7 +96,9 @@ export class LoginComponent {
     } catch (error) {
       console.log('Error signing in', error);
       this.authEventMessage = error;
-      this.loggerService.writeLogToS3(this.logger.debug(error));
+      let log = this.logger.debug(error);
+      let jsonLog = JSON.stringify(log);
+      this.loggerService.writeLogToS3(jsonLog);
     }
   }
 
