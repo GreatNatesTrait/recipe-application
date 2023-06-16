@@ -73,7 +73,7 @@ resource "aws_iam_policy" "lambda_log_writing_policy" {
       "Action": [
         "s3:PutObject"
       ],
-      "Resource": "arn:aws:s3:::recipe-app-code/logs"
+      "Resource": "arn:aws:s3:::recipe-app-code/logs/*"
     },
         {
             "Effect": "Allow",
