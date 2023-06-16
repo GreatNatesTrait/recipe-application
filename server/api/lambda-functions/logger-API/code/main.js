@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 
-export const handler = async (event) => {
+export const lambda_handler = async (event) => {
   console.log(event);
   try {
     // Parse the request body from API Gateway

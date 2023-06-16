@@ -25,7 +25,7 @@ resource "aws_s3_object" "file_upload" {
 resource "aws_lambda_function" "log_writer_lambda" {
   function_name    = "LogWriterLambda"
   runtime          = "nodejs18.x"
-  handler          = "index.handler"
+  handler          = "main.lambda_handler"
   s3_bucket = "${data.aws_s3_bucket.existing_bucket.id}"
   s3_key      = "${aws_s3_object.file_upload.key}"
   role             = aws_iam_role.lambda_log_writing_role.arn
@@ -94,6 +94,14 @@ EOF
 resource "aws_apigatewayv2_api" "s3_proxy_api" {
   name          = "S3ProxyAPI"
   protocol_type = "HTTP"
+   cors_configuration  {
+    allow_credentials = false
+    allow_headers     = ["*"]
+    allow_methods     = ["*"]
+    allow_origins     = ["*"]
+    expose_headers    = ["*"]
+    max_age           = 0
+  }
 }
 
 # Create a route for the S3 proxy path
