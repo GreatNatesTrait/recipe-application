@@ -13,3 +13,6 @@ if [ -f "$jenkinsfile" ]; then
 else
   echo "Jenkinsfile not found."
 fi
+
+# Execute the subsequent command or process
+exec "$@"
