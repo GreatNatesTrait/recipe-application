@@ -97,8 +97,8 @@ export class LoginComponent {
       console.log('Error signing in', error);
       this.authEventMessage = error;
       let log = this.logger.debug(error);
-      let jsonLog = JSON.stringify(log);
-      this.loggerService.writeLogToS3(jsonLog);
+      //get ip, timestamp, user, log level
+      this.loggerService.writeLogToS3(JSON.stringify(error));
     }
   }
 
