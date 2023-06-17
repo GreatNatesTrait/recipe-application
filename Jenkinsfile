@@ -11,6 +11,7 @@ pipeline {
             steps {
                    sh 'echo ${WORKSPACE}'
                    sh 'ls -l'
+                   sh 'find /app/server -maxdepth 1'
                    sh 'cd /app/server'
                    sh 'ls -l'
                    sh 'node --version'
