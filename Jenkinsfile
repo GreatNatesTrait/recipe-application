@@ -3,6 +3,9 @@ pipeline {
         docker {
             image 'greatnate27/recipe-app-pipeline-env:v1'
         }
+        environment {
+        HOME = '.'
+        }
     }  
     stages {        
         //stage('tesintg') {        
@@ -107,7 +110,7 @@ pipeline {
                     // Install frontend dependencies
                     //dir('client') {
                         //sh 'cd app/server'
-                        sh 'cd /app/server'
+                        //sh 'cd /app/server'
                         sh 'npm install'
                         sh 'ng build'
                     //}
