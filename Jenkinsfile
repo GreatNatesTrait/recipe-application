@@ -160,8 +160,7 @@ pipeline {
                         //zip -r archive.zip *
                         //rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                     sh '''
-                        echo ${PWD}
-                        sudo -u root chmod +x -R "/var/lib/jenkins/workspace"
+                        chmod +x -R ${PWD}
                         zip -r archive.zip app/client/dist app/server/server.js app/server/package.json                       
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
                         
