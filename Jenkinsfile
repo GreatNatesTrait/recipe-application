@@ -12,6 +12,8 @@ pipeline {
            steps {
                   sh 'echo ${PWD}'
                   sh 'echo $PWD'
+                  sh 'echo ${USER}'
+                  sh 'echo $USER'
                   sh 'node --version'
                   //sh 'ls $PWD'
            }                        
