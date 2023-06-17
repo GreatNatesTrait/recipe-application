@@ -1,12 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'greatnate27/recipe-app-pipeline-env:v1'
+        }
+    }  
     stages {        
-        stage('tesintg') {
-            agent {
-                docker {
-                    image 'greatnate27/recipe-app-pipeline-env:v1'
-                }
-            }           
+        stage('tesintg') {        
             steps {
                    sh 'node --version'
             }                        
