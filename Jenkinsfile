@@ -10,6 +10,8 @@ pipeline {
     stages {        
         stage('tesintg') {        
            steps {
+                  sh 'echo ${PWD}'
+                  sh 'echo $PWD'
                   sh 'node --version'
                   sh 'ls $PWD'
            }                        
@@ -94,6 +96,10 @@ pipeline {
             steps {
                 //steps {
                     sh '''#!/bin/bash
+                            echo ${PWD}
+                            echo $PWD
+                            node --version
+                            ls $PWD
                             echo "$USER"
                             npm install -C "app/client" 
                     '''
