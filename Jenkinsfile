@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'greatnate27/recipe-app-pipeline-env:v1'
-            args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD":/app -e DOCKER_HOST=tcp://0.0.0.0:4243'
+            args '-u root:sudo -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
 
