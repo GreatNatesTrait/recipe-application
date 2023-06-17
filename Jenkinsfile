@@ -8,11 +8,11 @@ pipeline {
         HOME = '.'
     }
     stages {        
-        //stage('tesintg') {        
-        //    steps {
-        //           sh 'node --version'
-        //    }                        
-        //}
+        stage('tesintg') {        
+           steps {
+                  sh 'node --version'
+           }                        
+        }
         stage('Checkout') {
             steps {
                 //withCredentials([gitUsernamePassword(credentialsId: 'e478701a-01ce-4a26-9b6b-d977fbeee953', gitToolName: 'git-tool')]) {
