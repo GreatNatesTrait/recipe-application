@@ -5,11 +5,11 @@ pipeline {
         }
     }  
     stages {        
-        stage('tesintg') {        
-            steps {
-                   sh 'node --version'
-            }                        
-        }
+        //stage('tesintg') {        
+        //    steps {
+        //           sh 'node --version'
+        //    }                        
+        //}
         stage('Checkout') {
             steps {
                 git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
@@ -87,20 +87,20 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Check if Node.js is installed
-                    def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
-                    if (nodeVersion != 0) {
-                        // Node.js is not installed, install it
-                        sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
-                        sh 'sudo apt-get install -y nodejs'
-                    }
+                    // // Check if Node.js is installed
+                    // def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
+                    // if (nodeVersion != 0) {
+                    //     // Node.js is not installed, install it
+                    //     sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
+                    //     sh 'sudo apt-get install -y nodejs'
+                    // }
 
-                    // Check if Angular CLI is installed
-                    def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
-                    if (ngVersion != 0) {
-                        // Angular CLI is not installed, install it
-                        sh 'sudo npm install -g @angular/cli'
-                    }
+                    // // Check if Angular CLI is installed
+                    // def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
+                    // if (ngVersion != 0) {
+                    //     // Angular CLI is not installed, install it
+                    //     sh 'sudo npm install -g @angular/cli'
+                    // }
 
                     // Install frontend dependencies
                     dir('client') {
@@ -129,10 +129,11 @@ pipeline {
                 accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
+                        // # Install AWS CLI (skip if already installed)
+                        // sudo apt-get install -y awscli
+                        // sudo apt-get install -y zip
                     sh '''
-                        # Install AWS CLI (skip if already installed)
-                        sudo apt-get install -y awscli
-                        sudo apt-get install -y zip
+
                         sudo mkdir -p "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                         sudo cp -R client/dist server/server.js server/package.json "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                         cd "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
