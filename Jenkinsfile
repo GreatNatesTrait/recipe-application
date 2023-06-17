@@ -10,6 +10,7 @@ pipeline {
             steps {
                 //dir(path: '/app') {
                    sh 'echo ${WORKSPACE}'
+                   sh 'echo ${PWD}'
                    sh 'ls'
                    sh 'find /app/server -maxdepth 1'
                    sh 'cd /app/server'
