@@ -9,9 +9,10 @@ pipeline {
             }           
             steps {
                 //dir(path: '/app') {
-                script {
-                   def containerId = sh(returnStdout: true, script: 'docker ps -q').trim()
-                   sh "docker exec $containerId ls"
+                //script {
+                   //def containerId = sh(returnStdout: true, script: 'docker ps -q').trim()
+                   //sh "docker exec $containerId ls"
+                   sh 'echo $PATH'
                    sh 'echo ${WORKSPACE}'
                    sh 'echo ${PWD}'
                    sh 'ls'
