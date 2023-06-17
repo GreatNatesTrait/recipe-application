@@ -5,15 +5,16 @@ pipeline {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
-                    args '-v $HOME:/app -u ubuntu -p 3000:3000'
                     reuseNode true
                 }
             }           
             steps {
-                   sh 'ls -l /app'
+                dir('/app') {
+                   sh 'ls -l'
                    sh 'node --version'
-                   sh 'echo $(pwd)'
+                   sh 'pwd'
                  }                         
+            }
         }
         stage('Checkout') {
             steps {
