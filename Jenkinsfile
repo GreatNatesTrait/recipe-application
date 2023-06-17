@@ -15,7 +15,7 @@ pipeline {
                    sh 'echo $PATH'
                    sh 'echo ${WORKSPACE}'
                    sh 'echo ${PWD}'
-                   sh 'cd /var/lib/jenkins/workspace/recipe\ application\ build@2/app/server'
+                   sh 'cd /var/lib/jenkins/workspace/recipe application build@2/app/server'
                    sh 'ls'
                    sh 'find /app/server -maxdepth 1'
                    sh 'cd /app/server'
