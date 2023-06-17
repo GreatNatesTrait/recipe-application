@@ -11,6 +11,7 @@ pipeline {
         stage('tesintg') {        
            steps {
                   sh 'node --version'
+                  sh 'ls $PWD'
            }                        
         }
         stage('Checkout') {
