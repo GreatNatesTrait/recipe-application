@@ -5,17 +5,16 @@ pipeline {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
-                    args'-u root -it --cgroupns host -v ${WORKSPACE}:/app'
+                    args'-u root -it --cgroupns host -v ${WORKSPACE}:/app --entrypoint='''
                 }
             }           
             steps {
                    sh 'echo ${WORKSPACE}'
-                   sh 'ls -l'
+                   sh 'ls'
                    sh 'find /app/server -maxdepth 1'
                    sh 'cd /app/server'
-                   sh 'ls -l'
+                   sh 'ls'
                    sh 'node --version'
-                   sh 'pwd'
                  }                         
         }
         stage('Checkout') {
