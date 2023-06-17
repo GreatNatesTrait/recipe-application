@@ -15,7 +15,7 @@ pipeline {
                    sh 'echo $PATH'
                    sh 'echo ${WORKSPACE}'
                    sh 'echo ${PWD}'
-                   sh 'cd /app'
+                   sh 'cd /app/server'
                    sh 'ls'
                    sh 'find /app/server -maxdepth 1'
                    sh 'cd /app/server'
