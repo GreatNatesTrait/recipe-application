@@ -17,6 +17,7 @@ pipeline {
                         sh 'echo $(pwd)'
                     }
                 }                         
+            }
         }
         stage('Checkout') {
             steps {
