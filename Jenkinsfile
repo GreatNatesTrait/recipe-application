@@ -154,16 +154,18 @@ pipeline {
                         // # Install AWS CLI (skip if already installed)
                         // sudo apt-get install -y awscli
                         // sudo apt-get install -y zip
+                        //mkdir -p "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        //cp -R client/dist server/server.js server/package.json "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        //cd "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        //zip -r archive.zip *
+                        //rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                     sh '''
 
-                        mkdir -p "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        cp -R client/dist server/server.js server/package.json "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        cd "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        zip -r archive.zip *
                         
-                        # Upload files to S3 bucket
+                        zip -r archive.zip app/client
+                        
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
-                        rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        
                     '''
                 }
             }
