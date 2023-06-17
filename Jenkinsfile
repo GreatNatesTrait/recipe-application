@@ -4,9 +4,9 @@ pipeline {
             image 'greatnate27/recipe-app-pipeline-env:v1'
         }
     }  
-    // environment {
-    //     HOME = '.'
-    // }
+    environment {
+        HOME = '.'
+    }
     stages {        
         //stage('tesintg') {        
         //    steps {
