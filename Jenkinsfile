@@ -1,13 +1,16 @@
 pipeline {
-    agent {
-        docker {
-            image 'greatnate27/recipe-app-pipeline-env:v1'
-            args '-u root:sudo -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
-
+    agent any
     stages {        
         stage('tesintg') {
+            agent {
+                docker {
+                    image 'greatnate27/recipe-app-pipeline-env:v1'
+                    // Run the container on the node specified at the
+                    // top-level of the Pipeline, in the same workspace,
+                    // rather than on a new node entirely:
+                    reuseNode true
+                }
+            }           
             steps {
                 sh 'node --version'
                 sh 'echo $(pwd)'
