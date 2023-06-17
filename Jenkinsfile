@@ -21,7 +21,7 @@ pipeline {
                    sh 'ls'
                    sh 'node --version'
                  //} 
-                }
+                //}
             }                        
         }
         stage('Checkout') {
