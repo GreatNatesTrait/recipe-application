@@ -11,6 +11,7 @@ pipeline {
             }           
             steps {
                  dir(path: '/app') {
+                   sh 'ls -l'
                    sh 'node --version'
                    sh 'echo $(pwd)'
                  }              
