@@ -109,9 +109,11 @@ pipeline {
                     
                     // Install frontend dependencies
                     //dir('client') {
+                        sh 'echo ${PWD}'
+                        sh 'echo $PWD'
                         sh 'ls /app'
                         sh 'ls app'
-                        sh 'npm install -C app/client'
+                        sh 'npm install -C "app/client"'
                         //sh 'npm install'
                         sh 'ng build'
                     //}
