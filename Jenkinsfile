@@ -12,9 +12,9 @@ pipeline {
         //}
         stage('Checkout') {
             steps {
-                withCredentials([gitUsernamePassword(credentialsId: 'e478701a-01ce-4a26-9b6b-d977fbeee953', gitToolName: 'git-tool')]) {
+                //withCredentials([gitUsernamePassword(credentialsId: 'e478701a-01ce-4a26-9b6b-d977fbeee953', gitToolName: 'git-tool')]) {
                     git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
-                }
+                //}
             }
         }
 
@@ -106,13 +106,13 @@ pipeline {
 
                     // Install frontend dependencies
                     dir('client') {
-                        sh 'sudo npm install'
+                        sh 'npm install'
                         sh 'ng build'
                     }
 
                     // Install backend dependencies
                     dir('server') {
-                        sh 'sudo npm install'
+                        sh 'npm install'
                     }
                 }
             }
@@ -136,14 +136,14 @@ pipeline {
                         // sudo apt-get install -y zip
                     sh '''
 
-                        sudo mkdir -p "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        sudo cp -R client/dist server/server.js server/package.json "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        mkdir -p "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        cp -R client/dist server/server.js server/package.json "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                         cd "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        sudo zip -r archive.zip *
+                        zip -r archive.zip *
                         
                         # Upload files to S3 bucket
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
-                        sudo rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                     '''
                 }
             }
