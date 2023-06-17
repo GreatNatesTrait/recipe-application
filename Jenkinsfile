@@ -7,15 +7,17 @@ pipeline {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
                     args '-v $HOME:/app -u ubuntu -p 3000:3000'
                     reuseNode true
+                    volumes {
+                        hostPath('$HOME', '/app')
+                    }
+                    workDir '/app'
                 }
             }           
             steps {
-                 dir(path: '/app') {
                    sh 'ls -l'
                    sh 'node --version'
                    sh 'echo $(pwd)'
-                 }              
-            }
+                 }                         
         }
         stage('Checkout') {
             steps {
