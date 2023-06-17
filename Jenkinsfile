@@ -103,9 +103,9 @@ pipeline {
                     //     // Angular CLI is not installed, install it
                     //     sh 'sudo npm install -g @angular/cli'
                     // }
-
+                    sh 'sudo chown -R 115:122 "/.npm"'
                     // Install frontend dependencies
-                    dir('/var/lib/jenkins/workspace/recipe application build/client') {
+                    dir('client') {
                         sh 'npm install'
                         sh 'ng build'
                     }
