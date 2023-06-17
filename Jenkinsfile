@@ -7,6 +7,7 @@ pipeline {
     }  
     environment {
         HOME = '.'
+        SECRET = credentials("secret")
     }
     stages {        
         stage('tesintg') {        
@@ -163,7 +164,7 @@ pipeline {
                         //zip -r archive.zip *
                         //rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                     sh '''
-                        chmod +x -R "${PWD}"
+                        
                         zip -r archive.zip app/client/dist app/server/server.js app/server/package.json                       
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
                         
