@@ -9,11 +9,9 @@ pipeline {
             }           
             steps {
                 //dir(path: '/app') {
-                //script {
-                   //def containerId = sh(returnStdout: true, script: 'docker ps -q').trim()
-                   //sh "docker exec $containerId ls"
-                   sh "/bin/docker exec ls"
-                   sh "docker exec ls"
+                script {
+                   def containerId = sh(returnStdout: true, script: 'docker ps -q').trim()
+                   sh "docker exec $containerId ls"
                    sh 'echo ${WORKSPACE}'
                    sh 'echo ${PWD}'
                    sh 'ls'
@@ -22,7 +20,7 @@ pipeline {
                    sh 'ls'
                    sh 'node --version'
                  //} 
-                //}
+                }
             }                        
         }
         stage('Checkout') {
