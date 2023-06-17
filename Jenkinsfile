@@ -10,6 +10,7 @@ pipeline {
         stage('tesintg') {
             steps {
                 sh 'node --version'
+                sh 'echo $(pwd)'
             }
         }
         stage('Checkout') {
