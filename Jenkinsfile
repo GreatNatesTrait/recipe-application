@@ -113,8 +113,8 @@ pipeline {
                         sh 'echo $PWD'
                         sh 'ls /app'
                         sh 'ls app'
-                        //sh 'sudo -u node npm install -C "app/client"'
-                        sh 'npm install -C "app/client"'
+                        sh 'sudo -u node npm install -C "app/client"'
+                        //sh 'sudnpm install -C "app/client"'
                         sh 'ng build'
                     //}
 
