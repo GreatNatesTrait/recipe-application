@@ -9,12 +9,13 @@ pipeline {
                 }
             }           
             steps {
-                dir('/app') {
+                   sh 'echo ${WORKSPACE}'
+                   sh 'ls -l'
+                   sh 'cd /app/server'
                    sh 'ls -l'
                    sh 'node --version'
                    sh 'pwd'
                  }                         
-            }
         }
         stage('Checkout') {
             steps {
