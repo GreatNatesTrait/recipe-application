@@ -2,11 +2,16 @@ pipeline {
     agent {
         docker {
             image 'greatnate27/recipe-app-pipeline-env:v1'
-            args '-u root:root'
+            args '-u root'
         }
     }
 
     stages {        
+        stage('tesintg') {
+            steps {
+                sh 'node --version'
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
