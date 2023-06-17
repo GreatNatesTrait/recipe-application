@@ -5,7 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
-                    args '-u root:root -it --entrypoint="" greatnate27/recipe-app-pipeline-env:v1 cat /etc/passwd'
+                    args '-u root:root -it --entrypoint="" greatnate27/recipe-app-pipeline-env:v1'
                 }
             }           
             steps {
