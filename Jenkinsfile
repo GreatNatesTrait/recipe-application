@@ -106,7 +106,9 @@ pipeline {
                     
                     // Install frontend dependencies
                     //dir('client') {
-                        sh 'npm install -C ./app/server'
+                        //sh 'cd app/server'
+                        sh 'cd app/server'
+                        sh 'npm install'
                         sh 'ng build'
                     //}
 
