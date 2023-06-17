@@ -162,7 +162,7 @@ pipeline {
                     sh '''
 
                         
-                        zip -r archive.zip /var/lib/jenkins/workspace
+                        zip -r archive.zip app/client/dist app/server/server.js app/server/package.json
                         
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
                         
