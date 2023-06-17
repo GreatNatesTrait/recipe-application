@@ -5,8 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
-                    args '-u root'
-                    volumes '/var/lib/jenkins/workspace:/app'
+                    args '-u root -v /var/lib/jenkins/workspace:/app'
                 }
             }           
             steps {
