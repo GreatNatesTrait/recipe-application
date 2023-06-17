@@ -12,7 +12,9 @@ pipeline {
         //}
         stage('Checkout') {
             steps {
-                git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
+                withCredentials([gitUsernamePassword(credentialsId: 'e478701a-01ce-4a26-9b6b-d977fbeee953', gitToolName: 'git-tool')]) {
+                    git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
+                }
             }
         }
 
