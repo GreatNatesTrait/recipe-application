@@ -13,7 +13,7 @@ pipeline {
                   sh 'echo ${PWD}'
                   sh 'echo $PWD'
                   sh 'node --version'
-                  sh 'ls $PWD'
+                  //sh 'ls $PWD'
            }                        
         }
         stage('Checkout') {
@@ -99,7 +99,6 @@ pipeline {
                             echo ${PWD}
                             echo $PWD
                             node --version
-                            ls $PWD
                             echo "$USER"
                             npm install -C "app/client" 
                     '''
