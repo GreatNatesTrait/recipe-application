@@ -103,13 +103,12 @@ pipeline {
                     //     // Angular CLI is not installed, install it
                     //     sh 'sudo npm install -g @angular/cli'
                     // }
-                    sh 'chown -R 0:0 "/.npm"'
-                    sh 'chown -R 115:122 "/.npm"'
+                    
                     // Install frontend dependencies
-                    dir('client') {
-                        sh 'npm install'
+                    //dir('client') {
+                        sh 'npm --prefix app/client install'
                         sh 'ng build'
-                    }
+                    //}
 
                     // Install backend dependencies
                     dir('server') {
