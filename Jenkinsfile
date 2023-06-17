@@ -5,6 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
+                    args '-v ${PWD}:/app'
                     reuseNode true
                 }
             }           
