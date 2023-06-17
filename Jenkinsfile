@@ -8,21 +8,7 @@ pipeline {
                 }
             }           
             steps {
-                //dir(path: '/app') {
-                //script {
-                   //def containerId = sh(returnStdout: true, script: 'docker ps -q').trim()
-                   //sh "docker exec $containerId ls"
-                   sh 'echo $PATH'
-                   sh 'echo ${WORKSPACE}'
-                   sh 'echo ${PWD}'
-                   sh 'cd /var/lib/jenkins/workspace/recipe application build@2/app/server'
-                   sh 'ls'
-                   sh 'find /app/server -maxdepth 1'
-                   sh 'cd /app/server'
-                   sh 'ls'
                    sh 'node --version'
-                 //} 
-                //}
             }                        
         }
         stage('Checkout') {
