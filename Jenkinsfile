@@ -10,14 +10,10 @@ pipeline {
                 }
             }           
             steps {
-                script {
-                    docker.image('greatnate27/recipe-app-pipeline-env:v1').inside('-u ubuntu -p 3000:3000') {
-                        sh 'ls -l'
-                        sh 'node --version'
-                        sh 'echo $(pwd)'
-                    }
-                }                         
-            }
+                   sh 'ls -l /app'
+                   sh 'node --version'
+                   sh 'echo $(pwd)'
+                 }                         
         }
         stage('Checkout') {
             steps {
