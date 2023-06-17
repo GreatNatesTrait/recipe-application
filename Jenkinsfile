@@ -91,11 +91,11 @@ pipeline {
 
         stage('Build') {
             steps {
-                steps {
+                //steps {
                     sh '''#!/bin/bash
                             npm install -C "app/client" 
                     '''
-                }
+                //}
                 // script {
                 //     // // Check if Node.js is installed
                 //     // def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
