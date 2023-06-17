@@ -91,38 +91,43 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    // // Check if Node.js is installed
-                    // def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
-                    // if (nodeVersion != 0) {
-                    //     // Node.js is not installed, install it
-                    //     sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
-                    //     sh 'sudo apt-get install -y nodejs'
-                    // }
-
-                    // // Check if Angular CLI is installed
-                    // def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
-                    // if (ngVersion != 0) {
-                    //     // Angular CLI is not installed, install it
-                    //     sh 'sudo npm install -g @angular/cli'
-                    // }
-                    
-                    // Install frontend dependencies
-                    //dir('client') {
-                        sh 'echo ${PWD}'
-                        sh 'echo $PWD'
-                        sh 'ls /app'
-                        sh 'ls app'
-                        sh 'sudo -u node npm install -C "app/client"'
-                        //sh 'sudnpm install -C "app/client"'
-                        sh 'ng build'
-                    //}
-
-                    // Install backend dependencies
-                    dir('server') {
-                        sh 'npm install'
-                    }
+                steps {
+                    sh '''#!/bin/bash
+                            npm install -C "app/client" 
+                    '''
                 }
+                // script {
+                //     // // Check if Node.js is installed
+                //     // def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
+                //     // if (nodeVersion != 0) {
+                //     //     // Node.js is not installed, install it
+                //     //     sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
+                //     //     sh 'sudo apt-get install -y nodejs'
+                //     // }
+
+                //     // // Check if Angular CLI is installed
+                //     // def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
+                //     // if (ngVersion != 0) {
+                //     //     // Angular CLI is not installed, install it
+                //     //     sh 'sudo npm install -g @angular/cli'
+                //     // }
+                    
+                //     // Install frontend dependencies
+                //     //dir('client') {
+                //         sh 'echo ${PWD}'
+                //         sh 'echo $PWD'
+                //         sh 'ls /app'
+                //         sh 'ls app'
+                //         sh 'sudo -u node npm install -C "app/client"'
+                //         //sh 'sudnpm install -C "app/client"'
+                //         sh 'ng build'
+                //     //}
+
+                //     // Install backend dependencies
+                //     dir('server') {
+                //         sh 'npm install'
+                //     }
+                // }
             }
         }
 
