@@ -5,7 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
-                    args '-it -v /var/run/docker.sock:/var/run/docker.sock'
+                    args '-it -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/jenkins/workspace:/app -p 3000:3000'
                 }
             }           
             steps {
