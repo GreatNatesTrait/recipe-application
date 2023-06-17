@@ -105,7 +105,7 @@ pipeline {
                     // }
 
                     // Install frontend dependencies
-                    dir('/app/client') {
+                    dir('/var/lib/jenkins/workspace/recipe application build/client') {
                         sh 'npm install'
                         sh 'ng build'
                     }
