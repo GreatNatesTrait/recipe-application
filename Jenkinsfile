@@ -5,7 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'
-                    args '-u root:root -it -v /var/run/docker.sock:/var/run/docker.sock --entrypoint="/bin/bash" greatnate27/recipe-app-pipeline-env:v1 cat /etc/passwd'
+                    args '-u root:root -it -v tcp://0.0.0.0:4243:/var/run/docker.sock --entrypoint="/bin/bash" greatnate27/recipe-app-pipeline-env:v1 cat /etc/passwd'
                 }
             }           
             steps {
