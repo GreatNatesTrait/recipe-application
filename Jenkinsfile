@@ -153,7 +153,7 @@ pipeline {
                 //}
                 script {                   
                    // Install frontend dependencies
-                    dir("${PWD}/client") {
+                    dir('${PWD}/client') {
                         sh 'echo ${PWD}'
                         sh 'echo $PWD'
                         sh 'ls /app'
