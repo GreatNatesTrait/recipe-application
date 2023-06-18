@@ -10,7 +10,7 @@ pipeline {
         //AWS_SECRET_ACCESS_KEY = ''
         //AWS_ACCESS_KEY_ID = credentials('c49b4767-615c-47ed-8880-e33d5b620515').accessKey.toString()
         //AWS_SECRET_ACCESS_KEY = credentials('c49b4767-615c-47ed-8880-e33d5b620515').secretKey.toString()
-        AWS = credentials('c49b4767-615c-47ed-8880-e33d5b620515')
+        //AWS = credentials('c49b4767-615c-47ed-8880-e33d5b620515')
     }
     stages {    
         //        stage('Configure AWS Credentials') {
@@ -28,34 +28,34 @@ pipeline {
         //     }
         // }
         
-        stage('Other Stage') {
-            steps {
-                // You can now reference the AWS credentials using the environment variables
-                sh """
-                    # Example usage
-                    aws --version
-                    aws configure set aws_access_key_id ${env.AWS.AWS_ACCESS_KEY_ID}
-                    aws configure set aws_secret_access_key ${env.AWS.AWS_SECRET_ACCESS_KEY}
-                    aws configure set region us-east-1
-                    aws s3 cp my-file.txt s3://my-bucket/
-                """
-            }
-        }
-        stage('Confi') {
-            steps {
-                withCredentials([
-                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
-                ]) {
-                    sh """
-                        # Configure AWS credentials
-                        mkdir -p ~/.aws
-                        echo "[default]" > ~/.aws/credentials
-                        echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
-                        echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
-                    """
-                }
-            }
-        }    
+        // stage('Other Stage') {
+        //     steps {
+        //         // You can now reference the AWS credentials using the environment variables
+        //         sh """
+        //             # Example usage
+        //             aws --version
+        //             aws configure set aws_access_key_id ${env.AWS.AWS_ACCESS_KEY_ID}
+        //             aws configure set aws_secret_access_key ${env.AWS.AWS_SECRET_ACCESS_KEY}
+        //             aws configure set region us-east-1
+        //             aws s3 cp my-file.txt s3://my-bucket/
+        //         """
+        //     }
+        // }
+        // stage('Confi') {
+        //     steps {
+        //         withCredentials([
+        //             [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
+        //         ]) {
+        //             sh """
+        //                 # Configure AWS credentials
+        //                 mkdir -p ~/.aws
+        //                 echo "[default]" > ~/.aws/credentials
+        //                 echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
+        //                 echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
+        //             """
+        //         }
+        //     }
+        // }    
         stage('tesintg') {        
            steps {
                   sh 'echo ${PWD}'
@@ -197,12 +197,12 @@ pipeline {
             }
             steps {
                 //string(credentialsId: 'secret', variable: 'SECRET'),
-                // withCredentials([[
-                // $class: 'AmazonWebServicesCredentialsBinding',
-                // credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
-                // accessKeyVariable: '${env.AWS_ACCESS_KEY_ID}',
-                // secretKeyVariable: '${env.AWS_SECRET_ACCESS_KEY}'
-                // ]]) {
+                withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+                accessKeyVariable: '${env.AWS_ACCESS_KEY_ID}',
+                secretKeyVariable: '${env.AWS_SECRET_ACCESS_KEY}'
+                ]]) {
                         // # Install AWS CLI (skip if already installed)
                         // sudo apt-get install -y awscli
                         // sudo apt-get install -y zip
@@ -212,16 +212,16 @@ pipeline {
                         //zip -r archive.zip *
                         //rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                         //zip -r archive.zip app/client/dist app/server/server.js app/server/package.json 
-                    sh """
-                        aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}
-                        aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}
-                        aws configure set region us-east-1
+                        //aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}
+                        //aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}
+                        //aws configure set region us-east-1
+                    sh """#!/bin/bash                        
                         mkdir -p "${PWD}/mytmp"
                         cp -R "${PWD}/app/server" "${PWD}/mytmp"
                         zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip                       
                     """
-                //}
+                }
             }
         }
 
