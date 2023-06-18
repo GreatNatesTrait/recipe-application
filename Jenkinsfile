@@ -146,28 +146,28 @@ pipeline {
         stage('Build') {
             steps {
                 //steps {
-                    sh '''#!/bin/bash
-                            npm install "${PWD}/client" 
-                            ng build
-                    '''
+                    // sh '''#!/bin/bash
+                    //         npm install "${PWD}/client" 
+                    //         ng build
+                    // '''
                 //}
-                // script {                   
-               //     // Install frontend dependencies
-                //     //dir('client') {
-                //         sh 'echo ${PWD}'
-                //         sh 'echo $PWD'
-                //         sh 'ls /app'
-                //         sh 'ls app'
-                //         sh 'sudo -u node npm install -C "app/client"'
-                //         //sh 'sudnpm install -C "app/client"'
-                //         sh 'ng build'
-                //     //}
+                script {                   
+                   // Install frontend dependencies
+                    dir("${PWD}/client") {
+                        sh 'echo ${PWD}'
+                        sh 'echo $PWD'
+                        sh 'ls /app'
+                        sh 'ls app'
+                        sh 'npm install'
+                        //sh 'sudnpm install -C "app/client"'
+                        sh 'ng build'
+                    }
 
-                //     // Install backend dependencies
-                //     dir('server') {
-                //         sh 'npm install'
-                //     }
-                // }
+                    // Install backend dependencies
+                    dir("${PWD}/server") {
+                        sh 'npm install'
+                    }
+                }
             }
         }
 
