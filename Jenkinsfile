@@ -63,7 +63,7 @@ pipeline {
                   sh 'echo ${USER}'
                   sh 'echo $USER'
                   sh 'node --version'
-                  sh 'aws --version'
+                  //sh 'aws --version'
                   //sh 'ls $PWD'
            }                        
         }
