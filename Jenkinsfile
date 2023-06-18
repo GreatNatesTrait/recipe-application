@@ -8,8 +8,9 @@ pipeline {
         HOME = '.'
         //AWS_ACCESS_KEY_ID = ''
         //AWS_SECRET_ACCESS_KEY = ''
-        AWS_ACCESS_KEY_ID = credentials('c49b4767-615c-47ed-8880-e33d5b620515').accessKey.toString()
-        AWS_SECRET_ACCESS_KEY = credentials('c49b4767-615c-47ed-8880-e33d5b620515').secretKey.toString()
+        //AWS_ACCESS_KEY_ID = credentials('c49b4767-615c-47ed-8880-e33d5b620515').accessKey.toString()
+        //AWS_SECRET_ACCESS_KEY = credentials('c49b4767-615c-47ed-8880-e33d5b620515').secretKey.toString()
+        AWS_SECRET_ACCESS_KEY = credentials('c49b4767-615c-47ed-8880-e33d5b620515')
     }
     stages {    
         //        stage('Configure AWS Credentials') {
