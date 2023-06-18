@@ -7,7 +7,7 @@ pipeline {
     }  
     environment {
         HOME = '.'
-        SECRET = credentials("AKIAVNPP546DDU7VJZHF")
+        SECRET = credentials("c49b4767-615c-47ed-8880-e33d5b620515")
     }
     stages {        
         stage('tesintg') {        
