@@ -6,20 +6,49 @@ pipeline {
     }  
     environment {
         HOME = '.'
+        AWS_ACCESS_KEY_ID = ''
+        AWS_SECRET_ACCESS_KEY = ''
     }
     stages {    
+               stage('Configure AWS Credentials') {
+            steps {
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
+                ]) {
+                    // Credentials are now available as environment variables
+                    // Set the global environment variables to be used in other stages
+                    script {
+                        env.AWS_ACCESS_KEY_ID = sh(script: 'echo $AWS_ACCESS_KEY_ID', returnStdout: true).trim()
+                        env.AWS_SECRET_ACCESS_KEY = sh(script: 'echo $AWS_SECRET_ACCESS_KEY', returnStdout: true).trim()
+                    }
+                }
+            }
+        }
+        
+        stage('Other Stage') {
+            steps {
+                // You can now reference the AWS credentials using the environment variables
+                sh """
+                    # Example usage
+                    aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}
+                    aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}
+                    aws configure set region us-east-1
+                    aws s3 cp my-file.txt s3://my-bucket/
+                """
+            }
+        }
         stage('Configure AWS Credentials') {
             steps {
                 withCredentials([
                     [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
                 ]) {
-                    sh '''
+                    sh """
                         # Configure AWS credentials
                         mkdir -p ~/.aws
                         echo "[default]" > ~/.aws/credentials
                         echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
                         echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
-                    '''
+                    """
                 }
             }
         }    
@@ -30,6 +59,7 @@ pipeline {
                   sh 'echo ${USER}'
                   sh 'echo $USER'
                   sh 'node --version'
+                  sh 'aws --version'
                   //sh 'ls $PWD'
            }                        
         }
