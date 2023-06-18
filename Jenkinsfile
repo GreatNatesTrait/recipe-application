@@ -203,7 +203,10 @@ pipeline {
                         mkdir -p "${PWD}/mytmp"
                         cp -R "${PWD}/client/dist" "${PWD}/server/server.js" "${PWD}/server/package.json" "${PWD}/mytmp"
                         cd "${PWD}/mytmp"
-                        zip -r archive.zip *                                                        
+                        zip -r archive.zip *    
+                        aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+                        aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+                        aws configure set region us-east-1                                                    
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip 
                     '''
                 }
