@@ -147,7 +147,7 @@ pipeline {
             steps {
                 //steps {
                     sh '''#!/bin/bash
-                            npm install "${PWD}/app/client" 
+                            npm install "${PWD}/client" 
                             ng build
                     '''
                 //}
@@ -200,8 +200,8 @@ pipeline {
                                                 //zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
                         //aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip   
                     sh '''                   
-                        mkdir -p "${PWD}/mytmp" "${PWD}/app/client"
-                        cp -R "${PWD}/app/client/dist" "${PWD}/app/server/server.js" "${PWD}/app/server/package.json" "${PWD}/mytmp"
+                        mkdir -p "${PWD}/mytmp"
+                        cp -R "${PWD}/client/dist" "${PWD}/server/server.js" "${PWD}/server/package.json" "${PWD}/mytmp"
                         zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
                         aws s3 cp "${PWD}/output.zip" s3://${S3_BUCKET_NAME}/archive.zip 
                     '''
