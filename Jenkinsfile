@@ -25,7 +25,6 @@ pipeline {
         }    
         stage('tesintg') {        
            steps {
-                  sh "cat $SECRET"
                   sh 'echo ${PWD}'
                   sh 'echo $PWD'
                   sh 'echo ${USER}'
@@ -167,8 +166,8 @@ pipeline {
                 withCredentials([[
                 $class: 'AmazonWebServicesCredentialsBinding',
                 credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                accessKeyVariable: '${env.AWS_ACCESS_KEY_ID}',
+                secretKeyVariable: '${env.AWS_SECRET_ACCESS_KEY}'
                 ]]) {
                         // # Install AWS CLI (skip if already installed)
                         // sudo apt-get install -y awscli
