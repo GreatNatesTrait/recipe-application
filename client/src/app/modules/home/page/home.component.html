@@ -61,8 +61,9 @@
             [(ngModel)]="searchQuery"
             [formControl]="dataControl"
             [matAutocomplete]="auto"
+            (keyup.enter)="searchResults(searchQuery)"
           />
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+          <mat-autocomplete #auto="matAutocomplete"  (optionSelected)="onOptionSelected($event)">
             <mat-option
               *ngFor="let item of results$ | async"
               [value]="item.strMeal"

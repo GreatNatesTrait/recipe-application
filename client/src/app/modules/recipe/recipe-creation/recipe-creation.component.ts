@@ -81,8 +81,13 @@ export class RecipeCreationComponent implements OnInit {
   }
 
   async createRecipe(recipe: RecipeModel) {
+    try{
     const result = this.recipeDataService.createRecipe(recipe);
     console.log(result);
+    alert('Recipe successfully created')
+    }catch (error) {
+      console.error('Error creating recipe:', error);
+    }
   }
 
   async getExistingMeals() {
@@ -119,7 +124,7 @@ export class RecipeCreationComponent implements OnInit {
     );
     this.recipe2Add.strMeasure = this.prepareArrays(
       'Measure',
-      this.form.value.ingredients
+      this.form.value.measurements
     );
     this.recipe2Add.strMealThumb = this.form.value.image;
     this.recipe2Add.strYoutube = this.form.value.youtube;
