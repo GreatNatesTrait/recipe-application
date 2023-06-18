@@ -153,7 +153,7 @@ pipeline {
                 //}
                 script {                   
                    // Install frontend dependencies
-                    dir('${PWD}/client') {
+                    dir('client') {
                         sh 'echo ${PWD}'
                         sh 'echo $PWD'
                         sh 'ls /app'
@@ -164,7 +164,7 @@ pipeline {
                     }
 
                     // Install backend dependencies
-                    dir("${PWD}/server") {
+                    dir('server') {
                         sh 'npm install'
                     }
                 }
