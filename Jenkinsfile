@@ -150,7 +150,7 @@ pipeline {
                 server_path = 'server/server.js'
             }
             steps {
-                string(credentialsId: 'secret', variable: 'SECRET'),
+                //string(credentialsId: 'secret', variable: 'SECRET'),
                 withCredentials([[
                 $class: 'AmazonWebServicesCredentialsBinding',
                 credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
