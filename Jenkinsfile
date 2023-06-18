@@ -6,77 +6,13 @@ pipeline {
     }  
     environment {
         HOME = '.'
-        //AWS_ACCESS_KEY_ID = ''
-        //AWS_SECRET_ACCESS_KEY = ''
-        //AWS_ACCESS_KEY_ID = credentials('c49b4767-615c-47ed-8880-e33d5b620515').accessKey.toString()
-        //AWS_SECRET_ACCESS_KEY = credentials('c49b4767-615c-47ed-8880-e33d5b620515').secretKey.toString()
-        //AWS = credentials('c49b4767-615c-47ed-8880-e33d5b620515')
     }
     stages {    
-        //        stage('Configure AWS Credentials') {
-        //     steps {
-        //         withCredentials([
-        //             [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
-        //         ]) {
-        //             // Credentials are now available as environment variables
-        //             // Set the global environment variables to be used in other stages
-        //             script {
-        //                 env.AWS_ACCESS_KEY_ID = sh(script: 'echo $AWS_ACCESS_KEY_ID', returnStdout: true).trim()
-        //                 env.AWS_SECRET_ACCESS_KEY = sh(script: 'echo $AWS_SECRET_ACCESS_KEY', returnStdout: true).trim()
-        //             }
-        //         }
-        //     }
-        // }
-        
-        // stage('Other Stage') {
-        //     steps {
-        //         // You can now reference the AWS credentials using the environment variables
-        //         sh """
-        //             # Example usage
-        //             aws --version
-        //             aws configure set aws_access_key_id ${env.AWS.AWS_ACCESS_KEY_ID}
-        //             aws configure set aws_secret_access_key ${env.AWS.AWS_SECRET_ACCESS_KEY}
-        //             aws configure set region us-east-1
-        //             mkdir -p "${PWD}/mytmp2"    
-        //             zip -r archive2.zip "${PWD}/mytmp2"                                                  
-        //             aws s3 cp archive2.zip s3://recipe-app-code/archive2.zip 
-        //         """
-        //     }
-        // }
-        // stage('Confi') {
-        //     steps {
-        //         withCredentials([
-        //             [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
-        //         ]) {
-        //             sh """
-        //                 # Configure AWS credentials
-        //                 mkdir -p ~/.aws
-        //                 echo "[default]" > ~/.aws/credentials
-        //                 echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
-        //                 echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
-        //             """
-        //         }
-        //     }
-        // }    
-        stage('tesintg') {        
-           steps {
-                  sh 'echo ${PWD}'
-                  sh 'echo $PWD'
-                  sh 'echo ${USER}'
-                  sh 'echo $USER'
-                  sh 'node --version'
-                  //sh 'aws --version'
-                  //sh 'ls $PWD'
-           }                        
-        }
         stage('Checkout') {
             steps {
-                //withCredentials([gitUsernamePassword(credentialsId: 'e478701a-01ce-4a26-9b6b-d977fbeee953', gitToolName: 'git-tool')]) {
                     git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
-                //}
             }
         }
-
         stage('Update Dynamo API') {
             when {
                 expression {
@@ -147,20 +83,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                //steps {
-                    // sh '''#!/bin/bash
-                    //         npm install "${PWD}/client" 
-                    //         ng build
-                    // '''
-                //}
                 script {                   
                    // Install frontend dependencies
-                    dir('./client') {
-                        sh 'echo ${PWD}'
-                        sh 'echo $PWD'
-                        sh 'ls /app'                        
+                    dir('./client') {                      
                         sh 'npm install'
-                        //sh 'sudnpm install -C "app/client"'
                         sh 'ng build'
                     }
 
@@ -179,28 +105,12 @@ pipeline {
                 server_path = 'server/server.js'
             }
             steps {
-                //string(credentialsId: 'secret', variable: 'SECRET'),
                 withCredentials([[
                 $class: 'AmazonWebServicesCredentialsBinding',
                 credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
                 accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
-                        // # Install AWS CLI (skip if already installed)
-                        // sudo apt-get install -y awscli
-                        // sudo apt-get install -y zip
-                        //mkdir -p "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        //cp -R client/dist server/server.js server/package.json "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        //cd "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        //zip -r archive.zip *
-                        //rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
-                        //zip -r archive.zip app/client/dist app/server/server.js app/server/package.json 
-                        //aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}
-                        //aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}
-                        //aws configure set region us-east-1
-                                                //zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
-                        //aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip  
-                        //aws s3 cp "${PWD}/output.zip" s3://${S3_BUCKET_NAME}/archive.zip  
                     sh '''     
                         #!/bin/bash              
                         mkdir -p "${PWD}/mytmp"

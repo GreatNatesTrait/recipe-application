@@ -1,16 +1,38 @@
-# Use the base image for your application
 FROM node:18
 
-# Set the working directory inside the container
-WORKDIR /app
+USER root
 
-# Copy the rest of the application code to the container
+RUN mkdir /app
+WORKDIR /app
 COPY . .
 
-# Install application dependencies
-WORKDIR /app/server
-RUN npm install
+# Install curl, unzip, and git
+RUN apt-get update && apt-get install -y curl zip unzip git
 
-# Specify the command to run when the container starts
+#RUN npm install -g aws-cli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+
+# Install Angular CLI
+RUN npm install -g @angular/cli@latest 
+
+# Install Terraform
+ARG TERRAFORM_VERSION=1.4.6
+RUN curl -LO "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" && \
+    unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -d /usr/local/bin/ && \
+    rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+
+
+ENV PATH="/root/.local/bin:/usr/local/bin:${PATH}"
+ENV SUDO_FORCE_REMOVE=yes
+
+RUN useradd -ms /bin/bash jenkins
+RUN chown -R jenkins:jenkins /app
+RUN chmod -R 777 /app
+
+USER jenkins
+
 EXPOSE 3000
-CMD [ "node", "server.js" ]
+
+
