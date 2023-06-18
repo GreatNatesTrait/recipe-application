@@ -163,7 +163,7 @@ pipeline {
                     }
 
                     // Install backend dependencies
-                    dir('/server') {
+                    dir('./server') {
                         sh 'npm install'
                     }
                 }
