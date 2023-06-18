@@ -177,9 +177,10 @@ pipeline {
                         //cd "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                         //zip -r archive.zip *
                         //rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
+                        //zip -r archive.zip app/client/dist app/server/server.js app/server/package.json 
                     sh '''
-                        
-                        zip -r archive.zip app/client/dist app/server/server.js app/server/package.json                       
+                        cp -R /app/client/dist ${PWD}
+                        zip -r ${PWD}/output.zip ${PWD}/app/client/dist                                      
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
                         
                     '''
