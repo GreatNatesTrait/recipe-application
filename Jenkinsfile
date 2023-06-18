@@ -147,30 +147,12 @@ pipeline {
             steps {
                 //steps {
                     sh '''#!/bin/bash
-                            echo ${PWD}
-                            echo $PWD
-                            node --version
-                            echo "$USER"
-                            npm install -C "app/client" 
+                            npm install "${PWD}/app/client" 
+                            ng build
                     '''
                 //}
-                // script {
-                //     // // Check if Node.js is installed
-                //     // def nodeVersion = sh(returnStdout: true, script: 'node --version', returnStatus: true)
-                //     // if (nodeVersion != 0) {
-                //     //     // Node.js is not installed, install it
-                //     //     sh 'curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
-                //     //     sh 'sudo apt-get install -y nodejs'
-                //     // }
-
-                //     // // Check if Angular CLI is installed
-                //     // def ngVersion = sh(returnStdout: true, script: 'ng version', returnStatus: true)
-                //     // if (ngVersion != 0) {
-                //     //     // Angular CLI is not installed, install it
-                //     //     sh 'sudo npm install -g @angular/cli'
-                //     // }
-                    
-                //     // Install frontend dependencies
+                // script {                   
+               //     // Install frontend dependencies
                 //     //dir('client') {
                 //         sh 'echo ${PWD}'
                 //         sh 'echo $PWD'
@@ -218,8 +200,8 @@ pipeline {
                                                 //zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
                         //aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip   
                     sh '''                   
-                        mkdir -p "${PWD}/mytmp"
-                        cp -R "${PWD}/app/server" "${PWD}/mytmp"
+                        mkdir -p "${PWD}/mytmp" "${PWD}/app/client"
+                        cp -R "${PWD}/app/client/dist" "${PWD}/app/server/server.js" "${PWD}/app/server/package.json" "${PWD}/mytmp"
                         zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
                         aws s3 cp "${PWD}/output.zip" s3://${S3_BUCKET_NAME}/archive.zip 
                     '''
