@@ -178,7 +178,7 @@ pipeline {
                         //zip -r archive.zip *
                         //rm -r "/var/lib/jenkins/workspace/recipe application build/path/to/temp"
                         //zip -r archive.zip app/client/dist app/server/server.js app/server/package.json 
-                    sh '''
+                    sh """
                         aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}
                         aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}
                         aws configure set region us-east-1
@@ -186,7 +186,7 @@ pipeline {
                         cp -R "${PWD}/app/server" "${PWD}/mytmp"
                         zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
                         aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip                       
-                    '''
+                    """
                 //}
             }
         }
