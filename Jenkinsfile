@@ -2,14 +2,27 @@ pipeline {
     agent {
         docker {
             image 'greatnate27/recipe-app-pipeline-env:v1'
-            args '-u jenkins:jenkins'
         }
     }  
     environment {
         HOME = '.'
-        SECRET = credentials("c49b4767-615c-47ed-8880-e33d5b620515")
     }
-    stages {        
+    stages {    
+        stage('Configure AWS Credentials') {
+            steps {
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
+                ]) {
+                    sh '''
+                        # Configure AWS credentials
+                        mkdir -p ~/.aws
+                        echo "[default]" > ~/.aws/credentials
+                        echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
+                        echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
+                    '''
+                }
+            }
+        }    
         stage('tesintg') {        
            steps {
                   sh "cat $SECRET"
