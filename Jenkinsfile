@@ -153,18 +153,17 @@ pipeline {
                 //}
                 script {                   
                    // Install frontend dependencies
-                    dir('client') {
+                    dir('/client') {
                         sh 'echo ${PWD}'
                         sh 'echo $PWD'
-                        sh 'ls /app'
-                        sh 'ls app'
+                        sh 'ls /app'                        
                         sh 'npm install'
                         //sh 'sudnpm install -C "app/client"'
                         sh 'ng build'
                     }
 
                     // Install backend dependencies
-                    dir('server') {
+                    dir('/server') {
                         sh 'npm install'
                     }
                 }
