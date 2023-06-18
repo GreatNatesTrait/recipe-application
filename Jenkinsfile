@@ -197,12 +197,14 @@ pipeline {
                         //aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}
                         //aws configure set region us-east-1
                                                 //zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
-                        //aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip   
+                        //aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip  
+                        //aws s3 cp "${PWD}/output.zip" s3://${S3_BUCKET_NAME}/archive.zip  
                     sh '''                   
                         mkdir -p "${PWD}/mytmp"
                         cp -R "${PWD}/client/dist" "${PWD}/server/server.js" "${PWD}/server/package.json" "${PWD}/mytmp"
-                        zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
-                        aws s3 cp "${PWD}/output.zip" s3://${S3_BUCKET_NAME}/archive.zip 
+                        cd "${PWD}/mytmp"
+                        zip -r archive.zip *                                                        
+                        aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip 
                     '''
                 }
             }
