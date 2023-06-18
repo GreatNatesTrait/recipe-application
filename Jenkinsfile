@@ -7,10 +7,12 @@ pipeline {
     }  
     environment {
         HOME = '.'
+        SECRET = credentials("AKIAVNPP546DDU7VJZHF")
     }
     stages {        
         stage('tesintg') {        
            steps {
+                  sh "cat $SECRET"
                   sh 'echo ${PWD}'
                   sh 'echo $PWD'
                   sh 'echo ${USER}'
