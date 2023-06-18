@@ -221,7 +221,7 @@ pipeline {
                         mkdir -p "${PWD}/mytmp"
                         cp -R "${PWD}/app/server" "${PWD}/mytmp"
                         zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
-                        aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip 
+                        aws s3 cp "${PWD}/output.zip" s3://${S3_BUCKET_NAME}/archive.zip 
                     '''
                 }
             }
