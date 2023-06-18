@@ -163,12 +163,12 @@ pipeline {
             }
             steps {
                 //string(credentialsId: 'secret', variable: 'SECRET'),
-                withCredentials([[
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
-                accessKeyVariable: '${env.AWS_ACCESS_KEY_ID}',
-                secretKeyVariable: '${env.AWS_SECRET_ACCESS_KEY}'
-                ]]) {
+                // withCredentials([[
+                // $class: 'AmazonWebServicesCredentialsBinding',
+                // credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+                // accessKeyVariable: '${env.AWS_ACCESS_KEY_ID}',
+                // secretKeyVariable: '${env.AWS_SECRET_ACCESS_KEY}'
+                // ]]) {
                         // # Install AWS CLI (skip if already installed)
                         // sudo apt-get install -y awscli
                         // sudo apt-get install -y zip
@@ -185,10 +185,9 @@ pipeline {
                         mkdir -p "${PWD}/mytmp"
                         cp -R "${PWD}/app/server" "${PWD}/mytmp"
                         zip -r "${PWD}/output.zip" "${PWD}/mytmp"                                    
-                        aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip
-                        
+                        aws s3 cp archive.zip s3://${S3_BUCKET_NAME}/archive.zip                       
                     '''
-                }
+                //}
             }
         }
 
