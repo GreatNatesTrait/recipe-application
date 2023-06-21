@@ -34,6 +34,7 @@ COPY server/server.js .
 # Install the server dependencies
 RUN npm i
 
+
 # Expose port 3000
 EXPOSE 3000
 
