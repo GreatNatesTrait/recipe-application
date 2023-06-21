@@ -41,6 +41,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.searchForm = new FormGroup({
        searchBar: new FormControl('')
      });
+
+     console.log('testing docker in pipeline')
   }
 
   ngAfterViewInit() {    
