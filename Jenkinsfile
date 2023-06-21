@@ -14,6 +14,7 @@ pipeline {
             }
         }
         stage('Build image') {
+            agent any
             steps {
                     sh 'docker build -u 115:122 -t greatnate27/recipe-application:latest .'
             }
