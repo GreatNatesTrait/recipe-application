@@ -1,9 +1,10 @@
 pipeline {
-    agent {
-        docker {
-            image 'greatnate27/recipe-app-pipeline-env:v1'
-        }
-    }  
+    agent any
+    // agent {
+    //     docker {
+    //         image 'greatnate27/recipe-app-pipeline-env:v1'
+    //     }
+    // }  
     environment {
         HOME = '.'
     }
@@ -14,7 +15,6 @@ pipeline {
             }
         }
         stage('Build image') {
-            agent any
             steps {
                     sh 'docker build -u 115:122 -t greatnate27/recipe-application:latest .'
             }
