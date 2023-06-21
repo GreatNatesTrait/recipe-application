@@ -1,94 +1,41 @@
-# FROM node:18
+# Use the official Node.js image as the base image
+FROM node:18 as builder
 
-# RUN mkdir /app
-# WORKDIR /app
-# COPY . .
-
-
-
-# EXPOSE 3000
-
-# FROM node:18 AS ui-build
-# WORKDIR /app
-# COPY client/package.json ./my-app/
-# RUN cd my-app && npm install @angular/cli && npm install && npm run build
-
-# FROM node:10 AS server-build
-# WORKDIR /root/
-# COPY --from=ui-build /usr/src/app/my-app/dist ./my-app/dist
-# COPY package*.json ./
-# RUN npm install
-# COPY server.js .
-
-# EXPOSE 3080
-
-# CMD ["node", "server.js"]
-
-#stage 1
-# FROM node:latest as node
-# WORKDIR /app
-# COPY . .
-# RUN npm install
-# RUN npm run build --prod
-# #stage 2
-# FROM nginx:alpine
-# COPY --from=node /app/dist /usr/share/nginx/html
-
-# stage 1
-# FROM node:lts-alpine as builder
-# RUN mkdir -p /usr/src/app
-# WORKDIR /usr/src/app
-# COPY client/package.json ./
-# RUN npm install
-
-# COPY . .
-# RUN npm run build --prod
-# #RUN ng build --configuration production --output-path=/dist
-# # stage 2
-# FROM nginx:stable-alpine
-# WORKDIR /usr/share/nginx/html
-# # Remove default nginx static assets
-# RUN rm -rf ./*
-# # Copy static assets from builder stage
-# COPY --from=builder client/dist .
-# # Containers run nginx with global directives and daemon off
-# EXPOSE 80
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-
-
-#stage 1
-FROM node:latest AS builder
+# Set the working directory in the container
 WORKDIR /app
-COPY . .
-WORKDIR /app/client
-#RUN npm cache clean --force
-RUN npm install @angular/cli -g
+
+# Copy the package.json and package-lock.json files to the container
+COPY client/package*.json ./
+
+# Install the project dependencies
+RUN npm ci --only=production
+
+# Copy the Angular app source code to the container
+COPY client/ .
+
+RUN npm install -g @angular/cli@latest 
+
+# Build the Angular app
+RUN npm run build
+
+# Use a new base image for the server
+FROM node:18
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the built Angular app from the previous stage
+COPY --from=builder /app/dist ./dist
+
+# Copy the server files to the container
+COPY server/package*.json .
+COPY server/server.js .
+
+# Install the server dependencies
 RUN npm i
 
-RUN ng build
-#WORKDIR /app
-#WORKDIR /app/server
-#RUN npm i
-#stage 2
-FROM nginx:stable-alpine
+# Expose port 3000
+EXPOSE 3000
 
-# Remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy dist folder fro build stage to nginx public folder
-COPY --from=builder /app/client/dist  /usr/share/nginx/html
-#COPY --from=builder /app/server/server.js  /usr/share/nginx/html
-#COPY --from=builder /app/server/server.js  /usr/share/nginx/html
-
-# Copy nginx config file
-COPY /nginx.conf  /etc/nginx/nginx.conf
-
-EXPOSE 80
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-
-
-
-
-
+# Start the server
+CMD ["npm", "start"]

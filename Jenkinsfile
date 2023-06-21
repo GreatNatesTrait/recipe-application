@@ -13,6 +13,11 @@ pipeline {
                     git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
             }
         }
+        stage('Build image') {
+            steps {
+                    sh 'docker build -t greatnate27/recipe-application:latest .'
+            }
+        }
         stage('Update Dynamo API') {
             when {
                 expression {
