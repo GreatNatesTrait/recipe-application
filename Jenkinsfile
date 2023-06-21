@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Build image') {
             steps {
-                    sh 'docker -u jenkins build -t greatnate27/recipe-application:latest .'
+                    sh 'docker build -t greatnate27/recipe-application:latest .'
             }
         }
         stage('Update Dynamo API') {
