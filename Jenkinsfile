@@ -257,7 +257,7 @@ pipeline {
                            script {
                                 //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
-                                dir('${PWD}/infrastructure') {
+                                dir('./infrastructure') {
                                     def terraformInitOutput = sh(script: 'terraform init')
                                     def terraformPlanOutput = sh(script: 'terraform plan')
                                     def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')                                                                          
@@ -272,7 +272,7 @@ pipeline {
                         script{
                              //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
-                            dir('${PWD}/infrastructure') {
+                            dir('./infrastructure') {
                             input "Continue?"
                             sh(script: 'terraform destroy')
                             }
