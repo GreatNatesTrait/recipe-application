@@ -1,23 +1,15 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeModel } from '@app/shared/models/recipe.model';
-import { Observable, catchError, debounceTime, filter, fromEvent, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
+import { Observable, catchError, debounceTime,fromEvent, map, of, switchMap, tap, throwError } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
-    ])
-  ]
 })
 
 export class HomeComponent implements OnInit, AfterViewInit {
@@ -65,7 +57,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return throwError(error);
       })
     );
-    this.results$.subscribe(result => console.log(result));
   };
 
 
@@ -75,7 +66,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   searchResults(selection) {
     const singleRecipe = this.results.filter(obj => obj.strMeal === selection);
-    console.log(singleRecipe);
   this.router.navigate(['/recipes', selection], {relativeTo: this.activatedRoute, state: {data: {recipeData: singleRecipe}}});
   }
 

@@ -8,9 +8,11 @@
   </thead>
   <tbody>
     <tr>
-      <td>Test 1</td>
-      <td>Test 2</td>
-      <td>Test 3</td>
+      <tr *ngFor="let item of userRecipes">
+        <td>{{ item }}</td>
+      
     </tr>
   </tbody>
 </table>
+
+

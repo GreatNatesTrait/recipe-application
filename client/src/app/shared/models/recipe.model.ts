@@ -15,3 +15,9 @@ export interface RecipeModel {
     strMeasure: Array<any> | Object;
     strInstructions: string;
   }
+
+
+  export interface RecipeAPIresponse {
+    items: RecipeModel[]
+    lastEvaluatedKey: string;
+  }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom} from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { RecipeModel } from '@app/shared/models/recipe.model';
+import { RecipeModel,RecipeAPIresponse } from '@app/shared/models/recipe.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,13 @@ export class RecipeDataService {
 
   constructor(private http: HttpClient) {}
 
-  getRecipeData(lastEvaluatedKey?): Promise<RecipeModel[]> {
+  getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse> {
     let params = new HttpParams();
     if (lastEvaluatedKey) {
       params = params.set('lastEvaluatedKey', lastEvaluatedKey);
     }
     return firstValueFrom(
-      this.http.get<RecipeModel[]>(`${this.apiUrl}/recipes`, { params })
+      this.http.get<RecipeAPIresponse>(`${this.apiUrl}/recipes`, { params })
     );
   }
 

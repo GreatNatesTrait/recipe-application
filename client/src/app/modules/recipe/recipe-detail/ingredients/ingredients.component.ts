@@ -18,7 +18,7 @@ export class IngredientsComponent implements OnInit {
   IngredientMeasurementPairs: any;
 
   ngOnInit(): void {
-    this.combineIngredientsAndMeasurements(
+   this.IngredientMeasurementPairs = this.combineIngredientsAndMeasurements(
       this.Ingredients,
       this.Measurements
     );
@@ -30,7 +30,7 @@ export class IngredientsComponent implements OnInit {
     ingredientKeys.sort();
     measurementKeys.sort();
 
-    const ngredientMeasurementPairs = [];
+    const ingredientMeasurementPairs = [];
 
     ingredientKeys.forEach((ingredientKey, index) => {
       const measurementKey = measurementKeys[index];
@@ -40,12 +40,12 @@ export class IngredientsComponent implements OnInit {
       if(Ingredient == '' || Measurement == ''){
         console.log('skip');
       }else{
-      ngredientMeasurementPairs.push({
+      ingredientMeasurementPairs.push({
         Ingredient,
         Measurement
       });
     }
     });
-    this.IngredientMeasurementPairs = ngredientMeasurementPairs;
+    return ingredientMeasurementPairs;
   }
 }

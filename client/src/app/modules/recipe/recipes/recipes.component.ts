@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { RecipeModel } from '@app/shared/models/recipe.model';
 import { Auth } from 'aws-amplify';
+import { LoggerService } from '@app/shared/service/log/logger.service';
 
 @Component({
   selector: 'app-recipes',
@@ -12,11 +13,8 @@ import { Auth } from 'aws-amplify';
 
 export class RecipesComponent implements OnInit {
   user: any;
-  lastEvaluatedKey:any;
-  recipeDataApiCall: any;
-  moreRecipes: any;
+  lastEvaluatedKey:string;
   recipeData: RecipeModel[] = [];
-  additionalRecipeData: RecipeModel[] = [];
   isLoading : boolean;
   isMoreLoading : boolean;
   userFavorites = [];
@@ -26,14 +24,13 @@ export class RecipesComponent implements OnInit {
     private dataService: RecipeDataService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private loggerService: LoggerService
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
-    this.recipeDataApiCall = await this.dataService.getRecipeData();
-    this.recipeData = this.recipeDataApiCall.items;
-    this.lastEvaluatedKey = this.recipeDataApiCall.lastEvaluatedKey;
+    await this.dataService.getRecipeData().then((data)=>{this.recipeData=data.items,this.lastEvaluatedKey=data.lastEvaluatedKey});
     this.isLoading = false;
     await this.getUser();
 
@@ -49,13 +46,12 @@ export class RecipesComponent implements OnInit {
   async getUserFavorites() {
     await this.getUser();
     this.userFavorites = JSON.parse(this.user.attributes['custom:favorites']);
+    console.log(this.userFavorites)
   }
 
   async getMoreRecipes(){
     this.isMoreLoading = true;
-    this.moreRecipes = await this.dataService.getRecipeData(this.lastEvaluatedKey);
-    this.additionalRecipeData = this.moreRecipes.items;
-    this.recipeData = this.recipeData.concat(this.additionalRecipeData);
+    await this.dataService.getRecipeData(this.lastEvaluatedKey).then((data)=>{this.recipeData = this.recipeData.concat(data.items),this.lastEvaluatedKey=data.lastEvaluatedKey});
     this.isMoreLoading = false;
   }
 
@@ -81,32 +77,28 @@ export class RecipesComponent implements OnInit {
     try {
       let updateUserAttributes = {};
       let isAlreadyFav = this.userFavorites.filter((el) => el === id).length;
-
       if (isAlreadyFav) {
-        let removeFav = this.userFavorites.filter((el) => el !== id);
-        updateUserAttributes = {
-          'custom:favorites': JSON.stringify(removeFav)
-        };
-        await Auth.updateUserAttributes(this.user, updateUserAttributes);
-        await this.getUserFavorites();
-
-        this.changeDetectorRef.detectChanges();
-        return;
+      this.removeFav(id);
+      this.changeDetectorRef.detectChanges();
+      return;
       }
-
-      if (this.userFavorites) {
         this.userFavorites.push(id);
         updateUserAttributes = {
           'custom:favorites': JSON.stringify(this.userFavorites)
         };
-      }
       await Auth.updateUserAttributes(this.user, updateUserAttributes);
-
       await this.getUserFavorites();
-      console.log('Custom attributes updated successfully', this.userFavorites);
-      console.trace();
     } catch (error) {
-      console.error('Error updating custom attributes:', error);
+      this.loggerService.warn(error)
     }
+  }
+
+  async removeFav(id): Promise<void>{
+    let removeFav = this.userFavorites.filter((el) => el !== id);
+    let updateUserAttributes = {
+      'custom:favorites': JSON.stringify(removeFav)
+    };
+    await Auth.updateUserAttributes(this.user, updateUserAttributes);
+    await this.getUserFavorites();
   }
 }

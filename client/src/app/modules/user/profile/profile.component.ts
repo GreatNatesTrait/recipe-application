@@ -16,12 +16,12 @@ import { AuthService } from '@app/shared/service/auth/auth.service';
 export class ProfileComponent {
   loading: boolean;
   email: string;
-  username: any;
   user: any;
   form: FormGroup;
   isLoading: boolean;
   isAuthenticated: boolean;
   userFavs: any;
+  userRecipes:any;
 
   constructor(
     private authService: AuthService,
@@ -35,15 +35,15 @@ export class ProfileComponent {
       currentaddress: new FormControl(''),
       previousaddress: new FormControl('')
     });
-    this.username = '';
   }
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
     this.isAuthenticated = await this.authService.checkAuthStatus();
     this.user = await this.authService.getUser();
-    this.username = this.user.username;
+    console.log(this.user)
     this.userFavs = JSON.parse(this.user.attributes['custom:favorites']);
+    this.userRecipes = JSON.parse(this.user.attributes['custom:UserRecipes']);
     this.isLoading = false;
     this.changeDetectorRef.detectChanges();
   }

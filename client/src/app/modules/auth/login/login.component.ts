@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/shared/service/auth/auth.service';
 import { LoggerService } from '@app/shared/service/log/logger.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,6 +17,7 @@ export class LoginComponent {
   activeTab: string = 'signin';
   isSignedUp: boolean;
   authEventMessage;
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -31,7 +33,7 @@ export class LoginComponent {
       signupUsername: ['', Validators.required],
       signupPassword: ['', Validators.required],
       signupEmail: ['', [Validators.required, Validators.email]],
-      //confirmSignUpCode: ['', Validators.required]
+      confirmSignUpCode: ['']
     });
     this.forgotPasswordForm = this.formBuilder.group({
       forgotPasswordUsername: ['', Validators.required]
@@ -55,7 +57,7 @@ export class LoginComponent {
         this.signUpForm.value.signupEmail
       );
       this.isSignedUp = true;
-      this.authEventMessage = 'Sign up successful';
+      this.authEventMessage = `Sign up successful: ${result}`;
     } catch (error) {
       this.handleAuthError(error);
     }
@@ -67,7 +69,7 @@ export class LoginComponent {
         this.signUpForm.value.signupUsername,
         this.signUpForm.value.confirmSignUpCode
       );
-      console.log('Confirm sign up successful', result);
+       this.authEventMessage = `Sign up confirmed: ${result}`;
       await this.authService.login(
         this.signUpForm.value.signupUsername,
         this.signUpForm.value.signupPassword
@@ -94,7 +96,7 @@ export class LoginComponent {
       const result = await this.authService.forgotPassword(
         this.forgotPasswordForm.value.forgotPasswordUsername
       );
-      this.authEventMessage = 'Password recovery initiated';
+      this.authEventMessage = `Password recovery initiated: ${result}`;
     } catch (error) {
       this.handleAuthError(error);
     }
@@ -107,7 +109,7 @@ export class LoginComponent {
         this.resetPasswordForm.value.resetPasswordCode,
         this.resetPasswordForm.value.newPassword
       );
-      this.authEventMessage = 'Password reset successful';
+      this.authEventMessage = `Password reset successful: ${result}`;
     } catch (error) {
       this.handleAuthError(error);
     }

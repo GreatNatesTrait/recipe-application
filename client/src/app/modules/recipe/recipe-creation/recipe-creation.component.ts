@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { RecipeModel } from '@app/shared/models/recipe.model';
+import { Auth } from 'aws-amplify';
+import { LoggerService } from '@app/shared/service/log/logger.service';
 
 @Component({
   selector: 'app-recipe-creation',
@@ -22,10 +24,13 @@ export class RecipeCreationComponent implements OnInit {
   existingPKs: [] | number[];
   recipe2Add = <RecipeModel>{};
   pk;
+  userRecipes = [];
+  user:any;
 
   constructor(
     private fb: FormBuilder,
-    private recipeDataService: RecipeDataService
+    private recipeDataService: RecipeDataService,
+    private loggerService: LoggerService
   ) {}
 
   async ngOnInit() {
@@ -44,7 +49,15 @@ export class RecipeCreationComponent implements OnInit {
     this.instructions = this.form.get('instructions') as FormArray;
 
     await this.getExistingMeals();
+
+    await this.getUser();
+
+    if(this.user){
+    await this.getUserRecipes();
+    }
   }
+
+ 
 
   addIngredient() {
     this.ingredients.push(this.fb.control(''));
@@ -81,7 +94,7 @@ export class RecipeCreationComponent implements OnInit {
 
   async createRecipe(recipe: RecipeModel) {
     try{
-    const result = this.recipeDataService.createRecipe(recipe);
+    const result = this.recipeDataService.createRecipe(recipe).then(()=>this.setUserRecipe(recipe.idMeal));;
     console.log(result);
     alert('Recipe successfully created')
     }catch (error) {
@@ -150,5 +163,30 @@ export class RecipeCreationComponent implements OnInit {
         break;
     }
     return result;
+  }
+
+  async setUserRecipe(id) {
+    try {
+      let updateUserAttributes = {};
+
+
+        this.userRecipes.push(id);
+        updateUserAttributes = {
+          'custom:UserRecipes': JSON.stringify(this.userRecipes)
+        };
+      await Auth.updateUserAttributes(this.user, updateUserAttributes);
+      //await this.getUserFavorites();
+    } catch (error) {
+      this.loggerService.warn(error)
+    }
+  }
+
+  async getUser(){
+   await Auth.currentAuthenticatedUser().then(user=>this.user = user);
+  }
+
+  getUserRecipes() {
+    this.userRecipes = JSON.parse(this.user.attributes['custom:UserRecipes']);
+    console.log(this.userRecipes)
   }
 }
