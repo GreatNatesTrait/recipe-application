@@ -260,25 +260,27 @@ pipeline {
                                 dir('./infrastructure') {
                                     def terraformInitOutput = sh(script: 'terraform init')
                                     def terraformPlanOutput = sh(script: 'terraform plan')
-                                    def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')                                                                          
+                                    def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')  
+                                     input "Continue?"
+                                    sh(script: 'terraform destroy')                                                                        
                                 }
                             }
 
                         }                                 
                     }
                 }
-                stage('Destroy Terraform') {
-                    steps {
-                        script{
-                             //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
+                // stage('Destroy Terraform') {
+                //     steps {
+                //         script{
+                //              //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
-                            dir('./infrastructure') {
-                            input "Continue?"
-                            sh(script: 'terraform destroy')
-                            }
-                        }
-                    }
-                }
+                //             dir('./infrastructure') {
+                //             input "Continue?"
+                //             sh(script: 'terraform destroy')
+                //             }
+                //         }
+                //     }
+                // }
             }
         }   
     }    
