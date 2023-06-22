@@ -226,14 +226,14 @@ pipeline {
             )
         }
         }
-        stage('Build image') {
-            steps {
-                    sh 'docker build -t greatnate27/recipe-application:latest .'
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    sh 'docker push greatnate27/recipe-application:latest'
-                    sh 'docker logout'
-            }
-        }
+        // stage('Build image') {
+        //     steps {
+        //             sh 'docker build -t greatnate27/recipe-application:latest .'
+        //             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //             sh 'docker push greatnate27/recipe-application:latest'
+        //             sh 'docker logout'
+        //     }
+        // }
         stage('Fargate Terraform') {  
              agent {
                         docker {
@@ -255,7 +255,7 @@ pipeline {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {
                            script {
-                                def terraformDirectories = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
+                                def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
                                 dir(terraformDirectory) {
                                     def terraformInitOutput = sh(script: 'terraform init')
@@ -270,7 +270,7 @@ pipeline {
                 stage('Destroy Terraform') {
                     steps {
                         script{
-                             def terraformDirectories = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
+                             def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
                             dir(terraformDirectory) {
                             input "Continue?"
