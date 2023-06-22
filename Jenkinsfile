@@ -269,18 +269,6 @@ pipeline {
                         }                                 
                     }
                 }
-                // stage('Destroy Terraform') {
-                //     steps {
-                //         script{
-                //              //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
-
-                //             dir('./infrastructure') {
-                //             input "Continue?"
-                //             sh(script: 'terraform destroy')
-                //             }
-                //         }
-                //     }
-                // }
             }
         }   
     }    
