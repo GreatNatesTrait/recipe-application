@@ -25,12 +25,12 @@ resource "aws_ecs_task_definition" "app_task" {
   [
     {
       "name": "app-first-task",
-      "image": "greatnate27/recipe-application:latest",
+      "image": "greatnate27/sample-app:v1",
       "essential": true,
       "portMappings": [
         {
-          "containerPort": 3000,
-          "hostPort": 3000
+          "containerPort": 5000,
+          "hostPort": 5000
         }
       ],
       "memory": 512,
