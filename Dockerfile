@@ -11,7 +11,7 @@ COPY client/package*.json ./
 #RUN npm ci --only=production
 RUN npm i
 # Copy the Angular app source code to the container
-COPY client/ ./
+COPY client/ .
 
 RUN npm install -g @angular/cli@latest 
 
