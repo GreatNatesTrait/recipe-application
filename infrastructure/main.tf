@@ -4,9 +4,12 @@ terraform {
     aws = {
       source = "hashicorp/aws"
       version = "4.45.0"
-      region = "us-east-1"
     }
   }
+}
+
+provider "aws" {
+  region = "us-east-1"  # Replace with your desired AWS region
 }
 
 # main.tf
