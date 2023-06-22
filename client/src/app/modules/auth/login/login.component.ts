@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/shared/service/auth/auth.service';
-import { LoggerApiService } from '@app/shared/service/log/logger-api.service';
 import { LoggerService } from '@app/shared/service/log/logger.service';
-
 
 @Component({
   selector: 'app-login',
@@ -18,11 +16,9 @@ export class LoginComponent {
   activeTab: string = 'signin';
   isSignedUp: boolean;
   authEventMessage;
-t;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private loggerService: LoggerApiService,
     private logger: LoggerService
 
   ) {
@@ -34,8 +30,7 @@ t;
     this.signUpForm = this.formBuilder.group({
       signupUsername: ['', Validators.required],
       signupPassword: ['', Validators.required],
-      signupEmail: ['', [Validators.required, Validators.email]]
-      //,
+      signupEmail: ['', [Validators.required, Validators.email]],
       //confirmSignUpCode: ['', Validators.required]
     });
     this.forgotPasswordForm = this.formBuilder.group({
@@ -46,8 +41,6 @@ t;
       resetPasswordCode: ['', Validators.required],
       newPassword: ['', Validators.required]
     });
-
-
   }
 
   setActiveTab(tab: string) {
@@ -62,12 +55,9 @@ t;
         this.signUpForm.value.signupEmail
       );
       this.isSignedUp = true;
-      console.log('Sign up successful', result);
       this.authEventMessage = 'Sign up successful';
     } catch (error) {
-      console.log('Error signing up', error);
-      this.authEventMessage = error;
-      this.logger.error(error);
+      this.handleAuthError(error);
     }
   }
 
@@ -83,13 +73,11 @@ t;
         this.signUpForm.value.signupPassword
       );
     } catch (error) {
-      console.log('Error confirming sign up', error);
-      this.authEventMessage = error;
+      this.handleAuthError(error);
     }
   }
 
   async signIn() {
-
     try {
       const result = await this.authService.login(
         this.signInForm.value.signinUsername,
@@ -97,9 +85,7 @@ t;
       );
       this.authEventMessage = result;
     } catch (error) {
-      console.log('Error signing in', error);
-      this.authEventMessage = error;
-      this.logger.error(error);
+        this.handleAuthError(error);
     }
   }
 
@@ -108,11 +94,9 @@ t;
       const result = await this.authService.forgotPassword(
         this.forgotPasswordForm.value.forgotPasswordUsername
       );
-      console.log('Password recovery initiated', result);
       this.authEventMessage = 'Password recovery initiated';
     } catch (error) {
-      console.log('Error initiating password recovery', error);
-      this.authEventMessage = error;
+      this.handleAuthError(error);
     }
   }
 
@@ -123,11 +107,9 @@ t;
         this.resetPasswordForm.value.resetPasswordCode,
         this.resetPasswordForm.value.newPassword
       );
-      console.log('Password reset successful', result);
       this.authEventMessage = 'Password reset successful';
     } catch (error) {
-      console.log('Error resetting password', error);
-      this.authEventMessage = error;
+      this.handleAuthError(error);
     }
   }
 
@@ -145,6 +127,11 @@ t;
 
   resetPasswordHasErrors(): boolean {
     return this.resetPasswordForm.invalid;
+  }
+
+  handleAuthError(error): void{
+    this.authEventMessage = error;
+    this.logger.error(error);
   }
   
 }

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RecipeModel
- } from '@app/shared/models/recipe.model';
+import { RecipeModel} from '@app/shared/models/recipe.model';
 
 @Component({
   selector: 'app-search-results',

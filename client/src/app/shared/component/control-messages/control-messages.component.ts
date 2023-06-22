@@ -13,7 +13,6 @@ export class ControlMessagesComponent {
 
 
   get errorMessage(): string {
-  
     for (const propertyName in this.control.errors) {
       if (
         this.control.errors.hasOwnProperty(propertyName) && this.control.touched
@@ -26,7 +25,6 @@ export class ControlMessagesComponent {
         return errorMessage;
       }
     }
-  
     return undefined;
   }
   

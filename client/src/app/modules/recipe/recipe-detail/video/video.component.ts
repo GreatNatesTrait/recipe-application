@@ -12,6 +12,7 @@ export class VideoComponent {
   @Input() videoUrl: string;
   safeVideoUrl: SafeResourceUrl;
   loading: boolean;
+  
   constructor(private safepipe:SafePipe) {}
 
   ngOnInit(): void {
@@ -22,15 +23,12 @@ export class VideoComponent {
    }
 
   extractYouTubeVideoId(url:string) {
-    // Regular expression pattern to match the video ID
     var pattern = /(?:\?v=|\/embed\/|\/\d{2}\/|\/\d{1}\/|\/v\/|https?:\/\/(?:www\.)?youtu\.be\/|https?:\/\/(?:www\.)?youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?&v=|embed\/|watch\?v%3D|embed%25%3D))([\w-]{11})/;
   
-    // Extract the video ID using the pattern and return it
     var match = url.match(pattern);
     if (match && match[1]) {
       return match[1];
     } else {
-      // Return null if no match is found
       return null;
     }
   }

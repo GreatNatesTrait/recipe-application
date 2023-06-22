@@ -4,7 +4,6 @@ import { RecipeDataService } from '@app/shared/service/data/recipe-data.service'
 import { RecipeModel } from '@app/shared/models/recipe.model';
 import { Auth } from 'aws-amplify';
 
-
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
@@ -22,6 +21,7 @@ export class RecipesComponent implements OnInit {
   isMoreLoading : boolean;
   userFavorites = [];
   loadingMessage = 'Loading';
+
   constructor(
     private dataService: RecipeDataService,
     private router: Router,

@@ -11,7 +11,6 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeModule } from './modules/home/home.module';
 import { HttpClientModule} from '@angular/common/http';
-import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 
 
 @NgModule({
@@ -30,11 +29,6 @@ import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
     FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    LoggerModule.forRoot({
-      //serverLoggingUrl: '/api/logs',
-      level: NgxLoggerLevel.DEBUG,
-      serverLogLevel: NgxLoggerLevel.ERROR
-    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

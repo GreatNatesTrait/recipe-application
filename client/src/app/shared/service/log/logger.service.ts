@@ -1,14 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LogLevel } from '@app/shared/models/log-level.model';
-import { LoggerApiService } from '@app/shared/service/log/logger-api.service';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoggerService {
+  private apiUrl = environment.loggerAPI;
   logLevel: LogLevel = new LogLevel();
 
-  constructor( private logAPIService: LoggerApiService,) {}
+  constructor(private http: HttpClient) {}
 
   info(msg: string): void {
     this.logWith(this.logLevel.Info, msg);
@@ -24,7 +26,7 @@ export class LoggerService {
 
   private logWith(level: any, msg: string): any {
 
-    let log = {level:level, message: msg};
+    let log = {time: this.timestamp(), level:level, message: msg};
 
     if (level <= this.logLevel.Error) {
       switch (level) {
@@ -38,36 +40,41 @@ export class LoggerService {
           console.error('%c' + msg, 'color: #DC143C');
         default:
           console.debug(msg);
-          this.storeLogInLocalStorage(log)
+          this.uploadLogsToS3(JSON.stringify(log))
       }
     }
   }
 
-  storeLogInLocalStorage(log){
-    //create log timestamp
+  timestamp(){
     const now = new Date();
     const milliseconds = now.getMilliseconds();
     const timestamp = now.toISOString().replace('T', ' ').replace('Z', '');
     const logTimestamp = `${timestamp}.${milliseconds}`;
 
-    log.timestamp = logTimestamp;
+    return logTimestamp;
 
-    // Check if adding the new log will exceed the local storage threshold
-    const MAX_LOCAL_STORAGE_SIZE = 3 * 1024;
-    const currentLocalStorageSize = JSON.stringify(localStorage).length;
-    const newLogSize = JSON.stringify(log).length;
+  }
 
-    if (currentLocalStorageSize + newLogSize > MAX_LOCAL_STORAGE_SIZE) {
-      // Local storage will exceed the threshold, upload logs to S3
-      console.log('threshold reached');
-      this.logAPIService.uploadLogsToS3();
-      localStorage.removeItem('logs');
+  uploadLogsToS3(logs) {
+    if (logs) {
+      const options = {
+        method: 'PUT',
+        url: `${this.apiUrl}/logs`,
+        body: JSON.parse(logs)
+      };
+
+      this.http
+        .request(options.method, options.url, {
+          body: options.body
+        })
+        .subscribe(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
     }
-
-    // Add the new log to local storage
-    const logs = localStorage.getItem('logs');
-    const updatedLogs = logs ? JSON.parse(logs) : [];
-    updatedLogs.push(log);
-    localStorage.setItem('logs', JSON.stringify(updatedLogs));
   }
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {Amplify,  Auth } from 'aws-amplify';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
-import { IUser } from '@app/shared/models/iuser.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +32,6 @@ export class AuthService {
     }
   }
 
-
   async confirmSignUp(username: string, code: string): Promise<any> {
     try {
       const result = await Auth.confirmSignUp(username, code);
@@ -51,7 +49,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   async resetPassword(username: string, code: string, newPassword: string): Promise<any> {
     try {
@@ -92,12 +89,5 @@ export class AuthService {
 
   public getUser(): Promise<any> {
     return Auth.currentUserInfo();
-  }
-
-  public updateUser(user: IUser): Promise<any> {
-    return Auth.currentUserPoolUser()
-    .then((cognitoUser: any) => {
-      return Auth.updateUserAttributes(cognitoUser, user);
-    });
   }
 }

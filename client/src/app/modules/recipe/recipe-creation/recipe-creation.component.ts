@@ -3,8 +3,7 @@ import {
   FormBuilder,
   FormGroup,
   FormArray,
-  Validators,
-  FormControl
+  Validators
 } from '@angular/forms';
 import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { RecipeModel } from '@app/shared/models/recipe.model';

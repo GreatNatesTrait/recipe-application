@@ -3,7 +3,7 @@ import {
   Component,
   ChangeDetectorRef
 } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup,FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { AuthService } from '@app/shared/service/auth/auth.service';
 

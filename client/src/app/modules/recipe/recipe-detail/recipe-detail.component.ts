@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeModel } from '@app/shared/models/recipe.model';
 
-
 @Component({
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
@@ -18,19 +17,15 @@ export class RecipeDetailComponent implements OnInit{
   measurements: Object;
   instructions: Object;
   
-
   constructor(private route: ActivatedRoute) { }
   
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('name');
     this.activeRecipe = history.state.data.recipeData[0];
-    console.log(this.activeRecipe);
+
     this.instructions = (this.activeRecipe.strInstructions.split('[BREAK]')).filter(el=>el !== '');
     this.ingredients = this.activeRecipe.strIngredient;
     this.measurements = this.activeRecipe.strMeasure;
-    //console.log(this.activeRecipe.strInstructions)
-    
-    console.log(this.instructions);
     this.videoUrl = this.activeRecipe.strYoutube;
   }
 
