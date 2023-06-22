@@ -258,7 +258,7 @@ pipeline {
                                 //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
                                 dir('./infrastructure') {
-                                    def terraformInitOutput = sh(script: 'terraform init')
+                                    def terraformInitOutput = sh(script: 'terraform init -backend-config="region=us-east-1"')
                                     def terraformPlanOutput = sh(script: 'terraform plan')
                                     def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')                                                                          
                                 }
