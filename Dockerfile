@@ -11,7 +11,7 @@ COPY client/package*.json ./
 #RUN npm ci --only=production
 RUN npm i
 # Copy the Angular app source code to the container
-COPY client/ .
+COPY client/ ./
 
 RUN npm install -g @angular/cli@latest 
 
@@ -31,12 +31,16 @@ COPY --from=builder /app/dist ./dist
 COPY server/package*.json .
 COPY server/server.js .
 
-# Install the server dependencies
+# Install dependencies
 RUN npm i
-
+RUN npm ci --production
 
 # Expose port 3000
 EXPOSE 3000
 
-# Start the server
-CMD ["npm", "start"]
+# Define the entrypoint script
+RUN echo "#!/bin/bash\nnode server.js" > /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Set the entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
