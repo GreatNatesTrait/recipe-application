@@ -262,7 +262,7 @@ pipeline {
                                     def terraformPlanOutput = sh(script: 'terraform plan')
                                     def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')  
                                      input "Continue?"
-                                    sh(script: 'terraform destroy')                                                                        
+                                    sh(script: 'terraform destroy -auto-approve')                                                                        
                                 }
                             }
 
