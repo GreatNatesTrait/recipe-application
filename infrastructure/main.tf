@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "app_task" {
   container_definitions    = <<DEFINITION
   [
     {
-      "name": "recipe-app",
+      "name": "recipe-app-task",
       "image": "greatnate27/recipe-application:latest",
       "essential": true,
       "portMappings": [
