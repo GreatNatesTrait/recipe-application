@@ -255,9 +255,9 @@ pipeline {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {
                            script {
-                                def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
+                                //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
-                                dir(terraformDirectory) {
+                                dir('${PWD}/infrastructure') {
                                     def terraformInitOutput = sh(script: 'terraform init')
                                     def terraformPlanOutput = sh(script: 'terraform plan')
                                     def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')                                                                          
@@ -270,9 +270,9 @@ pipeline {
                 stage('Destroy Terraform') {
                     steps {
                         script{
-                             def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
+                             //def terraformDirectory = "/var/lib/jenkins/workspace/recipe application build/infrastructure"
 
-                            dir(terraformDirectory) {
+                            dir('${PWD}/infrastructure') {
                             input "Continue?"
                             sh(script: 'terraform destroy')
                             }
