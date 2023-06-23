@@ -96,6 +96,5 @@ export class AuthService {
 
   async updateUser(user,userAttributes): Promise<any> {
     return await Auth.updateUserAttributes(user, userAttributes);
-  }
-  
+  }  
 }

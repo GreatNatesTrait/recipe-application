@@ -54,6 +54,7 @@ export class RecipeCreationComponent implements OnInit {
     await this.getExistingMeals();
 
     await this.authService.getUser().then(user=>this.user = user);
+    console.log(this.user)
 
     if(this.user){
     this.userRecipes = await this.userService.getUserRecipes(this.user)

@@ -111,10 +111,9 @@ export const lambda_handler = async (event, context) => {
         id = event.queryStringParameters.id;
         recipeParams = {
           TableName: tableName,
-          FilterExpression: "idMeal = :idMeal",
-          ExpressionAttributeValues: { ":idMeal": id },
+          Key: {idMeal: id}
         };
-        body = await dynamo.send(new DeleteCommandCommand(recipeParams));
+        body = await dynamo.send(new DeleteCommand(recipeParams));
         body = body.Items;
         break;
 

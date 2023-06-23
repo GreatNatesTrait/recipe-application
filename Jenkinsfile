@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         HOME = '.'
-        DOCKERHUB_CREDENTIALS=credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
+       // DOCKERHUB_CREDENTIALS=credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
     stages {
         stage('Checkout') {
@@ -11,7 +11,7 @@ pipeline {
             }
         }
 
-        stage("Test") {
+        stage("Run Unit Tests") {
             steps {
                 parallel (
                     'Front end unit tests': {
@@ -73,7 +73,7 @@ pipeline {
             }
         }
 
-        stage('Terraform') {
+        stage('Run Fargate Terraform') {
             agent {
                 docker {
                     image 'greatnate27/recipe-app-pipeline-env:v1'

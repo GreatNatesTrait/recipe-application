@@ -67,23 +67,23 @@ export class ProfileComponent {
     this.isLoading = false;
     this.changeDetectorRef.detectChanges();
   }
-  user2 = {
-    username: 'John Doe',
-    attributes: {
-      email: 'johndoe@example.com'
-    },
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-  };
-  isEditable = false;
+  // user2 = {
+  //   username: 'John Doe',
+  //   attributes: {
+  //     email: 'johndoe@example.com'
+  //   },
+  //   bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+  // };
+  // isEditable = false;
 
-  toggleEdit(): void {
-    this.isEditable = !this.isEditable;
-  }
+  // toggleEdit(): void {
+  //   this.isEditable = !this.isEditable;
+  // }
 
-  saveChanges(): void {
-    // Perform save logic here
-    this.isEditable = false;
-  }
+  // saveChanges(): void {
+  //   // Perform save logic here
+  //   this.isEditable = false;
+  // }
 
   getFavData() {}
 }

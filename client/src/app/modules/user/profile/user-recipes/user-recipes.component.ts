@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 
+
+import { UserService } from '@app/shared/service/user/user.service';
 @Component({
   selector: 'app-user-recipes',
   templateUrl: './user-recipes.component.html',
@@ -9,12 +10,14 @@ import { RecipeDataService } from '@app/shared/service/data/recipe-data.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserRecipesComponent {
+  @Input() user;
   @Input() userRecipes;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private dataService: RecipeDataService
+    private userService: UserService,
+
   ) {}
 
   navigateToRecipeDetails(meal) {
@@ -27,7 +30,11 @@ export class UserRecipesComponent {
     });
   }
 
-  async deleteRecipe(id){
-    await this.dataService.deleteRecipe(id);
+  async deleteRecipe(id?){
+    console.log(this.user)
+    await this.userService.deleteRecipe(id);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/user/profile']);
+    });
   }
 }

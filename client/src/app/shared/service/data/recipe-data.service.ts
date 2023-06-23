@@ -33,14 +33,14 @@ export class RecipeDataService {
     return firstValueFrom(this.http.get<RecipeModel[]>(url));
   }
 
-  deleteRecipe(id): Promise<RecipeModel[]> {
+  deleteRecipe(id): Promise<any> {
     const url = `${this.apiUrl}/recipe?id=${id}`;
     console.log(url);
-    return firstValueFrom(this.http.delete<RecipeModel[]>(url));
+    return firstValueFrom(this.http.delete<any>(url));
   }
 
   createRecipe(body): Promise<any> {
-    const url = `${this.apiUrl}/recipe`;
+    const url = `${this.apiUrl}/create-recipe`;
     return firstValueFrom(this.http.put<RecipeModel>(url, body));
   }
 
