@@ -22,8 +22,8 @@ export class UserService implements OnInit {
     return await JSON.parse(user.attributes['custom:favorites']);
   }
 
-  getUserRecipes(user):[]{
-    return JSON.parse(user.attributes['custom:UserRecipes']);
+  async getUserRecipes(user):Promise<[]>{
+    return await JSON.parse(user.attributes['custom:UserRecipes']);
   }
 
   addUserFav(){

@@ -11,6 +11,8 @@ import {
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = "RecipeTable";
+let id = '';
+let recipeParams = {};
 
 export const lambda_handler = async (event, context) => {
   let body;
@@ -18,7 +20,7 @@ export const lambda_handler = async (event, context) => {
   const headers = {
     "Content-Type": "application/json",
   };
-console.log(event);
+  console.log(event);
   try {
     switch (event.routeKey) {
       case "GET /recipes":
@@ -40,16 +42,6 @@ console.log(event);
         };
         break;
 
-      case "GET /recipe":
-        let id = event.queryStringParameters.id;
-        let recipeParams = {
-          TableName: tableName,
-          FilterExpression: 'idMeal = :idMeal',
-          ExpressionAttributeValues: {':idMeal': id}
-        };
-        body = await dynamo.send(new ScanCommand(recipeParams));
-        body = body.Items;
-        break;
       case "GET /recipes/search":
         let keyword = event.queryStringParameters.keyword;
         let searchParams = {
@@ -65,6 +57,7 @@ console.log(event);
         body = await dynamo.send(new ScanCommand(searchParams));
         body = body.Items;
         break;
+
       case "GET /recipesByCategory":
         let category = event.queryStringParameters.keyword;
         let searchByCategoryParams = {
@@ -80,7 +73,8 @@ console.log(event);
         body = await dynamo.send(new ScanCommand(searchByCategoryParams));
         body = body.Items;
         break;
-      case "PUT /recipe":
+
+      case "PUT /create-recipe":
         let requestJSON = JSON.parse(event.body);
         console.log(requestJSON);
         await dynamo.send(
@@ -91,6 +85,7 @@ console.log(event);
         );
         body = `Put item ${requestJSON.id}`;
         break;
+
       case "GET /existing-primary-keys":
         let Params = {
           TableName: tableName,
@@ -100,6 +95,39 @@ console.log(event);
         body = await dynamo.send(new ScanCommand(Params));
         body = body.Items;
         break;
+
+        case "GET /recipe":
+        id = event.queryStringParameters.id;
+        recipeParams = {
+          TableName: tableName,
+          FilterExpression: "idMeal = :idMeal",
+          ExpressionAttributeValues: { ":idMeal": id },
+        };
+        body = await dynamo.send(new ScanCommand(recipeParams));
+        body = body.Items;
+        break;
+
+        case "DELETE /recipe":
+        id = event.queryStringParameters.id;
+        recipeParams = {
+          TableName: tableName,
+          FilterExpression: "idMeal = :idMeal",
+          ExpressionAttributeValues: { ":idMeal": id },
+        };
+        body = await dynamo.send(new DeleteCommandCommand(recipeParams));
+        body = body.Items;
+        break;
+
+        // case "PUT /update-recipe":
+        // id = event.queryStringParameters.id;
+        // recipeParams = {
+        //   TableName: tableName,
+        //   FilterExpression: "idMeal = :idMeal",
+        //   ExpressionAttributeValues: { ":idMeal": id },
+        // };
+        // body = await dynamo.send(new ScanCommand(recipeParams));
+        // body = body.Items;
+        // break;
       default:
         console.log(event);
         throw new Error(`Unsupported route: "${event.routeKey}"`);

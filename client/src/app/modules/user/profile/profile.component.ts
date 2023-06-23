@@ -3,7 +3,7 @@ import {
   Component,
   ChangeDetectorRef
 } from '@angular/core';
-import { FormGroup,FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { AuthService } from '@app/shared/service/auth/auth.service';
 import { UserService } from '@app/shared/service/user/user.service';
@@ -22,9 +22,10 @@ export class ProfileComponent {
   form: FormGroup;
   isLoading: boolean;
   isAuthenticated: boolean;
-  userFavs=[];
-  userFavData=[];
-  userRecipes:any;
+  userFavs = [];
+  userFavData = [];
+  userRecipeData = [];
+  userRecipes = [];
 
   constructor(
     private authService: AuthService,
@@ -45,14 +46,24 @@ export class ProfileComponent {
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
     this.user = await this.authService.getUser();
-    this.userFavs =await this.userService.getUserFavs(this.user);
 
-    await Promise.all(this.userFavs.map(async (ele) => {
-      const data = await this.dataService.getRecipeByID(ele);
-      this.userFavData.push(data[0]);
-    }));
-    
-    this.userRecipes = this.userService.getUserRecipes(this.user);
+    this.userFavs = await this.userService.getUserFavs(this.user);
+    this.userRecipes = await this.userService.getUserRecipes(this.user);
+    console.log(this.userRecipes);
+    await Promise.all(
+      this.userFavs.map(async (ele) => {
+        const data = await this.dataService.getRecipeByID(ele);
+        this.userFavData.push(data[0]);
+      })
+    );
+
+    await Promise.all(
+      this.userRecipes.map(async (ele) => {
+        const data = await this.dataService.getRecipeByID(ele);
+        this.userRecipeData.push(data[0]);
+      })
+    );
+
     this.isLoading = false;
     this.changeDetectorRef.detectChanges();
   }
@@ -74,7 +85,5 @@ export class ProfileComponent {
     this.isEditable = false;
   }
 
-  getFavData(){
-    
-  }
+  getFavData() {}
 }

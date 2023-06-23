@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<!-- <table class="table table-striped">
   <thead>
     <tr>
       <th>Meal</th>
@@ -9,10 +9,33 @@
   <tbody>
     <tr>
       <tr *ngFor="let item of userRecipes">
-        <td>{{ item }}</td>
-      
+        <td>{{ item }}</td>  
     </tr>
   </tbody>
 </table>
 
-
+ -->
+ <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Meal</th>
+      <th>Category</th>
+      <th>Area</th>
+      <th>Recipe</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of userRecipes">
+      <td>{{ item.strMeal }}</td>
+      <td>{{ item.strCategory }}</td>
+      <td>{{ item.strArea }}</td>
+      <td><button class="btn btn-primary my-2" (click)="navigateToRecipeDetails(item.strMeal)">
+        Details
+      </button></td>
+      <td><button class="btn btn-primary my-2" (click)="deleteRecipe(item.idMeal)">
+        Delete
+      </button></td>
+    </tr>
+  </tbody>
+</table>
