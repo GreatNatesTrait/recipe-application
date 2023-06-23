@@ -24,6 +24,8 @@ export class AuthService {
           email,
           'custom:favorites':'[]',
           'custom:UserRecipes':'[]',
+          'custom:Location':'[]',
+          'custom:Bio':'[]',
         },
       });
       return result;

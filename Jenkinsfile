@@ -52,12 +52,12 @@ pipeline {
                            script {
                                 def terraformDirectories = [
                                     "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform",
-                                    "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
+                                    //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
                                 ]
 
                                 def outputPaths = [
                                     "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.json",
-                                    "/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
+                                    //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
 
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
