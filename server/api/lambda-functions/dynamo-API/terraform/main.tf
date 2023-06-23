@@ -133,12 +133,6 @@ resource "aws_apigatewayv2_route" "Get_Recipe_By_ID" {
   target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
 }
 
-resource "aws_apigatewayv2_route" "Get_Recipe_By_ID" {
-  api_id = aws_apigatewayv2_api.dynamo_api.id
-  route_key = "GET /recipe"
-  target    = "integrations/${aws_apigatewayv2_integration.recipe_app.id}"
-}
-
 resource "aws_apigatewayv2_route" "Delete_Recipe_By_ID" {
   api_id = aws_apigatewayv2_api.dynamo_api.id
   route_key = "DELETE /recipe"
