@@ -56,13 +56,23 @@ pipeline {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {
                             script {
+                                // def terraformDirectories = [
+                                //     "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform",
+                                //     //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
+                                // ]
+
+                                // def outputPaths = [
+                                //     "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.json",
+                                //     //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
+                                // ]
+
                                 def terraformDirectories = [
-                                    "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform",
+                                    "./server/api/lambda-functions/dynamo-API/terraform",
                                     //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
                                 ]
 
                                 def outputPaths = [
-                                    "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.json",
+                                    "./client/src/environments/dynamo-api-config.json",
                                     //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
 
