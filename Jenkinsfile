@@ -55,7 +55,8 @@ pipeline {
                                 ]
 
                                 def outputPaths = [
-                                    "./client/src/environments/dynamo-api-config.json",
+                                    "./dynamo-api-config.json",
+                                    //"./client/src/environments/dynamo-api-config.json",
                                     //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
 
