@@ -80,9 +80,9 @@ pipeline {
                  stage('Build image') {
                     steps {
                             //sh 'grep docker /etc/group'
-                            sh 'sudo chmod -R 777 /var/lib/jenkins/workspace'
-                            sh 'sudo chmod -x -R /var/lib/jenkins/workspace'
-                            sh 'sudo usermod -aG docker 115'
+                            //sh 'sudo chmod -R 777 /var/lib/jenkins/workspace'
+                            //sh 'sudo chmod -x -R /var/lib/jenkins/workspace'
+                            sh 'ausermod -aG docker jenkins'
                             sh 'docker build -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                             sh 'docker push greatnate27/recipe-application:latest'
