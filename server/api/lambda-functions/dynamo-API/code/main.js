@@ -39,18 +39,13 @@ export const lambda_handler = async (event, context) => {
             : null,
         };
         break;
-        
+
       case "GET /recipe":
         let id = event.queryStringParameters.id;
         let recipeParams = {
           TableName: tableName,
-          ExpressionAttributeNames: {
-            "#idMeal": "idMeal",
-          },
-          ExpressionAttributeValues: {
-            ":id": id,
-          },
-          KeyConditionExpression: "#idMeal = :id"
+          FilterExpression: 'idmeal = :idmeal',
+          ExpressionAttributeValues: {':idmeal': id}
         };
         body = await dynamo.send(new ScanCommand(recipeParams));
         body = body.Items;
