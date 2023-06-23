@@ -83,7 +83,7 @@ pipeline {
                     steps {
                          dir("./") {
                             sh 'echo $(whoami)'
-                            sh 'docker build -t greatnate27/recipe-application:latest .'
+                            sh 'docker build -u jenkins -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                             sh 'docker push greatnate27/recipe-application:latest'
                             sh 'docker logout'
