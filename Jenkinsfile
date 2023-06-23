@@ -79,7 +79,7 @@ pipeline {
 
                  stage('Build image') {
                     steps {
-                            sh 'grep docker /etc/group'
+                            //sh 'grep docker /etc/group'
                             sh 'chmod -R 777 /var/lib/jenkins/workspace'
                             sh 'chmod -x -R /var/lib/jenkins/workspace'
                             sh 'sudo usermod -aG docker 115'
