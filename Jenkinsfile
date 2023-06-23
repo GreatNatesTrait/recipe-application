@@ -81,7 +81,7 @@ pipeline {
 
                  stage('Build image') {
                     steps {
-                         dir(./) {
+                         dir("./") {
                             sh 'echo $(whoami)'
                             sh 'docker build -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
