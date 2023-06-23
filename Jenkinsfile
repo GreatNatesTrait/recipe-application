@@ -45,7 +45,7 @@ pipeline {
                                 ]
 
                                 def outputPaths = [
-                                    "./dynamo-api-config.json",
+                                    "$PWD/dynamo-api-config.json",
                                 //"./client/src/environments/dynamo-api-config.json",
                                 //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
@@ -59,7 +59,7 @@ pipeline {
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                             sh 'mkdir -p tmp'
                                             def outputPath = outputPaths[index]
-                                            def terraformOutputOutput = sh(script: "terraform output -json > tmp")
+                                            def terraformOutputOutput = sh(script: "terraform output -json > '${outputPaths}'")
                                         }
                                     }
                                 }
@@ -71,7 +71,6 @@ pipeline {
                  stage('Build image') {
                     steps {
                             sh 'echo $(whoami)'
-                            sh 'docker run --rm -v tmp -w /app alpine cp ./lambda-output.json /app/lambda-output.json'
                             sh 'docker build -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                             sh 'docker push greatnate27/recipe-application:latest'
