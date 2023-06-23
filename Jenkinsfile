@@ -36,9 +36,8 @@ pipeline {
         stage('Terraform') {  
              agent {
                     docker {
-                       // image 'greatnate27/recipe-app-pipeline-env:v1'
-                       image 'greatnate27/ecs-test:latest'
-                       args '-u root -v tcp://0.0.0.0:4243:/var/run/docker.sock'
+                       image 'greatnate27/recipe-app-pipeline-env:v1'
+                       //image 'greatnate27/ecs-test:latest'
                     }
                 }        
             stages {
@@ -65,6 +64,7 @@ pipeline {
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
                                     script {
                                         dir(terraformDirectory) {
+                                            sh 'echo $(whoami)'
                                             def terraformInitOutput = sh(script: 'terraform init')
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
@@ -81,10 +81,13 @@ pipeline {
 
                  stage('Build image') {
                     steps {
+                         dir(./) {
+                            sh 'echo $(whoami)'
                             sh 'docker build -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                             sh 'docker push greatnate27/recipe-application:latest'
                             sh 'docker logout'
+                    }
                     }
                 }
 
