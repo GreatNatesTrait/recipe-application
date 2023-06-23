@@ -37,6 +37,7 @@ pipeline {
              agent {
                     docker {
                         image 'greatnate27/recipe-app-pipeline-env:v1'
+                        volume '/var/run/docker.sock:/var/run/docker.sock'
                     }
                 }        
             stages {
