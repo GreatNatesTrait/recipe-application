@@ -38,7 +38,7 @@ pipeline {
                     docker {
                        image 'greatnate27/recipe-app-pipeline-env:v1'
                        //image 'greatnate27/ecs-test:latest'
-                       args '-u jenkins'
+                       args '-u root:jenkins'
                     }
                 }        
             stages {
