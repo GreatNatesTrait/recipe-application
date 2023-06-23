@@ -44,8 +44,8 @@ console.log(event);
         let id = event.queryStringParameters.id;
         let recipeParams = {
           TableName: tableName,
-          FilterExpression: 'idmeal = :idmeal',
-          ExpressionAttributeValues: {':idmeal': JSON.stringify(id)}
+          FilterExpression: 'idMeal = :idMeal',
+          ExpressionAttributeValues: {':idMeal': JSON.stringify(id)}
         };
         body = await dynamo.send(new ScanCommand(recipeParams));
         body = body.Items;
