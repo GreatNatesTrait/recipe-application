@@ -4,7 +4,7 @@ pipeline {
         HOME = '.'
         DOCKERHUB_CREDENTIALS=credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
-    stages {    
+    stages {
         stage('Checkout') {
             steps {
                     git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
@@ -14,10 +14,10 @@ pipeline {
         // steps {
         //     parallel (
         //         'Front end unit tests': {
-        //             echo "run ng test here"                   
+        //             echo "run ng test here"
         //         },
         //         'backend unit tests': {
-        //             echo "run npm test here"                    
+        //             echo "run npm test here"
         //         },
                     // 'lambda unit tests': {
                     //     echo 'Test Completed'
@@ -25,24 +25,12 @@ pipeline {
         //     )
         // }
         // }
-       
-        // stage('Test Lambda Function') {
-        //     steps {
-        //         echo 'Test Completed'
-        //     }
-        // }
 
-        
-        stage('Terraform') {  
-             agent {
-                    docker {
-                       image 'greatnate27/recipe-app-pipeline-env:v1'
-                       //image 'greatnate27/ecs-test:latest'
-                       args '-u root:jenkins -v /var/run/docker.sock:/var/run/docker.sock'
-                    }
-                }        
-            stages {
-                stage('Lambda') {
+                    // stage('Test Lambda Function') {
+                    //     steps {
+                    //         echo 'Test Completed'
+                    //     }
+                 stage('Lambda') {
                     steps {
                         withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
@@ -53,13 +41,13 @@ pipeline {
                             script {
                                 def terraformDirectories = [
                                     "./server/api/lambda-functions/dynamo-API/terraform",
-                                    //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
+                                //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
                                 ]
 
                                 def outputPaths = [
                                     "./dynamo-api-config.json",
-                                    //"./client/src/environments/dynamo-api-config.json",
-                                    //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
+                                //"./client/src/environments/dynamo-api-config.json",
+                                //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
 
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
@@ -76,21 +64,27 @@ pipeline {
                                     }
                                 }
                             }
-                        }                                 
+                        }
                     }
-                }
+        }
 
                  stage('Build image') {
                     steps {
-                         dir("./") {
                             sh 'echo $(whoami)'
                             sh 'docker build -u jenkins -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                             sh 'docker push greatnate27/recipe-application:latest'
                             sh 'docker logout'
+                         }
                     }
+
+        stage('Terraform') {
+             agent {
+                    docker {
+                       image 'greatnate27/recipe-app-pipeline-env:v1'
                     }
-                }
+             }
+            stages {
 
                 stage('Fargate') {
                     steps {
@@ -104,16 +98,16 @@ pipeline {
                                 dir('./infrastructure') {
                                     def terraformInitOutput = sh(script: 'terraform init')
                                     def terraformPlanOutput = sh(script: 'terraform plan')
-                                    def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')  
+                                    def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                      input "Continue?"
-                                    sh(script: 'terraform destroy -auto-approve')                                                                        
+                                    sh(script: 'terraform destroy -auto-approve')
                                 }
-                            }
-                        }                                 
+                           }
+                        }
                     }
                 }
             }
-        }   
-    }    
-}
+        }
+    }
 
+}
