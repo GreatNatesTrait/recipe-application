@@ -25,14 +25,7 @@ pipeline {
         //     )
         // }
         // }
-        stage('Build image') {
-            steps {
-                    sh 'docker build -t greatnate27/recipe-application:latest .'
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    sh 'docker push greatnate27/recipe-application:latest'
-                    sh 'docker logout'
-            }
-        }
+       
         // stage('Test Lambda Function') {
         //     steps {
         //         echo 'Test Completed'
@@ -56,16 +49,6 @@ pipeline {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                         ]]) {
                             script {
-                                // def terraformDirectories = [
-                                //     "/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/dynamo-API/terraform",
-                                //     //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
-                                // ]
-
-                                // def outputPaths = [
-                                //     "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.json",
-                                //     //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
-                                // ]
-
                                 def terraformDirectories = [
                                     "./server/api/lambda-functions/dynamo-API/terraform",
                                     //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
@@ -90,6 +73,15 @@ pipeline {
                                 }
                             }
                         }                                 
+                    }
+                }
+
+                 stage('Build image') {
+                    steps {
+                            sh 'docker build -t greatnate27/recipe-application:latest .'
+                            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                            sh 'docker push greatnate27/recipe-application:latest'
+                            sh 'docker logout'
                     }
                 }
 
