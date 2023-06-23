@@ -6,6 +6,7 @@ import {
 import { FormGroup,FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { AuthService } from '@app/shared/service/auth/auth.service';
+import { UserService } from '@app/shared/service/user/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +26,7 @@ export class ProfileComponent {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     this.loading = false;
@@ -41,10 +43,26 @@ export class ProfileComponent {
     this.isLoading = true;
     this.isAuthenticated = await this.authService.checkAuthStatus();
     this.user = await this.authService.getUser();
-    console.log(this.user)
-    this.userFavs = JSON.parse(this.user.attributes['custom:favorites']);
-    this.userRecipes = JSON.parse(this.user.attributes['custom:UserRecipes']);
+    this.userFavs = this.userService.getUserFavs(this.user);
+    this.userRecipes = this.userService.getUserRecipes(this.user);
     this.isLoading = false;
     this.changeDetectorRef.detectChanges();
+  }
+  user2 = {
+    username: 'John Doe',
+    attributes: {
+      email: 'johndoe@example.com'
+    },
+    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+  };
+  isEditable = false;
+
+  toggleEdit(): void {
+    this.isEditable = !this.isEditable;
+  }
+
+  saveChanges(): void {
+    // Perform save logic here
+    this.isEditable = false;
   }
 }

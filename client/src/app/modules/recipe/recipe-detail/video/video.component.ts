@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { SafePipe } from '@app/shared/pipe/safepipe.pipe';
+import { SafePipe } from './pipe/safepipe.pipe';
 
 @Component({
   selector: 'app-video',

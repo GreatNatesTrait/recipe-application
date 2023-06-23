@@ -12,7 +12,6 @@ const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = "RecipeTable";
 
-
 export const lambda_handler = async (event, context) => {
   let body;
   let statusCode = 200;
@@ -40,6 +39,21 @@ export const lambda_handler = async (event, context) => {
             : null,
         };
         break;
+      case "GET /recipe":
+        let id = event.queryStringParameters.id;
+        let recipeParams = {
+          TableName: tableName,
+          ExpressionAttributeNames: {
+            "#idMeal": "idMeal",
+          },
+          ExpressionAttributeValues: {
+            ":id": id,
+          },
+          KeyConditionExpression: "#idMeal = :id"
+        };
+        body = await dynamo.send(new ScanCommand(recipeParams));
+        body = body.Items;
+        break;
       case "GET /recipes/search":
         let keyword = event.queryStringParameters.keyword;
         let searchParams = {
@@ -50,7 +64,7 @@ export const lambda_handler = async (event, context) => {
           },
           ExpressionAttributeValues: {
             ":keyword": keyword,
-          }
+          },
         };
         body = await dynamo.send(new ScanCommand(searchParams));
         body = body.Items;
@@ -70,26 +84,26 @@ export const lambda_handler = async (event, context) => {
         body = await dynamo.send(new ScanCommand(searchByCategoryParams));
         body = body.Items;
         break;
-        case "PUT /recipe":
-          let requestJSON = JSON.parse(event.body);
-          console.log(requestJSON);
-          await dynamo.send(
-            new PutCommand({
-              TableName: tableName,
-              Item: requestJSON,
-            })
-          );
-          body = `Put item ${requestJSON.id}`;
-          break;
-          case "GET /existing-primary-keys":
-            let Params = {
-              TableName: tableName,
-              Select: 'SPECIFIC_ATTRIBUTES',
-              ProjectionExpression: 'idMeal'
-            };
-            body = await dynamo.send(new ScanCommand(Params));
-            body = body.Items;
-            break;
+      case "PUT /recipe":
+        let requestJSON = JSON.parse(event.body);
+        console.log(requestJSON);
+        await dynamo.send(
+          new PutCommand({
+            TableName: tableName,
+            Item: requestJSON,
+          })
+        );
+        body = `Put item ${requestJSON.id}`;
+        break;
+      case "GET /existing-primary-keys":
+        let Params = {
+          TableName: tableName,
+          Select: "SPECIFIC_ATTRIBUTES",
+          ProjectionExpression: "idMeal",
+        };
+        body = await dynamo.send(new ScanCommand(Params));
+        body = body.Items;
+        break;
       default:
         console.log(event);
         throw new Error(`Unsupported route: "${event.routeKey}"`);

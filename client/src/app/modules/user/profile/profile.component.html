@@ -24,14 +24,26 @@
               class="img-fluid rounded-circle"
             />
           </div>
-          <div class="col-md-8">
+          <!-- <div class="col-md-8">
             <h4 class="card-title">{{user.username}}</h4>
             <p class="card-text">Email: {{user.attributes.email}}</p>
             <p class="card-text">Location: New York, USA</p>
             <p class="card-text">
               Bio: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
+          </div> -->
+          <div class="col-md-8">
+            <h4 class="card-title">{{user2.username}}</h4>
+            <p class="card-text">Email: {{user2.attributes.email}}</p>
+            <p class="card-text">Location: New York, USA</p>
+            <p class="card-text" *ngIf="!isEditable">
+              Bio: {{user2.bio}}
+              <button (click)="toggleEdit()">Edit</button>
+            </p>
+            <textarea class="card-text" *ngIf="isEditable" [(ngModel)]="user2.bio"></textarea>
+            <button *ngIf="isEditable" (click)="saveChanges()">Save</button>
           </div>
+          
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { IngredientsComponent } from './recipe-detail/ingredients/ingredients.co
 import { VideoComponent } from './recipe-detail/video/video.component';
 import { InstructionsComponent } from './recipe-detail/instructions/instructions.component';
 import { RecipeCreationComponent } from './recipe-creation/recipe-creation.component';
+import { SafePipe } from './recipe-detail/video/pipe/safepipe.pipe';
 
 @NgModule({
   declarations: [InstructionsComponent, RecipeDetailComponent,RecipesComponent,IngredientsComponent,VideoComponent, RecipeCreationComponent],
@@ -15,6 +16,8 @@ import { RecipeCreationComponent } from './recipe-creation/recipe-creation.compo
     CommonModule,
     RecipeRoutingModule,
     SharedModule
-  ]
+  ],
+  exports: [],
+  providers: [SafePipe]
 })
 export class RecipeModule { }

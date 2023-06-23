@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-
   isAuthenticated: boolean;
 
   constructor(private router: Router) {
@@ -88,7 +87,13 @@ export class AuthService {
     }
   }
 
-  public getUser(): Promise<any> {
-    return Auth.currentUserInfo();
+  async getUser(): Promise<any> {
+    const user = await Auth.currentAuthenticatedUser();
+    return user;
   }
+
+  async updateUser(user,userAttributes): Promise<any> {
+    return await Auth.updateUserAttributes(user, userAttributes);
+  }
+  
 }

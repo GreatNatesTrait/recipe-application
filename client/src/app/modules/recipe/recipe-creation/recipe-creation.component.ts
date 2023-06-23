@@ -7,8 +7,9 @@ import {
 } from '@angular/forms';
 import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 import { RecipeModel } from '@app/shared/models/recipe.model';
-import { Auth } from 'aws-amplify';
 import { LoggerService } from '@app/shared/service/log/logger.service';
+import { UserService } from '@app/shared/service/user/user.service';
+import { AuthService } from '@app/shared/service/auth/auth.service';
 
 @Component({
   selector: 'app-recipe-creation',
@@ -30,7 +31,9 @@ export class RecipeCreationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private recipeDataService: RecipeDataService,
-    private loggerService: LoggerService
+    private loggerService: LoggerService,
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   async ngOnInit() {
@@ -50,10 +53,10 @@ export class RecipeCreationComponent implements OnInit {
 
     await this.getExistingMeals();
 
-    await this.getUser();
+    await this.authService.getUser().then(user=>this.user = user);
 
     if(this.user){
-    await this.getUserRecipes();
+    this.userRecipes = await this.userService.getUserRecipes(this.user)
     }
   }
 
@@ -78,10 +81,9 @@ export class RecipeCreationComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.form.value);
     this.mapFormToRecipeModel();
     this.createRecipe(this.recipe2Add);
-    console.log(this.existingPKs);
+    this.form.reset();
   }
 
   getIngredientNameControlName(index: number): string {
@@ -95,10 +97,9 @@ export class RecipeCreationComponent implements OnInit {
   async createRecipe(recipe: RecipeModel) {
     try{
     const result = this.recipeDataService.createRecipe(recipe).then(()=>this.setUserRecipe(recipe.idMeal));;
-    console.log(result);
     alert('Recipe successfully created')
     }catch (error) {
-      console.error('Error creating recipe:', error);
+      this.loggerService.warn(error)
     }
   }
 
@@ -168,25 +169,13 @@ export class RecipeCreationComponent implements OnInit {
   async setUserRecipe(id) {
     try {
       let updateUserAttributes = {};
-
-
         this.userRecipes.push(id);
         updateUserAttributes = {
           'custom:UserRecipes': JSON.stringify(this.userRecipes)
         };
-      await Auth.updateUserAttributes(this.user, updateUserAttributes);
-      //await this.getUserFavorites();
+      await this.authService.updateUser(this.user, updateUserAttributes);
     } catch (error) {
       this.loggerService.warn(error)
     }
-  }
-
-  async getUser(){
-   await Auth.currentAuthenticatedUser().then(user=>this.user = user);
-  }
-
-  getUserRecipes() {
-    this.userRecipes = JSON.parse(this.user.attributes['custom:UserRecipes']);
-    console.log(this.userRecipes)
   }
 }
