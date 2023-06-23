@@ -54,13 +54,13 @@ pipeline {
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
                                     script {
                                         dir(terraformDirectory) {
-                                            sh 'echo "Script executed from: " ${PWD/../../../../../client/src}'
+                                            //sh 'echo "Script executed from: " ${PWD/../../../../../client/src}'
                                             //sh 'ls ../../../../../client/src'
                                             def terraformInitOutput = sh(script: 'terraform init')
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                             def outputPath = outputPaths[index]
-                                            def terraformOutputOutput = sh(script: "terraform output -json > '${outputPaths}'")
+                                            def terraformOutputOutput = sh(script: "terraform output -json > '${PWD}/${outputPaths}'")
                                         }
                                     }
                                 }
