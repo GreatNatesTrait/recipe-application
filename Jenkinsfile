@@ -37,7 +37,6 @@ pipeline {
              agent {
                     docker {
                         image 'greatnate27/recipe-app-pipeline-env:v1'
-                        volume '/var/run/docker.sock:/var/run/docker.sock'
                     }
                 }        
             stages {
@@ -80,6 +79,8 @@ pipeline {
 
                  stage('Build image') {
                     steps {
+                            sh 'user=$(whoami)'
+                            sh 'echo $user'
                             sh 'docker build -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                             sh 'docker push greatnate27/recipe-application:latest'
