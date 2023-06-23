@@ -46,7 +46,7 @@ export class RecipesComponent implements OnInit {
 
   async getUserFavorites() {
     this.user = await this.authService.getUser();
-    this.userFavorites = this.userService.getUserFavs(this.user);
+    this.userFavorites =await this.userService.getUserFavs(this.user);
   }
 
   async getMoreRecipes() {

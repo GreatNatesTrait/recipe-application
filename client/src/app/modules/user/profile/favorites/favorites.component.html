@@ -9,7 +9,12 @@
   </thead>
   <tbody>
     <tr *ngFor="let item of userFavs">
-      <td>{{ item }}</td>
+      <td>{{ item.strMeal }}</td>
+      <td>{{ item.strCategory }}</td>
+      <td>{{ item.strArea }}</td>
+      <td><button class="btn btn-primary my-2" (click)="navigateToRecipeDetails(item.strMeal)">
+        Details
+      </button></td>
     </tr>
   </tbody>
 </table>

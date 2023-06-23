@@ -18,11 +18,11 @@ export class UserService implements OnInit {
     await Auth.currentUserInfo().then((user)=>this.user = user);
   }
 
-  getUserFavs(user){
-    return JSON.parse(user.attributes['custom:favorites']);
+  async getUserFavs(user):Promise<[]>{
+    return await JSON.parse(user.attributes['custom:favorites']);
   }
 
-  getUserRecipes(user){
+  getUserRecipes(user):[]{
     return JSON.parse(user.attributes['custom:UserRecipes']);
   }
 

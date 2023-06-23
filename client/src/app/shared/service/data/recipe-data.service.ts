@@ -27,6 +27,12 @@ export class RecipeDataService {
     return this.http.get<any[]>(url);
   }
 
+  getRecipeByID(id): Promise<RecipeModel[]> {
+    const url = `${this.apiUrl}/recipe?id=${id}`;
+    console.log(url);
+    return firstValueFrom(this.http.get<RecipeModel[]>(url));
+  }
+
   createRecipe(body): Promise<any> {
     const url = `${this.apiUrl}/recipe`;
     return firstValueFrom(this.http.put<RecipeModel>(url, body));

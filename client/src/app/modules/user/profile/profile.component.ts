@@ -7,6 +7,7 @@ import { FormGroup,FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { AuthService } from '@app/shared/service/auth/auth.service';
 import { UserService } from '@app/shared/service/user/user.service';
+import { RecipeDataService } from '@app/shared/service/data/recipe-data.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,12 +22,14 @@ export class ProfileComponent {
   form: FormGroup;
   isLoading: boolean;
   isAuthenticated: boolean;
-  userFavs: any;
+  userFavs=[];
+  userFavData=[];
   userRecipes:any;
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private dataService: RecipeDataService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     this.loading = false;
@@ -41,9 +44,14 @@ export class ProfileComponent {
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
-    this.isAuthenticated = await this.authService.checkAuthStatus();
     this.user = await this.authService.getUser();
-    this.userFavs = this.userService.getUserFavs(this.user);
+    this.userFavs =await this.userService.getUserFavs(this.user);
+
+    await Promise.all(this.userFavs.map(async (ele) => {
+      const data = await this.dataService.getRecipeByID(ele);
+      this.userFavData.push(data[0]);
+    }));
+    
     this.userRecipes = this.userService.getUserRecipes(this.user);
     this.isLoading = false;
     this.changeDetectorRef.detectChanges();
@@ -64,5 +72,9 @@ export class ProfileComponent {
   saveChanges(): void {
     // Perform save logic here
     this.isEditable = false;
+  }
+
+  getFavData(){
+    
   }
 }
