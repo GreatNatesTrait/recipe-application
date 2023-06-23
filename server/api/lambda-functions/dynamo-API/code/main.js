@@ -18,7 +18,7 @@ export const lambda_handler = async (event, context) => {
   const headers = {
     "Content-Type": "application/json",
   };
-
+console.log(event);
   try {
     switch (event.routeKey) {
       case "GET /recipes":
@@ -45,7 +45,7 @@ export const lambda_handler = async (event, context) => {
         let recipeParams = {
           TableName: tableName,
           FilterExpression: 'idmeal = :idmeal',
-          ExpressionAttributeValues: {':idmeal': id}
+          ExpressionAttributeValues: {':idmeal': JSON.stringify(id)}
         };
         body = await dynamo.send(new ScanCommand(recipeParams));
         body = body.Items;
