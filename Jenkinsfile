@@ -54,7 +54,7 @@ pipeline {
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
                                     script {
                                         dir(terraformDirectory) {
-                                            sh 'echo $(whoami)'
+                                            sh 'echo "Script executed from: ${PWD}"'
                                             sh 'ls ../../../../../client/src'
                                             def terraformInitOutput = sh(script: 'terraform init')
                                             def terraformPlanOutput = sh(script: 'terraform plan')
