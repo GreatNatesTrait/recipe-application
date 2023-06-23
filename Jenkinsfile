@@ -59,7 +59,7 @@ pipeline {
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                             sh 'mkdir -p $(PWD)/tmp'
                                             def outputPath = outputPaths[index]
-                                            def terraformOutputOutput = sh(script: "terraform output -json > $(PWD)/tmp")
+                                            def terraformOutputOutput = sh(script: "terraform output -json > ${PWD}/tmp")
                                         }
                                     }
                                 }
