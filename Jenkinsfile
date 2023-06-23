@@ -46,21 +46,19 @@ pipeline {
 
                                 def outputPaths = [
                                    // "$WORKSPACE/client/src/environments/dynamo-api-config.json",
-                                   "../../../../../client/src/environments/dynamo-api-config.json"
-                                //"./client/src/environments/dynamo-api-config.json",
+                                  // "../../../../../client/src/environments/dynamo-api-config.json"
+                                "./client/src/environments/dynamo-api-config.json",
                                 //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
 
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
                                     script {
                                         dir(terraformDirectory) {
-                                            //sh 'echo "Script executed from: " \${PWD}/../../../../../client/src'
-                                            //sh 'ls ../../../../../client/src'
                                             def terraformInitOutput = sh(script: 'terraform init')
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                             def outputPath = outputPaths[index]
-                                            def terraformOutputOutput = sh(script: "terraform output -json > '../../../../${terraformDirectory}'")
+                                            def terraformOutputOutput = sh(script: "terraform output -json > '${outputPaths}'")
                                         }
                                     }
                                 }
