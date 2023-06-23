@@ -55,6 +55,7 @@ pipeline {
                                     script {
                                         dir(terraformDirectory) {
                                             sh 'echo $(whoami)'
+                                            sh 'ls'
                                             def terraformInitOutput = sh(script: 'terraform init')
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
