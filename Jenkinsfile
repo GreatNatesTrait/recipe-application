@@ -62,9 +62,9 @@ pipeline {
                     }
         }
 
-        stage('Build image') {
-            withDockerRegistry([ credentialsId: "b28bbdd7-0345-46b2-a3c8-050a04a90660", url: "" ]) {
+        stage('Build image') {           
             steps {
+                withDockerRegistry([ credentialsId: "b28bbdd7-0345-46b2-a3c8-050a04a90660", url: "" ]) {
                     sh 'docker build -t greatnate27/recipe-application:latest .'
                     //sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                     sh 'docker push greatnate27/recipe-application:latest'
