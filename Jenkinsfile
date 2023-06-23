@@ -38,14 +38,9 @@ pipeline {
                     docker {
                        // image 'greatnate27/recipe-app-pipeline-env:v1'
                        image 'greatnate27/ecs-test:latest'
+                       args '-u root -v tcp://0.0.0.0:4243:/var/run/docker.sock'
                     }
-                }    
-            environment {
-                    environment {
-                        DOCKER_HOST = 'tcp://0.0.0.0:4243'
-                    }
-
-                }    
+                }        
             stages {
                 stage('Lambda') {
                     steps {
