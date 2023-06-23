@@ -36,7 +36,8 @@ pipeline {
         stage('Terraform') {  
              agent {
                     docker {
-                        image 'greatnate27/recipe-app-pipeline-env:v1'
+                       // image 'greatnate27/recipe-app-pipeline-env:v1'
+                       image 'greatnate27/ecs-test:latest'
                     }
                 }        
             stages {
@@ -79,10 +80,6 @@ pipeline {
 
                  stage('Build image') {
                     steps {
-                            //sh 'grep docker /etc/group'
-                            //sh 'sudo chmod -R 777 /var/lib/jenkins/workspace'
-                            //sh 'sudo chmod -x -R /var/lib/jenkins/workspace'
-                            sh 'usermod -aG docker 115'
                             sh 'docker build -t greatnate27/recipe-application:latest .'
                             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                             sh 'docker push greatnate27/recipe-application:latest'
