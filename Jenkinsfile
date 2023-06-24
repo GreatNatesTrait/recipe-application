@@ -45,18 +45,21 @@ pipeline {
                                 def outputPaths = [
                                 //"./client/src/environments/dynamo-api-config.json",
                                 //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
-                                "${PWD}/workspace/recipe application build/client/src/environments/dynamo-api-config.json",
-                                "${PWD}/workspace/recipe application build/client/src/environments/logger-api-config.json"
+                                '${PWD}/workspace/recipe application build/client/src/environments/dynamo-api-config.json',
+                                '${PWD}/workspace/recipe application build/client/src/environments/logger-api-config.json'
                                 ]
 
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
                                     script {
-                                        dir(terraformDirectory) {
-                                            sh(script: "echo $PWD/../")
+                                        dir(terraformDirectory) {                                           
                                             def terraformInitOutput = sh(script: 'terraform init')
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                             def outputPath = outputPaths[index]
+                                            sh(script: "echo ${outputPath}")
+                                            sh(script: "echo '${outputPath}'")
+                                            sh(script: 'echo ${outputPath}')
+                                            sh(script: 'echo "${outputPath}"')
                                             def terraformOutputOutput = sh(script: "terraform output -json > ${outputPath}")
                                         }
                                     }
