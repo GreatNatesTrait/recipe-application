@@ -18,6 +18,8 @@ export class IngredientsComponent implements OnInit {
   IngredientMeasurementPairs: any;
 
   ngOnInit(): void {
+    console.log(this.Ingredients);
+    console.log(this.Measurements);
    this.IngredientMeasurementPairs = this.combineIngredientsAndMeasurements(
       this.Ingredients,
       this.Measurements

@@ -20,6 +20,7 @@ export class RecipeDetailComponent implements OnInit{
   constructor(private route: ActivatedRoute) { }
   
   ngOnInit(): void {
+    console.log(history.state)
     this.id = this.route.snapshot.paramMap.get('name');
     this.activeRecipe = history.state.data.recipeData[0];
 

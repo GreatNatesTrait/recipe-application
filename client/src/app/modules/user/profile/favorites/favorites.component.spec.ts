@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FavoritesComponent } from './favorites.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
@@ -8,7 +9,16 @@ describe('FavoritesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FavoritesComponent ]
+      declarations: [ FavoritesComponent ],
+      providers:
+      [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {params: {id: '24fkzrw3487943uf358lovd'}}
+          }
+        }
+      ]
     })
     .compileComponents();
 

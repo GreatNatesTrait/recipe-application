@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         HOME = '.'
-       // DOCKERHUB_CREDENTIALS=credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
     stages {
         stage('Checkout') {
@@ -15,7 +14,9 @@ pipeline {
             steps {
                 parallel (
                     'Front end unit tests': {
-                        echo "run ng test here"
+                        dir("/var/lib/jenkins/workspace/recipe application build/client"){
+                            echo "ng test"
+                        }
                     },
                     'backend unit tests': {
                         echo "run npm test here"
@@ -38,12 +39,14 @@ pipeline {
                             script {
                                 def terraformDirectories = [
                                     "./server/api/lambda-functions/dynamo-API/terraform",
-                                //"/var/lib/jenkins/workspace/recipe application build/server/api/lambda-functions/logger-API/terraform"
+                                "./server/api/lambda-functions/logger-API/terraform"
                                 ]
 
                                 def outputPaths = [
                                 //"./client/src/environments/dynamo-api-config.json",
                                 //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
+                                '${PWD}/workspace/recipe application build/client/src/environments/dynamo-api-config.json',
+                                '${PWD}/workspace/recipe application build/client/src/environments/logger-api-config.json'
                                 ]
 
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
@@ -53,7 +56,7 @@ pipeline {
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                             def outputPath = outputPaths[index]
-                                            def terraformOutputOutput = sh(script: "terraform output -json > '${PWD}/workspace/recipe application build/client/src/environments/dynamo-api-config.json'")
+                                            def terraformOutputOutput = sh(script: "terraform output -json > '${outputPath}'")
                                         }
                                     }
                                 }
@@ -66,9 +69,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: "b28bbdd7-0345-46b2-a3c8-050a04a90660", url: "" ]) {
                     sh 'docker build -t greatnate27/recipe-application:latest .'
-                    //sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                     sh 'docker push greatnate27/recipe-application:latest'
-                    sh 'docker logout'
             }
             }
         }

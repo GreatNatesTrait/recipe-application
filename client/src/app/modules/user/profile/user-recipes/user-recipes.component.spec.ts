@@ -1,14 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { UserService } from '@app/shared/service/user/user.service';
 import { UserRecipesComponent } from './user-recipes.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('UserRecipesComponent', () => {
   let component: UserRecipesComponent;
   let fixture: ComponentFixture<UserRecipesComponent>;
-
+  const mockUserService = jasmine.createSpyObj("UserService", ["deleteRecipe"]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserRecipesComponent ]
+      declarations: [ UserRecipesComponent ],
+      providers:
+      [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {params: {id: '24fkzrw3487943uf358lovd'}}
+          }
+        },
+          { provide: UserService, useValue: mockUserService }
+      ]
     })
     .compileComponents();
 
