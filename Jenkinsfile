@@ -15,7 +15,7 @@ pipeline {
                 parallel (
                     'Front end unit tests': {
                         dir("/var/lib/jenkins/workspace/recipe application build/client"){
-                            sh(script: 'npm install')
+                            sh(script: 'npm install -D')
                             sh(script: 'ng test --configuration=test --browsers ChromeHeadless')
                         }
                     },
