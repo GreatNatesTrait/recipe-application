@@ -45,8 +45,8 @@ pipeline {
                                 def outputPaths = [
                                 //"./client/src/environments/dynamo-api-config.json",
                                 //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
-                                '${PWD}/workspace/recipe application build/client/src/environments/dynamo-api-config.json',
-                                '${PWD}/workspace/recipe application build/client/src/environments/logger-api-config.json'
+                                "${PWD}/workspace/recipe application build/client/src/environments/dynamo-api-config.json",
+                                "${PWD}/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
 
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
