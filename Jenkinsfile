@@ -52,7 +52,7 @@ pipeline {
                                 terraformDirectories.eachWithIndex { terraformDirectory, index ->
                                     script {
                                         dir(terraformDirectory) {
-                                            sh(script: 'echo "${PWD}/../"')
+                                            sh(script: "echo $PWD/../")
                                             def terraformInitOutput = sh(script: 'terraform init')
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
