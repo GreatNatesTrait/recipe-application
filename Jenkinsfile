@@ -15,7 +15,7 @@ pipeline {
                 parallel (
                     'Front end unit tests': {
                         dir("/var/lib/jenkins/workspace/recipe application build/client"){
-                            echo "ng test"
+                            sh(script: 'ng test')
                         }
                     },
                     'backend unit tests': {
