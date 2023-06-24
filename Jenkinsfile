@@ -56,11 +56,7 @@ pipeline {
                                             def terraformPlanOutput = sh(script: 'terraform plan')
                                             def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
                                             def outputPath = outputPaths[index]
-                                            sh(script: "echo ${outputPath}")
-                                            sh(script: "echo '${outputPath}'")
-                                            sh(script: 'echo ${outputPath}')
-                                            sh(script: 'echo "${outputPath}"')
-                                            def terraformOutputOutput = sh(script: "terraform output -json > ${outputPath}")
+                                            def terraformOutputOutput = sh(script: "terraform output -json > '${outputPath}'")
                                         }
                                     }
                                 }
