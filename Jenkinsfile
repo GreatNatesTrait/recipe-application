@@ -12,7 +12,7 @@ pipeline {
 
         stage("Install project dev dependencies") {
             steps {
-                sh(script: 'npm install -D --force')
+                sh(script: 'npm install --force')
             }
         }
 
