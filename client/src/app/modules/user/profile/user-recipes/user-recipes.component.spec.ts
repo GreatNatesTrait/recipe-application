@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 describe('UserRecipesComponent', () => {
   let component: UserRecipesComponent;
   let fixture: ComponentFixture<UserRecipesComponent>;
-  const mockUserService = jasmine.createSpyObj("UserService", ["deleteRecipe"]);
+  const mockUserService = { UserService: jest.fn()};
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ UserRecipesComponent ],

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecipesComponent } from './recipes.component';
 import { ActivatedRoute } from '@angular/router';
+import { RecipeModule } from '../recipe.module';
 
 describe('RecipesComponent', () => {
   let component: RecipesComponent;
@@ -11,7 +12,7 @@ describe('RecipesComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [RecipesComponent],
-        imports: [HttpClientTestingModule],
+        imports: [HttpClientTestingModule,RecipeModule],
         providers:
         [
           {

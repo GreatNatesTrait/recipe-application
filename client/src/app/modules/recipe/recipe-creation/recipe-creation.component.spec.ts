@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecipeCreationComponent } from './recipe-creation.component';
-
+import { RecipeModule } from '../recipe.module';
 describe('RecipeCreationComponent', () => {
   let component: RecipeCreationComponent;
   let fixture: ComponentFixture<RecipeCreationComponent>;
@@ -9,7 +9,7 @@ describe('RecipeCreationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ RecipeCreationComponent ],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,RecipeModule],
     })
     .compileComponents();
 

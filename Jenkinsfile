@@ -10,20 +10,26 @@ pipeline {
             }
         }
 
+        stage("Install project dev dependencies") {
+            steps {
+                sh(script: 'npm install -D')
+            }
+        }
+
         stage("Run Unit Tests") {
             steps {
                 parallel (
                     'Front end unit tests': {
-                        dir("/var/lib/jenkins/workspace/recipe application build/client"){
-                            sh(script: 'npm install -D')
-                            sh(script: 'ng test --configuration=test --browsers ChromeHeadless')
-                        }
+                            sh(script: 'npm run test -w client')                        
                     },
                     'backend unit tests': {
                         echo "run npm test here"
                     },
-                    'lambda unit tests': {
+                    'dynamo lambda unit tests': {
                         echo 'Test Completed'
+                    },
+                    'logger lambda unit tests': {
+                        sh(script: 'npm run test -w server/api/lambda-functions/logger-API/code')
                     }
                 )
             }
@@ -39,13 +45,11 @@ pipeline {
                         ]]) {
                             script {
                                 def terraformDirectories = [
-                                    "./server/api/lambda-functions/dynamo-API/terraform",
+                                "./server/api/lambda-functions/dynamo-API/terraform",
                                 "./server/api/lambda-functions/logger-API/terraform"
                                 ]
 
                                 def outputPaths = [
-                                //"./client/src/environments/dynamo-api-config.json",
-                                //"/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 "/var/lib/jenkins/workspace/recipe application build/client/src/environments/dynamo-api-config.json",
                                  "/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json"
                                 ]
@@ -90,9 +94,9 @@ pipeline {
                 ]]) {
                     script {
                         dir('./infrastructure') {
-                            def terraformInitOutput = sh(script: 'terraform init')
-                            def terraformPlanOutput = sh(script: 'terraform plan')
-                            def terraformApplyOutput = sh(script: 'terraform apply -auto-approve')
+                            sh(script: 'terraform init')
+                            sh(script: 'terraform plan')
+                            sh(script: 'terraform apply -auto-approve')
                             input "Continue?"
                             sh(script: 'terraform destroy -auto-approve')
                         }

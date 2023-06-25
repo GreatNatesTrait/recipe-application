@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '../../../../shared/shared.module';
 import { VideoComponent } from './video.component';
 import { SafePipe } from './pipe/safepipe.pipe';
 
@@ -10,6 +10,7 @@ describe('VideoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ VideoComponent ],
+      imports:[SharedModule],
       providers:[{provide: SafePipe}]
     })
     .compileComponents();
