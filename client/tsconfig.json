@@ -7,23 +7,19 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
     "paths": {
       "@app/*": ["app/*"],
-      "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
       "@env": ["environments/environment"],
       "@modules/*": ["app/modules/*"],
-      "@data/*": ["app/data/*"]
     },
     "lib": [
       "ES2022",
