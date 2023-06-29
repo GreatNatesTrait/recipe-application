@@ -1,0 +1,9 @@
+<app-spinner [isLoading]="loading"></app-spinner>
+<iframe
+  (load)="loading = false"
+  [class.d-none]="loading"
+  width="750"
+  height="400"
+  [src]="safeVideoUrl"
+>
+</iframe>

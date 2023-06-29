@@ -1,0 +1,64 @@
+<div *ngIf="isLoading" class="d-flex justify-content-center" role="status">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div class="profile-page d-flex flex-column" *ngIf="!isLoading">
+  <header class="header">
+    <span class="header-title"><h2>User Profile</h2></span>
+    <div class="header-container">
+      <mat-icon aria-hidden="false" aria-label="Example home icon"
+        >person</mat-icon
+      >
+
+    </div>
+  </header>
+  <div class="container">
+    <div class="card mt-5">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <img
+              src="../../../../assets/images/avatar.jpg"
+              alt="Profile Picture"
+              class="img-fluid rounded-circle"
+            />
+          </div>
+          <!-- <div class="col-md-8">
+            <h4 class="card-title">{{user.username}}</h4>
+            <p class="card-text">Email: {{user.attributes.email}}</p>
+            <p class="card-text">Location: New York, USA</p>
+            <p class="card-text">
+              Bio: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+          </div> -->
+          <div class="col-md-8">
+            <h4 class="card-title">{{user.username}}</h4>
+            <p class="card-text">Email: {{user.attributes.email}}</p>
+            <p class="card-text">{{user.attributes.email_verified}}</p>
+            <p class="card-text">Location: New York, USA</p>
+            <p class="card-text">{{user.authenticationFlowType}}</p>
+            <!-- <p class="card-text" *ngIf="!isEditable">
+              Bio: {{user2.bio}}
+              <button (click)="toggleEdit()">Edit</button>
+            </p>
+            <textarea class="card-text" *ngIf="isEditable" [(ngModel)]="user2.bio"></textarea>
+            <button *ngIf="isEditable" (click)="saveChanges()">Save</button> -->
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-6">
+        <h5>My Favorites</h5>
+        <app-favorites [userFavs]="userFavData" ></app-favorites>
+      </div>
+      <div class="col-md-6">
+        <h5>My Recipes</h5>
+        <app-user-recipes [userRecipes]="userRecipeData" [user]="user"></app-user-recipes>
+      </div>
+    </div>
+  </div>
+</div>

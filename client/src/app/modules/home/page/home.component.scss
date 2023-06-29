@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.full-width-image {
+  min-height: 70vh;
+  width: 100vw;
+  //background: url('../../../../assets/images/w_3888.png') no-repeat center center
+  background: url('../../../../assets/images/1412206.jpg') no-repeat center center
+    fixed;
+  background-size: cover;
+}
+
+
+.badge.rounded-pill {
+  font-size: 20px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+
+
