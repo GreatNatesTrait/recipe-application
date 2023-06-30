@@ -1,9 +1,12 @@
 {
-    "name": "My Dev Container",
-    "image": "greatnate27/recipe-app-pipeline-env:v1",
-    "mounts": [
-      "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
-    ],
+    "name": "env-container",
+    "dockerFile": "Dockerfile",
+     // Uncomment the next line if you want to publish any ports.
+     "appPort": [4200],
+    //"image": "greatnate27/recipe-app-pipeline-env:v1",
+    // "mounts": [
+    //   "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+    // ],
     "customizations": {
       "vscode": {
         "extensions": [
