@@ -16,7 +16,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "allowedCommonJsDependencies": [
               "rxjs-compat",
@@ -159,5 +159,8 @@
       }
     }
   }
+},
+"cli": {
+  "analytics": false
 }
 }
