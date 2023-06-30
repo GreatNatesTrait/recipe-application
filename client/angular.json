@@ -25,7 +25,10 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills":[
+
+               "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -56,7 +59,7 @@
             "extractLicenses": false,
             "buildOptimizer": false,
             "sourceMap": true,
-            "optimization": false,
+            "optimization": true,
             "namedChunks": true
           },
           "configurations": {
@@ -139,24 +142,6 @@
             "tsConfig": "tsconfig.spec.json"
           }
         }
-    },
-    "angular-folder-structure-e2e": {
-      "root": "./e2e",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-folder-structure:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "angular-folder-structure:serve:production"
-            }
-          }
-        }
-      }
     }
   }
 },
