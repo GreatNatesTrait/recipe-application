@@ -10,22 +10,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS= credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
     stages {
-        stage('Login to Docker Hub') {      	
-            steps{               
-            echo '$PATH' 	
-            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            echo 'Login Completed'      
-            sh 'docker build -t greatnate27/recipe-application:latest .' 
-            sh 'docker push greatnate27/recipe-application:latest'           
-            echo 'Push Image Completed'  
-            }      
-
-            post{
-            always {  
-            sh 'docker logout'     
-            }      
-        }              
-        }   
+        
 
         stage('Checkout') {
             steps {
@@ -93,14 +78,31 @@ pipeline {
                     }
         }
 
-        stage('Build image') {           
-            steps {
-                withDockerRegistry([ credentialsId: "b28bbdd7-0345-46b2-a3c8-050a04a90660", url: "" ]) {
-                    sh 'docker build -t greatnate27/recipe-application:latest .'
-                    sh 'docker push greatnate27/recipe-application:latest'
-            }
-            }
-        }
+        // stage('Build image') {           
+        //     steps {
+        //         withDockerRegistry([ credentialsId: "b28bbdd7-0345-46b2-a3c8-050a04a90660", url: "" ]) {
+        //             sh 'docker build -t greatnate27/recipe-application:latest .'
+        //             sh 'docker push greatnate27/recipe-application:latest'
+        //     }
+        //     }
+        // }
+
+        stage('Build image') {      	
+            steps{               
+            echo '$PATH' 	
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            echo 'Login Completed'      
+            sh 'docker build -t greatnate27/recipe-application:latest .' 
+            sh 'docker push greatnate27/recipe-application:latest'           
+            echo 'Push Image Completed'  
+            }      
+
+            post{
+            always {  
+            sh 'docker logout'     
+            }      
+        }              
+        }   
 
         stage('Run Fargate Terraform') {
             steps {
