@@ -3,7 +3,7 @@ WORKDIR /app
 COPY client/package*.json ./
 RUN npm i
 COPY client/ ./
-RUN npm install -g @angular/cli@latest 
+RUN npm install -g @angular/cli@16.0.0
 RUN npm run build
 
 FROM node:18
