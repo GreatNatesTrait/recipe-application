@@ -9,6 +9,16 @@ pipeline {
         DOCKERHUB_CREDENTIALS= credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
     stages {
+        stage('Build image2') {           
+            steps {
+                withDockerRegistry([ credentialsId: "b28bbdd7-0345-46b2-a3c8-050a04a90660", url: "" ]) {
+                    
+                    sh 'docker build -t greatnate27/recipe-application:latest .'
+                    sh 'docker push greatnate27/recipe-application:latest'
+            }
+            }
+        }
+
         stage('Login to Docker Hub') {      	
             steps{                       	
             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
