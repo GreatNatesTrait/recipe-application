@@ -1,3 +1,5 @@
+
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -5,26 +7,28 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "moduleResolution": "node",
     "target": "ES2022",
-    "types": ["jest"],
-    "typeRoots": ["./src/types", "node_modules/@types"],
+    "module": "ES2022",
+    "useDefineForClassFields": false,
     "paths": {
       "@app/*": ["app/*"],
-      "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
       "@env": ["environments/environment"],
       "@modules/*": ["app/modules/*"],
-      "@data/*": ["app/data/*"]
     },
-    "lib": ["ES2022", "dom"]
+    "lib": [
+      "ES2022",
+      "dom"
+    ]
   },
   "angularCompilerOptions": {
-    "strictTemplates": true,
-    "strictInjectionParameters": true
+    "strictInjectionParameters": true,
+    "strictTemplates": true
   }
 }
