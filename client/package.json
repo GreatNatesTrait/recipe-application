@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
     "@aws-amplify/ui-angular": "^3.2.18",
-    "@ng-bootstrap/ng-bootstrap": "^14.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^15.0.0",
     "aws-amplify": "^5.2.5",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.5",
