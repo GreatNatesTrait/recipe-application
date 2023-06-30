@@ -5,9 +5,33 @@ pipeline {
         }
     }
     environment {
-        HOME = '.'
+        HOME = '.',
+        DOCKERHUB_CREDENTIALS= credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
     stages {
+        stage('Login to Docker Hub') {      	
+            steps{                       	
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
+            echo 'Login Completed'      
+            }           
+        }   
+
+        stage('Push Image to Docker Hub') {         
+            steps{                      
+                sh 'docker build -t greatnate27/recipe-application:latest .' 
+                sh 'sudo docker push greatnate27/recipe-application:latest'           
+                echo 'Push Image Completed'       
+            }   
+
+            post{
+            always {  
+            sh 'docker logout'     
+            }      
+        }           
+        }  
+
+        
+
         stage('Checkout') {
             steps {
                     git branch: 'dev', url:'https://github.com/GreatNatesTrait/recipe-application.git'
