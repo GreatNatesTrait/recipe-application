@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         HOME = '.'
-        DOCKERHUB_CREDENTIALS= credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
+        //DOCKERHUB_CREDENTIALS= credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
     stages {
         stage('Build image2') {           
@@ -19,21 +19,21 @@ pipeline {
             }
         }
 
-        stage('Login to Docker Hub') {      	
-            steps{                       	
-            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            echo 'Login Completed'      
-            sh 'docker build -t greatnate27/recipe-application:latest .' 
-            sh 'docker push greatnate27/recipe-application:latest'           
-            echo 'Push Image Completed'  
-            }      
+        // stage('Login to Docker Hub') {      	
+        //     steps{                       	
+        //     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //     echo 'Login Completed'      
+        //     sh 'docker build -t greatnate27/recipe-application:latest .' 
+        //     sh 'docker push greatnate27/recipe-application:latest'           
+        //     echo 'Push Image Completed'  
+        //     }      
 
-            post{
-            always {  
-            sh 'docker logout'     
-            }      
-        }              
-        }   
+        //     post{
+        //     always {  
+        //     sh 'docker logout'     
+        //     }      
+        // }              
+        // }   
 
         stage('Checkout') {
             steps {
