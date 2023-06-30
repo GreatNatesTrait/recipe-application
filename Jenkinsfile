@@ -12,8 +12,7 @@ pipeline {
 
         stage("Install project dev dependencies") {
             steps {
-                sh(script: 'npm i -D -w client --legacy-peer-deps')
-                sh(script: 'npm i -D -w server/api/lambda-functions/logger-API/code --legacy-peer-deps')
+                sh(script: 'npm i -D')
             }
         }
 
