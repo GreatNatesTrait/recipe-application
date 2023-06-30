@@ -1,8 +1,8 @@
 pipeline {
      agent {
         docker {
-                image 'greatnate27/recipe-app-pipeline-env:v1'
-                args '-v /var/run/docker.sock:/var/run/docker.sock'
+                image 'greatnate27/recipe-app-pipeline-env:v2'
+                args '-u 115:999 -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     environment {
