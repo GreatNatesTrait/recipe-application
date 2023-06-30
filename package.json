@@ -6,5 +6,9 @@
     "server",
     "server/api/lambda-functions/dynamo-API/code",
     "server/api/lambda-functions/logger-API/code"
-  ]
+  ],
+  "dependencies": {
+    "@angular/animations": "^16.0.0",
+    "@angular/material": "^16.0.0"
+  }
 }

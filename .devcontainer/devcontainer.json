@@ -1,0 +1,23 @@
+{
+    "name": "My Dev Container",
+    "image": "greatnate27/recipe-app-pipeline-env:v1",
+    "mounts": [
+      "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+    ],
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-vscode.vscode-typescript-tslint-plugin"
+        ],
+        "settings": {
+          "terminal.integrated.profiles.linux": {
+            "bash": {
+              "path": "/bin/bash"
+            }
+          },
+          "terminal.integrated.defaultProfile.linux": "bash"
+        }
+      }
+    }
+  }
+  
