@@ -85,7 +85,7 @@ pipeline {
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
                     script {
-                        parallel {               
+                        parallel (               
                                 "Deploy dynamo api": {
                                     dir("./server/api/lambda-functions/dynamo-API/terraform") {                       
                                             sh 'terraform init'
@@ -102,7 +102,7 @@ pipeline {
                                             sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json'"
                                     }
                                 }                         
-                        }
+                        )
                     }
                 }
             }
