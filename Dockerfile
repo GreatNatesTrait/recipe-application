@@ -4,7 +4,7 @@ COPY client/package.json ./
 RUN npm i --production
 COPY client/ ./
 RUN npm install -g @angular/cli@16.0.0
-RUN npm run build
+RUN npm run build -w client
 
 FROM node:18
 WORKDIR /app
