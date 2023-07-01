@@ -1,26 +1,22 @@
 {
-    "name": "env-container",
-    "dockerFile": "Dockerfile",
-     // Uncomment the next line if you want to publish any ports.
-     "appPort": [4200],
-    //"image": "greatnate27/recipe-app-pipeline-env:v1",
-    // "mounts": [
-    //   "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
-    // ],
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          "ms-vscode.vscode-typescript-tslint-plugin"
-        ],
-        "settings": {
-          "terminal.integrated.profiles.linux": {
-            "bash": {
-              "path": "/bin/bash"
-            }
-          },
-          "terminal.integrated.defaultProfile.linux": "bash"
-        }
+  "name": "env-container",
+  "dockerFile": "Dockerfile",
+  "appPort": [
+    4200
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-tslint-plugin"
+      ],
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
   }
-  
+}

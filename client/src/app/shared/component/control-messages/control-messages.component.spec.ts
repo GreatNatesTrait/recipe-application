@@ -8,7 +8,6 @@ describe('ControlMessagesComponent', () => {
   let signInForm : FormGroup;
   let builder : FormBuilder;
   
-
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({

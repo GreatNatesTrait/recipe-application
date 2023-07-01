@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SearchResultsComponent } from './search-results.component';
 import { ActivatedRoute } from '@angular/router';
 
@@ -16,7 +15,7 @@ describe('SearchResultsComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: {params: {id: '24fkzrw3487943uf358lovd'}}
+            snapshot: {params: {id: 'some id'}}
           }
         }
       ]

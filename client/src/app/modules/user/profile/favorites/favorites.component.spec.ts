@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FavoritesComponent } from './favorites.component';
 import { ActivatedRoute } from '@angular/router';
 
@@ -15,7 +14,7 @@ describe('FavoritesComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: {params: {id: '24fkzrw3487943uf358lovd'}}
+            snapshot: {params: {id: 'some id'}}
           }
         }
       ]

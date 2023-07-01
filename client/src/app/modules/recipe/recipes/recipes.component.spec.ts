@@ -18,7 +18,7 @@ describe('RecipesComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              snapshot: {params: {id: '24fkzrw3487943uf358lovd'}}
+              snapshot: {params: {id: 'some id'}}
             }
           }
         ]

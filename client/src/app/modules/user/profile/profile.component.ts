@@ -25,7 +25,7 @@ export class ProfileComponent {
   userFavs = [];
   userFavData = [];
   userRecipeData = [];
-  userRecipes = [];
+  userRecipes? = [];
 
   constructor(
     private authService: AuthService,
@@ -49,6 +49,7 @@ export class ProfileComponent {
 
     this.userFavs = await this.userService.getUserFavs(this.user);
     this.userRecipes = await this.userService.getUserRecipes(this.user);
+    console.log(this.userRecipes);
     console.log(this.userRecipes);
     await Promise.all(
       this.userFavs.map(async (ele) => {

@@ -1,7 +1,8 @@
 FROM node:18 as builder
 WORKDIR /app
 COPY client/package*.json ./
-RUN npm i
+#RUN npm i
+RUN npm ci --production
 COPY client/ ./
 RUN npm install -g @angular/cli@16.0.0
 RUN npm run build
@@ -11,7 +12,7 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY server/package*.json .
 COPY server/server.js .
-RUN npm i
+#RUN npm i
 RUN npm ci --production
 
 EXPOSE 3000

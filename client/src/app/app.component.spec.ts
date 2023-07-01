@@ -1,6 +1,7 @@
 import {  ComponentFixture,TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
+
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -21,9 +22,7 @@ describe('AppComponent', () => {
   });
 
 
-  it(
-    'should create the app',
-    waitForAsync(() => {
+  it('should create the app', waitForAsync(() => {
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.debugElement.componentInstance;
       expect(app).toBeTruthy();
