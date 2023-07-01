@@ -1,7 +1,7 @@
 /dynamo iac (DO NOT DELETE)
-/beanstalk iac
 /pipeline-image
-/testing
 node_modules
-package-lock.json
+.terraform/
+*.terraform.lock.hcl
+
 
