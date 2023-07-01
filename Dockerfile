@@ -1,17 +1,17 @@
 FROM node:18 as builder
 WORKDIR /app
 COPY client/package.json ./
-RUN npm i --production
+RUN npm i --omit=dev
 COPY client/ ./
 RUN npm install -g @angular/cli@16.0.0
-RUN npm run build -w client
+RUN npm run build
 
 FROM node:18
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY server/package*.json .
 COPY server/server.js .
-RUN npm i --production
+RUN npm i --omit=dev
 
 EXPOSE 3000
 RUN echo "#!/bin/bash\nnode server.js" > /entrypoint.sh
