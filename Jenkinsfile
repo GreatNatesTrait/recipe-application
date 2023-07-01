@@ -119,7 +119,7 @@ pipeline {
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
                     script {
-                        input: 'Continue with destroy?'
+                        input 'Continue with destroy?'
                         parallel (
                             "Destroy dynamo API": {
                                 dir("../server/api/lambda-functions/dynamo-API/terraform") {
