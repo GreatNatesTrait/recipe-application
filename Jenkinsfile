@@ -109,5 +109,37 @@ pipeline {
                 }
             }                          
         }
+
+         stage('Destroy all infrastructure') {
+            steps {
+                withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                    script {
+                        input: 'Continue with destroy?'
+                        parallel (
+                            "Destroy dynamo API": {
+                                dir("../server/api/lambda-functions/dynamo-API/terraform") {
+                                    sh 'terraform destroy -auto-approve'
+                                }
+                            },
+                            "Destroy logger API": {
+                                dir("../server/api/lambda-functions/logger-API/terraform") {
+                                    sh 'terraform destroy -auto-approve'
+                                }
+                            },
+                            "Destroy Fargate": {
+                                dir('./infrastructure') {
+                                    sh(script: 'terraform destroy -auto-approve')
+                                }
+                            }
+                        )
+                    }
+                }
+            }                         
+        }
     }
 }
