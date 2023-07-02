@@ -29,10 +29,10 @@ pipeline {
                         sh(script: 'npm run test -w client')                        
                     },
                     'backend unit tests': {
-                        echo "run npm test here"
+                        sh(script: 'npm test -w server')
                     },
                     'dynamo lambda unit tests': {
-                        echo 'Test Completed'
+                        sh(script: 'npm run test -w server/api/lambda-functions/dynamo-API/code')
                     },
                     'logger lambda unit tests': {
                         sh(script: 'npm run test -w server/api/lambda-functions/logger-API/code')
@@ -102,44 +102,83 @@ pipeline {
                             sh(script: 'terraform init')
                             sh(script: 'terraform plan')
                             sh(script: 'terraform apply -auto-approve')
-                            input "Continue?"
-                            sh(script: 'terraform destroy -auto-approve')
                         }
                     }
                 }
             }                          
         }
 
-         stage('Destroy all infrastructure') {
+        //  stage('Destroy all infrastructure') {
+        //     steps {
+        //         withCredentials([[
+        //         $class: 'AmazonWebServicesCredentialsBinding',
+        //         credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
+        //         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+        //         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        //         ]]) {
+        //             script {
+        //                 parallel (
+        //                     "Destroy dynamo API": {
+        //                         dir("../server/api/lambda-functions/dynamo-API/terraform") {
+        //                             sh 'terraform destroy -auto-approve'
+        //                         }
+        //                     },
+        //                     "Destroy logger API": {
+        //                         dir("../server/api/lambda-functions/logger-API/terraform") {
+        //                             sh 'terraform destroy -auto-approve'
+        //                         }
+        //                     },
+        //                     "Destroy Fargate": {
+        //                         dir('./infrastructure') {
+        //                             sh(script: 'terraform destroy -auto-approve')
+        //                         }
+        //                     }
+        //                 )
+        //             }
+        //         }
+        //     }                         
+        // }
+
+        stage('Destroy all infrastructure') {
             steps {
-                withCredentials([[
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]) {
-                    script {
-                        input 'Continue with destroy?'
-                        parallel (
-                            "Destroy dynamo API": {
-                                dir("../server/api/lambda-functions/dynamo-API/terraform") {
-                                    sh 'terraform destroy -auto-approve'
-                                }
-                            },
-                            "Destroy logger API": {
-                                dir("../server/api/lambda-functions/logger-API/terraform") {
-                                    sh 'terraform destroy -auto-approve'
-                                }
-                            },
-                            "Destroy Fargate": {
-                                dir('./infrastructure') {
-                                    sh(script: 'terraform destroy -auto-approve')
-                                }
-                            }
-                        )
+                input(message: 'Do you want to proceed with destroying all infrastructure?', parameters: [
+                choice(choices: ['Yes', 'No'], description: 'Select an option', name: 'PROCEED')
+                ])
+                
+                script {
+                def proceed = env.PROCEED
+                
+                if (proceed == 'Yes') {
+                    withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ]]) {
+                    parallel (
+                        "Destroy dynamo API": {
+                        dir('../server/api/lambda-functions/dynamo-API/terraform') {
+                            sh 'terraform destroy -auto-approve'
+                        }
+                        },
+                        "Destroy logger API": {
+                        dir('../server/api/lambda-functions/logger-API/terraform') {
+                            sh 'terraform destroy -auto-approve'
+                        }
+                        },
+                        "Destroy Fargate": {
+                        dir('./infrastructure') {
+                            sh(script: 'terraform destroy -auto-approve')
+                        }
+                        }
+                    )
                     }
+                } else {
+                    echo 'Infrastructure destruction skipped.'
                 }
-            }                         
+                }
+            }
         }
+
     }
 }
