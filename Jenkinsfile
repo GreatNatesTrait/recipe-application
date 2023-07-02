@@ -120,12 +120,12 @@ pipeline {
                     ]]) {
                     parallel (
                         "Destroy dynamo API": {
-                        dir('../server/api/lambda-functions/dynamo-API/terraform') {
+                        dir('./server/api/lambda-functions/dynamo-API/terraform') {
                             sh 'terraform destroy -auto-approve'
                         }
                         },
                         "Destroy logger API": {
-                        dir('../server/api/lambda-functions/logger-API/terraform') {
+                        dir('./server/api/lambda-functions/logger-API/terraform') {
                             sh 'terraform destroy -auto-approve'
                         }
                         },
