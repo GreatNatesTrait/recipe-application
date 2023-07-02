@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const appFile = require('./server');
 const path = require('path');
 
-describe("serving app", () => {
+describe("serving front end build files", () => {
   let sendFileSpy;
 
   afterAll(async () => {
@@ -10,7 +10,8 @@ describe("serving app", () => {
     await appFile.server.close();
   });
 
-  it("should send an index.html file", async () => {
+  it("should send an index.html file from dist folder at same level as server", async () => {
+    
     sendFileSpy = jest.spyOn(appFile.app.response, 'sendFile');
     const file = path.join(__dirname, 'dist', 'index.html');
 
