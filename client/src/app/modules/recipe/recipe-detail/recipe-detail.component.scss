@@ -1,0 +1,52 @@
+.card-container {
+  perspective: 800px;
+}
+
+.flippable-card {
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.flippable-card mat-card {
+  margin: 0;
+  display: block;
+  backface-visibility: hidden;
+}
+
+.flippable-card .back {
+  background: #23262d;
+  color: #fff;
+  transform: rotateY(180deg);
+}
+
+.flippable-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.image-container {
+  max-width: 100%; /* Set a maximum width for the container */
+  height: auto; /* Allow the height to adjust automatically */
+}
+
+.image-container img {
+  width: 100%; /* Set the width to 100% to fill the container */
+  height: auto; /* Allow the height to adjust automatically */
+  display: block; /* Ensure the image is displayed as a block element */
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.app-ingredients,
+.image-container,
+app-video {
+  flex-basis: 30%;
+  margin-right: 5%;
+}
+
+.card-body > *:last-child {
+  margin-right: 0;
+}

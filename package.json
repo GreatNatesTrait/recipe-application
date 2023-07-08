@@ -1,0 +1,10 @@
+{
+  "name": "recipe-app",
+  "private": false,
+  "workspaces": [
+    "client",
+    "server",
+    "server/api/lambda-functions/dynamo-API/code",
+    "server/api/lambda-functions/logger-API/code"
+  ]
+}

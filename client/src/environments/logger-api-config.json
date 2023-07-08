@@ -1,0 +1,7 @@
+{
+    "logger_api_endpoint": {
+      "sensitive": false,
+      "type": "string",
+      "value": "https://5olenhixzi.execute-api.us-east-1.amazonaws.com/"
+    }
+  }

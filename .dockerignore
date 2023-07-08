@@ -1,0 +1,7 @@
+**/node_modules
+/iac
+/beanstalk iac
+/testing
+Jenkinsfile
+/pipeline-image
+.gitignore

@@ -1,0 +1,8 @@
+/dynamo iac (DO NOT DELETE)
+/pipeline-image
+node_modules
+.terraform/
+*.terraform.lock.hcl
+coverage/
+
+
