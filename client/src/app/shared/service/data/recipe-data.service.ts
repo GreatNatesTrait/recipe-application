@@ -3,6 +3,8 @@ import { Observable, firstValueFrom} from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { RecipeModel,RecipeAPIresponse } from '@app/shared/models/recipe.model';
+import { cacheResponse } from '@app/shared/models/cache.model';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ import { RecipeModel,RecipeAPIresponse } from '@app/shared/models/recipe.model';
 export class RecipeDataService {
   private apiUrl = environment.dynamoAPI;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   // getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse> {
   //   let params = new HttpParams();
@@ -22,24 +24,29 @@ export class RecipeDataService {
   //   );
   // }
 
-  getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse> {
-    if (environment.localData) {
-      // Load data from local JSON file
-      return firstValueFrom(
-        this.http.get<RecipeAPIresponse>(environment.localData)
-      );
-    } else {
-      // Make request to API
-      let params = new HttpParams();
-      if (lastEvaluatedKey) {
-        params = params.set('lastEvaluatedKey', lastEvaluatedKey);
-      }
-      return firstValueFrom(
-        this.http.get<RecipeAPIresponse>(`${this.apiUrl}/recipes`, { params })
-      );
+  async getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse | cacheResponse> {
+    const recipesFromCache = this.cacheService.getRecipesFromCache();
+    if (recipesFromCache.length > 0) {
+      console.log('using cache');
+      return { items: recipesFromCache, count: recipesFromCache.length };
     }
+
+
+      let params = new HttpParams();
+    if (lastEvaluatedKey) {
+      params = params.set('lastEvaluatedKey', lastEvaluatedKey);
+    }
+ 
+
+    const response = await firstValueFrom(
+     this.http.get<RecipeAPIresponse>(`${this.apiUrl}/recipes`, { params })
+    );
+
+    const recipes = response.items;
+    this.cacheService.updateRecipeCache(recipes);
+
+    return response;
   }
-  
 
   searchRecipes(keyword: string): Observable<any[]> {
     const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;
