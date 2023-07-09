@@ -12,15 +12,34 @@ export class RecipeDataService {
 
   constructor(private http: HttpClient) {}
 
+  // getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse> {
+  //   let params = new HttpParams();
+  //   if (lastEvaluatedKey) {
+  //     params = params.set('lastEvaluatedKey', lastEvaluatedKey);
+  //   }
+  //   return firstValueFrom(
+  //     this.http.get<RecipeAPIresponse>(`${this.apiUrl}/recipes`, { params })
+  //   );
+  // }
+
   getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse> {
-    let params = new HttpParams();
-    if (lastEvaluatedKey) {
-      params = params.set('lastEvaluatedKey', lastEvaluatedKey);
+    if (environment.localData) {
+      // Load data from local JSON file
+      return firstValueFrom(
+        this.http.get<RecipeAPIresponse>(environment.localData)
+      );
+    } else {
+      // Make request to API
+      let params = new HttpParams();
+      if (lastEvaluatedKey) {
+        params = params.set('lastEvaluatedKey', lastEvaluatedKey);
+      }
+      return firstValueFrom(
+        this.http.get<RecipeAPIresponse>(`${this.apiUrl}/recipes`, { params })
+      );
     }
-    return firstValueFrom(
-      this.http.get<RecipeAPIresponse>(`${this.apiUrl}/recipes`, { params })
-    );
   }
+  
 
   searchRecipes(keyword: string): Observable<any[]> {
     const url = `${this.apiUrl}/recipes/search?keyword=${keyword}`;

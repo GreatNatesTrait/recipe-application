@@ -12,6 +12,7 @@ export const environment = {
   version: env.npm_package_version + '-dev',
   envName: 'DEV',
   dynamoAPI : apiConfig.dynamo_api_url.value,
+  localData: 'assets/recipes.json' ,
   loggerAPI : loggerApiConfig.logger_api_endpoint.value,
   cognito: {
     region: 'us-east-1',
