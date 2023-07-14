@@ -1,3 +1,23 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "4.59.0"
+    }
+  }
+
+  backend "s3" {
+    bucket         	   = "recipe-app-code"
+    key              	   = "state/s3-proxy/terraform.tfstate"
+    region         	   = "us-east-1"
+    encrypt        	   = true
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
 resource "aws_api_gateway_api_key" "MyDemoApiKey" {
   name = "webhook"
 }
