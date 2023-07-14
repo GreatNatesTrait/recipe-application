@@ -19,18 +19,20 @@ export class RecipeDataService {
     let localMetadata;
     let state = await firstValueFrom(this.http.get<any>(`${this.cacheUrl}/cache-state`))
     .then((data)=>localMetadata = data.Items);
-
+console.log(localMetadata)
     let test = localStorage.getItem("cache-metadata");
     if(test){
       let test2 = JSON.parse(test);
     let compare = localMetadata.map(item1 => {
-      const item2 = test2.Items.find(item => item.endpoint === item1.endpoint);
+      const item2 = test2.find(item => item.endpoint === item1.endpoint);
       const match = item2 ? item1.response === item2.response : false;
       let output = { ...item1, match };
       console.log(output);
-      if(Object.values(output.match).includes(false)){
-        localStorage.removeItem('cache-metadata');
-
+      for (let key in output) {
+        if (output.hasOwnProperty(key) && key == 'match' && output[key] == false) {
+          console.log("At least one value of match is false.");
+          localStorage.removeItem('recipeCache');
+        }
       }
     });
     }else{
