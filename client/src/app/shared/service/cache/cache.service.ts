@@ -9,6 +9,8 @@ import { environment } from 'environments/environment';
 export class CacheService {
   private readonly CACHE_KEY = 'recipeCache';
 
+  private cacheUrl = environment.cacheAPI;
+
   constructor(private http: HttpClient) {}
   invalidCache(): void{
     
@@ -33,7 +35,7 @@ export class CacheService {
   }
 
   private saveCache(cache: { [key: string]: RecipeModel }): void {
-    let cachee = this.http.get(`${environment.cacheAPI}\cache-state`);
+    let cachee = this.http.get(`${this.cacheUrl}\cache-state`);
     localStorage.setItem('cache-metadata',JSON.stringify(cachee));
     localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache));
   }
