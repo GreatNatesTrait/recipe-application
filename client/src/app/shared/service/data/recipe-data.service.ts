@@ -11,8 +11,30 @@ import { CacheService } from '../cache/cache.service';
 })
 export class RecipeDataService {
   private apiUrl = environment.dynamoAPI;
+  private cacheUrl = environment.cacheAPI;
 
   constructor(private http: HttpClient, private cacheService: CacheService) {}
+
+
+  async shouldInvalidateCache() :Promise<any>{
+    let localMetadata =  JSON.parse(localStorage.getItem('cache-metadata')).Items;
+
+    if(!localMetadata){
+      console.log('false')
+    }
+
+    let state = await firstValueFrom(this.http.get<any>(`${this.cacheUrl}/cache-state`)).then((data)=>{
+      //localStorage.setItem('cache-metadata',JSON.stringify(data));
+      data.Items.map(item1 => {
+        const item2 = localMetadata.find(item => item.endpoint === item1.endpoint);
+        const match = item2 ? item1.response === item2.response : false;
+        console.log({ ...item1, match })
+      });
+    }
+      );
+    return state
+  }
+  
 
   // getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse> {
   //   let params = new HttpParams();

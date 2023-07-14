@@ -32,6 +32,7 @@ export class RecipesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
+    await this.dataService.shouldInvalidateCache();
     await this.dataService.getRecipeData().then((data) => {
       (this.recipeData = data.items),
         (this.lastEvaluatedKey = data.lastEvaluatedKey);
@@ -42,6 +43,7 @@ export class RecipesComponent implements OnInit {
     if (this.user) {
       await this.getUserFavorites();
     }
+    
   }
 
   async getUserFavorites() {

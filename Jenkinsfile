@@ -67,7 +67,23 @@ pipeline {
                                         sh 'terraform apply -auto-approve'
                                         sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json'"
                                     }
-                                }                         
+                                },
+                                "Deploy cache api": {
+                                    dir("./server/api/lambda-functions/cache-API/terraform") {                       
+                                        sh 'terraform init'
+                                        sh 'terraform plan'
+                                        sh 'terraform apply -auto-approve'
+                                        sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/cache-api-config.json'"
+                                    }
+                                },
+                                "Deploy s3 api": {
+                                    dir("./server/api/s3-proxy") {                       
+                                        sh 'terraform init'
+                                        sh 'terraform plan'
+                                        sh 'terraform apply -auto-approve'
+                                        //sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json'"
+                                    }
+                                }                                    
                         )
                     }
                 }
@@ -126,6 +142,16 @@ pipeline {
                         },
                         "Destroy logger API": {
                         dir('./server/api/lambda-functions/logger-API/terraform') {
+                            sh 'terraform destroy -auto-approve'
+                        }
+                        },
+                        "Destroy cache API": {
+                        dir('./server/api/lambda-functions/cache-API/terraform') {
+                            sh 'terraform destroy -auto-approve'
+                        }
+                        },
+                        "Destroy s3 API": {
+                        dir('./server/api/s3-proxy') {
                             sh 'terraform destroy -auto-approve'
                         }
                         },

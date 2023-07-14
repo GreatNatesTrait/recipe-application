@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { RecipeModel } from '@app/shared/models/recipe.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CacheService {
   private readonly CACHE_KEY = 'recipeCache';
+
+  constructor(private http: HttpClient) {}
+  invalidCache(): void{
+    
+  }
 
   getRecipesFromCache(): RecipeModel[] {
     const cache = this.getCache();
@@ -26,6 +33,8 @@ export class CacheService {
   }
 
   private saveCache(cache: { [key: string]: RecipeModel }): void {
+    let cachee = this.http.get(`${environment.cacheAPI}\cache-state`);
+    localStorage.setItem('cache-metadata',JSON.stringify(cachee));
     localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache));
   }
 }

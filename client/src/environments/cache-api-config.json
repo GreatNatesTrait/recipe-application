@@ -1,0 +1,7 @@
+{
+    "cache_api_endpoint": {
+      "sensitive": false,
+      "type": "string",
+      "value": "https://3gjy9c0vq1.execute-api.us-east-1.amazonaws.com/"
+    }
+  }

@@ -6,6 +6,7 @@
 import env from './.env';
 import apiConfig from './dynamo-api-config.json'
 import loggerApiConfig from './logger-api-config.json'
+import cacheApiConfig from './cache-api-config.json'
 
 export const environment = {
   production: false,
@@ -14,6 +15,7 @@ export const environment = {
   dynamoAPI : apiConfig.dynamo_api_url.value,
   localData: 'assets/response.json' ,
   loggerAPI : loggerApiConfig.logger_api_endpoint.value,
+  cacheAPI : cacheApiConfig.cache_api_endpoint.value,
   cognito: {
     region: 'us-east-1',
     userPoolId: 'us-east-1_9v5QC3TYm',
