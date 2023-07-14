@@ -90,7 +90,7 @@ pipeline {
                          
                                     dir("./server/api/lambda-functions/streams-API") {   
                                         sh 'zip cacheLambda.zip main.js'                    
-                                        sh 'aws lambda create-function --function-name cacheLambda --runtime nodejs14.x --handler cacheLambda.handler --zip-file fileb://cacheLambda.zip --role arn:aws:iam::372554721158:role/dynamo-lambda-role'
+                                        sh 'aws lambda create-function --function-name cacheLambda --runtime nodejs14.x --handler cacheLambda.handler --zip-file fileb://cacheLambda.zip --role arn:aws:iam::372554721158:role/dynamo-cache-role'
                                         sh 'aws lambda create-event-source-mapping --function-name cacheLambda --event-source-arn arn:aws:dynamodb:us-east-1:372554721158:table/RecipeTable/stream/2023-07-09T15:42:37.365 --starting-position LATEST'
                                     }
                                
