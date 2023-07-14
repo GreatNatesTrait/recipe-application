@@ -47,6 +47,12 @@ resource "aws_lambda_function" "dynamo_lambda" {
   depends_on = [aws_cloudwatch_log_group.recipe-cache, aws_s3_object.file_upload]
 }
 
+resource "aws_lambda_event_source_mapping" "example" {
+  event_source_arn  = "arn:aws:dynamodb:us-east-1:372554721158:table/RecipeTable"
+  function_name     = aws_lambda_function.dynamo_lambda.function_name
+  starting_position = "LATEST"
+}
+
 resource "aws_cloudwatch_log_group" "recipe-cache" {
   name = "/aws/lambda/cache-api"
 }
