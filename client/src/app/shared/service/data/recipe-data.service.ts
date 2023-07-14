@@ -18,12 +18,12 @@ export class RecipeDataService {
   async shouldInvalidateCache() :Promise<any>{
     let localMetadata;
     let state = await firstValueFrom(this.http.get<any>(`${this.cacheUrl}/cache-state`))
-    .then((data)=>localMetadata = data.Items);
+    .then((data)=>localMetadata = data);
 console.log(localMetadata)
     let test = localStorage.getItem("cache-metadata");
     if(test){
-      let test2 = JSON.parse(test);
-    let compare = localMetadata.map(item1 => {
+      let test2 = JSON.parse(test).Items;
+    let compare = localMetadata.Items.map(item1 => {
       const item2 = test2.find(item => item.endpoint === item1.endpoint);
       const match = item2 ? item1.response === item2.response : false;
       let output = { ...item1, match };
@@ -32,6 +32,7 @@ console.log(localMetadata)
         if (output.hasOwnProperty(key) && key == 'match' && output[key] == false) {
           console.log("At least one value of match is false.");
           localStorage.removeItem('recipeCache');
+          localStorage.removeItem('cache-metadata');
         }
       }
     });

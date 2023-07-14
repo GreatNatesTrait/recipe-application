@@ -35,8 +35,7 @@ export class CacheService {
   }
 
   private saveCache(cache: { [key: string]: RecipeModel }): void {
-    let cachee = this.http.get(`${this.cacheUrl}\cache-state`);
-    localStorage.setItem('cache-metadata',JSON.stringify(cachee));
+    //let cachee = this.http.get(`${this.cacheUrl}\cache-state`);
     localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache));
   }
 }

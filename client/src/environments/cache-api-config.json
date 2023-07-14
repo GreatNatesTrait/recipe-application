@@ -2,6 +2,6 @@
     "cache_api_url": {
       "sensitive": false,
       "type": "string",
-      "value": "https://40lhu59suj.execute-api.us-east-1.amazonaws.com/"
+      "value": "https://sb6gbetgfa.execute-api.us-east-1.amazonaws.com/"
     }
   }
