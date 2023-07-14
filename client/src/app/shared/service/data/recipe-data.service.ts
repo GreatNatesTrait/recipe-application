@@ -18,13 +18,13 @@ export class RecipeDataService {
   async shouldInvalidateCache() :Promise<any>{
     let localMetadata;
     let state = await firstValueFrom(this.http.get<any>(`${this.cacheUrl}/cache-state`))
-    .then((data)=>localMetadata = JSON.parse(data).Items);
+    .then((data)=>localMetadata = data.Items);
 
     let test = localStorage.getItem("cache-metadata");
     if(test){
-      let test2 = JSON.parse(test).Items;
+      let test2 = JSON.parse(test);
     let compare = localMetadata.map(item1 => {
-      const item2 = test2.find(item => item.endpoint === item1.endpoint);
+      const item2 = test2.Items.find(item => item.endpoint === item1.endpoint);
       const match = item2 ? item1.response === item2.response : false;
       let output = { ...item1, match };
       console.log(output);

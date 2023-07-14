@@ -2,6 +2,6 @@
     "dynamo_api_url": {
       "sensitive": false,
       "type": "string",
-      "value": "https://nc3f5os8qf.execute-api.us-east-1.amazonaws.com/"
+      "value": "https://0zrbqi7cca.execute-api.us-east-1.amazonaws.com/"
     }
   }
