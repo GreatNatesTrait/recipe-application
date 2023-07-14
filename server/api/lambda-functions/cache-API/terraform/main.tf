@@ -48,7 +48,7 @@ resource "aws_lambda_function" "dynamo_lambda" {
 }
 
 resource "aws_lambda_event_source_mapping" "example" {
-  event_source_arn  = "arn:aws:dynamodb:us-east-1:372554721158:table/RecipeTable"
+  event_source_arn  = "arn:aws:dynamodb:us-east-1:372554721158:table/RecipeTable/stream/2023-07-09T15:42:37.365"
   function_name     = aws_lambda_function.dynamo_lambda.function_name
   starting_position = "LATEST"
 }
