@@ -15,25 +15,57 @@ export class RecipeDataService {
 
   constructor(private http: HttpClient, private cacheService: CacheService) {}
 
-
   async shouldInvalidateCache() :Promise<any>{
-    let localMetadata =  JSON.parse(localStorage.getItem('cache-metadata')).Items;
+    let localMetadata;
+    let state = await firstValueFrom(this.http.get<any>(`${this.cacheUrl}/cache-state`))
+    .then((data)=>localMetadata = JSON.parse(data).Items);
 
-    if(!localMetadata){
-      console.log('false')
-    }
+    let test = localStorage.getItem("cache-metadata");
+    if(test){
+      let test2 = JSON.parse(test).Items;
+    let compare = localMetadata.map(item1 => {
+      const item2 = test2.find(item => item.endpoint === item1.endpoint);
+      const match = item2 ? item1.response === item2.response : false;
+      let output = { ...item1, match };
+      console.log(output);
+      if(Object.values(output.match).includes(false)){
+        localStorage.removeItem('cache-metadata');
 
-    let state = await firstValueFrom(this.http.get<any>(`${this.cacheUrl}/cache-state`)).then((data)=>{
-      //localStorage.setItem('cache-metadata',JSON.stringify(data));
-      data.Items.map(item1 => {
-        const item2 = localMetadata.find(item => item.endpoint === item1.endpoint);
-        const match = item2 ? item1.response === item2.response : false;
-        console.log({ ...item1, match })
-      });
+      }
+    });
+    }else{
+      localStorage.setItem('cache-metadata',JSON.stringify(localMetadata));
     }
-      );
     return state
   }
+
+  // async shouldInvalidateCache() :Promise<any>{
+  //   let localMetadata;
+  //   if(localStorage.getItem("cache-metadata") !== null){
+  //   localMetadata =  JSON.parse(localStorage.getItem('cache-metadata')).Items;
+  //   }
+
+  //   if(!localMetadata){
+  //     console.log('false');
+  //     return;
+  //   }
+
+  //   let state = await firstValueFrom(this.http.get<any>(`${this.cacheUrl}/cache-state`)).then((data)=>{
+      
+  //     if(!localMetadata){
+  //     localStorage.setItem('cache-metadata',JSON.stringify(data));
+  //     };
+  //     data.Items.map(item1 => {
+  //       const item2 = localMetadata.find(item => item.endpoint === item1.endpoint);
+  //       const match = item2 ? item1.response === item2.response : false;
+  //       let output = { ...item1, match };
+  //       console.log(output);
+  //       if(output.match)
+  //     });
+  //   }
+  //     );
+  //   return state
+  // }
   
 
   // getRecipeData(lastEvaluatedKey?): Promise<RecipeAPIresponse> {
