@@ -275,6 +275,11 @@ resource "aws_api_gateway_integration" "itemOptionsMethod-ApiProxyIntegration" {
   resource_id = "${aws_api_gateway_resource.itemResource.id}"
   http_method = "${aws_api_gateway_method.itemOptionsMethod.http_method}"
   type        = "MOCK"
+  passthrough_behavior    = "WHEN_NO_MATCH"
+  request_templates = {
+    "application/json": "{\"statusCode\": 200}"
+  }
+  
   depends_on  = ["aws_api_gateway_method.itemOptionsMethod"]
 }
 
@@ -306,9 +311,12 @@ resource "aws_api_gateway_method_response" "itemOptionsMethod200Response" {
   }
 
   response_parameters= {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
     "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Allow-Credentials" 	= true
+"method.response.header.Access-Control-Allow-Headers"= true
+"method.response.header.Access-Control-Allow-Methods"= true
+"method.response.header.Access-Control-Expose-Headers"	= true
+"method.response.header.Access-Control-Max-Age"= true
   }
 
   depends_on = ["aws_api_gateway_method.itemOptionsMethod"]
@@ -370,10 +378,15 @@ resource "aws_api_gateway_integration_response" "itemOptionsMethod-IntegrationRe
   status_code = "${aws_api_gateway_method_response.itemOptionsMethod200Response.status_code}"
 
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,x-amz-meta-fileinfo'"
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,PUT,OPTIONS'"
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Allow-Credentials" 	= "'true'"
+"method.response.header.Access-Control-Allow-Headers"= "'*'"
+"method.response.header.Access-Control-Allow-Methods"= "'GET,OPTIONS,PUT'"
+"method.response.header.Access-Control-Expose-Headers"	= "'*'"
+"method.response.header.Access-Control-Max-Age"= "'300'"
   }
+
+  
 
   response_templates ={
     "application/json" = ""
@@ -410,7 +423,7 @@ resource "aws_api_gateway_usage_plan" "example" {
   }
 
   quota_settings {
-    limit  = 200
+    limit  = 2000
     offset = 2
     period = "WEEK"
   }

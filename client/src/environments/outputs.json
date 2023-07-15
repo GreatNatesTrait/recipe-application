@@ -1,0 +1,104 @@
+{
+  "api-key": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "id": "string",
+        "key_id": "string",
+        "key_type": "string",
+        "name": "string",
+        "usage_plan_id": "string",
+        "value": "string"
+      }
+    ],
+    "value": {
+      "id": "fgg0rza02k",
+      "key_id": "fgg0rza02k",
+      "key_type": "API_KEY",
+      "name": "webhook",
+      "usage_plan_id": "4o99wt",
+      "value": "MMFp16pjPD4krlniBHOAh8JWlWRl607P7xnOszlY"
+    }
+  },
+  "api-url": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "api_key_source": "string",
+        "arn": "string",
+        "binary_media_types": [
+          "list",
+          "string"
+        ],
+        "body": "string",
+        "created_date": "string",
+        "description": "string",
+        "disable_execute_api_endpoint": "bool",
+        "endpoint_configuration": [
+          "list",
+          [
+            "object",
+            {
+              "types": [
+                "list",
+                "string"
+              ],
+              "vpc_endpoint_ids": [
+                "set",
+                "string"
+              ]
+            }
+          ]
+        ],
+        "execution_arn": "string",
+        "id": "string",
+        "minimum_compression_size": "number",
+        "name": "string",
+        "parameters": [
+          "map",
+          "string"
+        ],
+        "policy": "string",
+        "put_rest_api_mode": "string",
+        "root_resource_id": "string",
+        "tags": [
+          "map",
+          "string"
+        ],
+        "tags_all": [
+          "map",
+          "string"
+        ]
+      }
+    ],
+    "value": {
+      "api_key_source": "HEADER",
+      "arn": "arn:aws:apigateway:us-east-1::/restapis/5kd2dru7v8",
+      "binary_media_types": [],
+      "body": null,
+      "created_date": "2023-07-15T18:32:30Z",
+      "description": "enable webhook for S3 bucket",
+      "disable_execute_api_endpoint": false,
+      "endpoint_configuration": [
+        {
+          "types": [
+            "REGIONAL"
+          ],
+          "vpc_endpoint_ids": []
+        }
+      ],
+      "execution_arn": "arn:aws:execute-api:us-east-1:372554721158:5kd2dru7v8",
+      "id": "5kd2dru7v8",
+      "minimum_compression_size": -1,
+      "name": "api-gateway-webhook",
+      "parameters": null,
+      "policy": "",
+      "put_rest_api_mode": null,
+      "root_resource_id": "pz7g9bg7e1",
+      "tags": null,
+      "tags_all": {}
+    }
+  }
+}

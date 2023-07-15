@@ -82,7 +82,7 @@ pipeline {
                                         sh 'terraform init'
                                         sh 'terraform plan'
                                         sh 'terraform apply -auto-approve'
-                                        //sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/logger-api-config.json'"
+                                        sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/outputs.json'"
                                     }
                                 },
                                                                 
@@ -161,6 +161,7 @@ pipeline {
                         },
                         "Destroy s3 API": {
                         dir('./server/api/s3-proxy') {
+                            sh 'aws s3 rm s3://nwebhook-apigateway --recursive'
                             sh 'terraform destroy -auto-approve'
                         }
                         },
@@ -170,6 +171,7 @@ pipeline {
                         }
                         }
                     )
+                    //sh 'aws lambda list-event-source-mappings --function-name cacheLambda --event-source-arn arn:aws:dynamodb:us-east-1:372554721158:table/RecipeTable/stream'
                     sh 'aws lambda delete-function --function-name cacheLambda'
                     }                 
                 }

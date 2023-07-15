@@ -7,6 +7,7 @@ import env from './.env';
 import apiConfig from './dynamo-api-config.json'
 import loggerApiConfig from './logger-api-config.json'
 import cacheApiConfig from './cache-api-config.json'
+import s3Proxy from  './outputs.json'
 
 export const environment = {
   production: false,
@@ -16,6 +17,8 @@ export const environment = {
   localData: 'assets/response.json' ,
   loggerAPI : loggerApiConfig.logger_api_endpoint.value,
   cacheAPI : cacheApiConfig.cache_api_url.value,
+  photoUpload: `https://${s3Proxy['api-url'].value.id}.execute-api.us-east-1.amazonaws.com/s3api`,
+  photoUploadAPIkey: s3Proxy['api-key'].value.value,
   cognito: {
     region: 'us-east-1',
     userPoolId: 'us-east-1_9v5QC3TYm',
