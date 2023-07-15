@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AboutComponent } from './about.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -8,7 +9,8 @@ describe('AboutComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AboutComponent]
+        declarations: [AboutComponent],
+        imports: [HttpClientTestingModule],
       }).compileComponents();
     })
   );
