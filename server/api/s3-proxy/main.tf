@@ -305,7 +305,7 @@ resource "aws_api_gateway_method_response" "itemOptionsMethod200Response" {
   resource_id = "${aws_api_gateway_resource.itemResource.id}"
   http_method = "${aws_api_gateway_method.itemOptionsMethod.http_method}"
   status_code = "200"
-
+  
   response_models ={
     "application/json" = "Empty"
   }
@@ -376,7 +376,7 @@ resource "aws_api_gateway_integration_response" "itemOptionsMethod-IntegrationRe
   resource_id = "${aws_api_gateway_resource.itemResource.id}"
   http_method = "${aws_api_gateway_method.itemOptionsMethod.http_method}"
   status_code = "${aws_api_gateway_method_response.itemOptionsMethod200Response.status_code}"
-
+  content_handling        = "CONVERT_TO_TEXT"
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
     "method.response.header.Access-Control-Allow-Credentials" 	= "'true'"
