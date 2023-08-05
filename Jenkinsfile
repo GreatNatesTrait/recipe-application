@@ -114,23 +114,63 @@ pipeline {
             }              
         }   
 
-        stage('Run Fargate Terraform') {
+        // stage('Run Fargate Terraform') {
+        //     steps {
+        //         withCredentials([[
+        //         $class: 'AmazonWebServicesCredentialsBinding',
+        //         credentialsId: "new",
+        //         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+        //         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        //         ]]) {
+        //             script {
+        //                 dir('./infrastructure') {
+        //                     sh(script: 'terraform init')
+        //                     sh(script: 'terraform plan')
+        //                     sh(script: 'terraform apply -auto-approve')
+        //                 }
+        //             }
+        //         }
+        //     }                          
+        // }
+
+          stage('Deploy to EKS') {
+            environment {
+                AWS_REGION = 'us-east-1'
+                EKS_CLUSTER_NAME = 'nates-eks-cluster'
+            }
             steps {
                 withCredentials([[
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: "new",
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]) {
-                    script {
-                        dir('./infrastructure') {
-                            sh(script: 'terraform init')
-                            sh(script: 'terraform plan')
-                            sh(script: 'terraform apply -auto-approve')
-                        }
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: "new",
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {       
+                    // Update kubeconfig to connect to EKS cluster
+                    sh 'aws sts get-caller-identity'
+                    sh 'aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME'
+        
+                    // Apply Kubernetes deployment
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl create -f loadbalancer.yaml'
                     }
+            }
+        }
+
+
+        stage('Show external address to load balancer') {
+            steps {             
+                script {
+                input "Continue?"                               
+                    withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'c49b4767-615c-47ed-8880-e33d5b620515',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ]]) {
+                    sh 'kubectl get services'
+                    }                 
                 }
-            }                          
+            }
         }
 
         stage('Destroy all infrastructure') {
