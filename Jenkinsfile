@@ -150,8 +150,8 @@ pipeline {
                     sh 'aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME'
         
                     // Apply Kubernetes deployment
-                    sh 'sudo kubectl apply -f deployment.yaml'
-                    sh 'sudo kubectl create -f loadbalancer.yaml'
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl create -f loadbalancer.yaml'
                     }
             }
         }
@@ -167,7 +167,7 @@ pipeline {
                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                     ]]) {
-                    sh 'sudo kubectl get services'
+                    sh 'kubectl get services'
                     }                 
                 }
             }
