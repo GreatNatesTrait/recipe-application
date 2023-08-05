@@ -16,4 +16,4 @@ spec:
         - name: recipe-app
           image: greatnate27/recipe-application:latest
           ports:
-            - containerPort: 80
+            - containerPort: 3000
