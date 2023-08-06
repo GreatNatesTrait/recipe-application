@@ -85,12 +85,12 @@ pipeline {
                                         sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/outputs.json'"
                                     }
                                 },
-                                "Deploy streams api": {
-                                    dir("./server/api/lambda-functions/streams-API") {   
-                                        sh 'zip cacheLambda.zip main.js'                 
-                                        sh 'aws lambda create-function --function-name cacheLambda --runtime nodejs18.x --handler main.handler --zip-file fileb://cacheLambda.zip --role arn:aws:iam::372554721158:role/dynamo-cache-role'
-                                    }
-                                }                                                              
+                                // "Deploy streams api": {
+                                //     dir("./server/api/lambda-functions/streams-API") {   
+                                //         sh 'zip cacheLambda.zip main.js'                 
+                                //         sh 'aws lambda create-function --function-name cacheLambda --runtime nodejs18.x --handler main.handler --zip-file fileb://cacheLambda.zip --role arn:aws:iam::372554721158:role/dynamo-cache-role'
+                                //     }
+                                // }                                                              
                         )                                                                                    
                     }
                 }
