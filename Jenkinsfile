@@ -5,10 +5,12 @@ pipeline {
             args '-u 115:999 -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
+
     environment {
         HOME = '.'
         DOCKERHUB_CREDENTIALS= credentials('b28bbdd7-0345-46b2-a3c8-050a04a90660')
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -41,12 +43,10 @@ pipeline {
             }
         }
 
-
         stage('Deploy Lambdas') {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    //credentialsId: "c49b4767-615c-47ed-8880-e33d5b620515",
                     credentialsId: "new",
                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
@@ -85,20 +85,17 @@ pipeline {
                                         sh "terraform output -json > '/var/lib/jenkins/workspace/recipe application build/client/src/environments/outputs.json'"
                                     }
                                 },
-                                                                
-                        )
-                         
+                                "Deploy streams api": {
                                     dir("./server/api/lambda-functions/streams-API") {   
                                         sh 'zip cacheLambda.zip main.js'                 
                                         sh 'aws lambda create-function --function-name cacheLambda --runtime nodejs18.x --handler main.handler --zip-file fileb://cacheLambda.zip --role arn:aws:iam::372554721158:role/dynamo-cache-role'
-                                        //sh 'aws lambda create-event-source-mapping --function-name cacheLambda --event-source-arn arn:aws:dynamodb:us-east-1:372554721158:table/RecipeTable/stream/2023-07-09T15:42:37.365 --starting-position LATEST'
                                     }
-                               
+                                }                                                              
+                        )                                                                                    
                     }
                 }
             }
         }
-
 
         stage('Build app image') {      	
             steps{               
@@ -114,26 +111,7 @@ pipeline {
             }              
         }   
 
-        // stage('Run Fargate Terraform') {
-        //     steps {
-        //         withCredentials([[
-        //         $class: 'AmazonWebServicesCredentialsBinding',
-        //         credentialsId: "new",
-        //         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-        //         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-        //         ]]) {
-        //             script {
-        //                 dir('./infrastructure') {
-        //                     sh(script: 'terraform init')
-        //                     sh(script: 'terraform plan')
-        //                     sh(script: 'terraform apply -auto-approve')
-        //                 }
-        //             }
-        //         }
-        //     }                          
-        // }
-
-          stage('Deploy to EKS') {
+        stage('Deploy to EKS') {
             environment {
                 AWS_REGION = 'us-east-1'
                 EKS_CLUSTER_NAME = 'nates-eks-cluster'
@@ -155,7 +133,6 @@ pipeline {
                     }
             }
         }
-
 
         stage('Show external address to load balancer') {
             steps {             
@@ -197,6 +174,7 @@ pipeline {
                         "Destroy cache API": {
                         dir('./server/api/lambda-functions/cache-API/terraform') {
                             sh 'terraform destroy -auto-approve'
+                            sh 'aws lambda delete-function --function-name cacheLambda'
                         }
                         },
                         "Destroy s3 API": {
@@ -205,14 +183,11 @@ pipeline {
                             sh 'terraform destroy -auto-approve'
                         }
                         },
-                        "Destroy Fargate": {
-                        dir('./infrastructure') {
-                            sh 'terraform destroy -auto-approve'
+                        "Destroy EKS deployment and service": {
+                            sh 'kubectl delete service service-loadbalancer'
+                            sh 'kubectl delete deployment recipe-app'
                         }
-                        }
-                    )
-                    //sh 'aws lambda list-event-source-mappings --function-name cacheLambda --event-source-arn arn:aws:dynamodb:us-east-1:372554721158:table/RecipeTable/stream'
-                    sh 'aws lambda delete-function --function-name cacheLambda'
+                    )                  
                     }                 
                 }
             }
